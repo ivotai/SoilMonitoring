@@ -1,1 +1,6 @@
-1. 建立项目 SoilMonitoring
+建立项目 SoilMonitoring
+分析需求，结合可以实现的功能。
+
+添加 Jitpack
+添加 ViewBinding
+添加 Base
