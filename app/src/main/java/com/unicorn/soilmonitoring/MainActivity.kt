@@ -1,13 +1,27 @@
 package com.unicorn.soilmonitoring
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import com.unicorn.soilmonitoring.databinding.ActivityMainBinding
+import com.unicorn.soilmonitoring.ui.base.BaseAct
 
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+class MainActivity : BaseAct<ActivityMainBinding>() {
+
+    override fun initViews() {
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.bmapView.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.bmapView.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.bmapView.onDestroy()
     }
 
 }

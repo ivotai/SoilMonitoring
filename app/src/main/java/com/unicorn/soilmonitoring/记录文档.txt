@@ -1,6 +1,29 @@
+0.
 建立项目 SoilMonitoring
 分析需求，结合可以实现的功能。
 
+1.
 添加 Jitpack
 添加 ViewBinding
 添加 Base
+测试 ViewBinding 通过
+
+2.
+百度地图个人认证（额度不如企业认证）
+获取开发版 sha1
+获取发布版 sha1
+创建应用，获得 ak
+6XELBYBp5nia6MIvpFq9qreFo1qt36WY
+添加百度地图 sdk
+error 一直报错，莫名其妙
+结果是 ak 放错位置了
+
+3.
+
+
+
+
+
+2.
+需要坐标点
+Poi or Sug

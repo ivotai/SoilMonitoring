@@ -13,10 +13,19 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
+        ndk {
+            abiFilters += listOf("armeabi", "armeabi-v7a", "arm64-v8a")
+        }
     }
 
     buildTypes {
         release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            )
+        }
+        debug {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
@@ -45,4 +54,9 @@ dependencies {
     implementation("com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.1.0")
     implementation("com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.1.0")
 
+    // BaiduMap
+    implementation("com.baidu.lbsyun:BaiduMapSDK_Map:7.5.4")
+
 }
+
+
