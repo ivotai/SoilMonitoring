@@ -77,6 +77,8 @@ dependencies {
     implementation("com.github.liangjingkanji:BRV:1.5.0")
     implementation("com.github.RuffianZhong:RWidgetHelper:androidx.v0.0.14")
     implementation("com.louiscad.splitties:splitties-fun-pack-android-base:3.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("com.github.liangjingkanji:Channel:1.1.5")
 }
 
 
