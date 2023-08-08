@@ -15,7 +15,7 @@ android {
         versionCode = 1
         versionName = "1.0"
         ndk {
-            abiFilters += listOf("armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+            abiFilters += listOf("armeabi", "armeabi-v7a", "arm64-v8a")
         }
     }
 
@@ -70,7 +70,13 @@ dependencies {
     // BaiduMapSDK
     implementation("com.baidu.lbsyun:BaiduMapSDK_Map:7.5.8")
     implementation("com.baidu.lbsyun:BaiduMapSDK_Search:7.5.8")
+    implementation("com.baidu.lbsyun:BaiduMapSDK_Util:7.5.8")
 
+    implementation("com.afollestad.material-dialogs:core:3.3.0")
+    implementation("com.afollestad.material-dialogs:bottomsheets:3.3.0")
+    implementation("com.github.liangjingkanji:BRV:1.5.0")
+    implementation("com.github.RuffianZhong:RWidgetHelper:androidx.v0.0.14")
+    implementation("com.louiscad.splitties:splitties-fun-pack-android-base:3.0.0")
 }
 
 

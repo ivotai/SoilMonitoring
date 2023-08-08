@@ -1,34 +1,48 @@
 package com.unicorn.soilmonitoring
 
-import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener
-import com.baidu.mapapi.search.poi.PoiCitySearchOption
-import com.baidu.mapapi.search.poi.PoiDetailResult
-import com.baidu.mapapi.search.poi.PoiDetailSearchResult
-import com.baidu.mapapi.search.poi.PoiIndoorResult
-import com.baidu.mapapi.search.poi.PoiResult
-import com.baidu.mapapi.search.poi.PoiSearch
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.customview.customView
+import com.baidu.mapapi.map.BitmapDescriptorFactory
+import com.baidu.mapapi.map.MapStatus
+import com.baidu.mapapi.map.MapStatusUpdateFactory
+import com.baidu.mapapi.map.MarkerOptions
+import com.baidu.mapapi.map.OverlayOptions
+import com.baidu.mapapi.model.LatLng
+import com.baidu.mapapi.search.sug.SuggestionSearch
+import com.baidu.mapapi.search.sug.SuggestionSearchOption
 import com.baidu.mapapi.search.weather.WeatherDataType
 import com.baidu.mapapi.search.weather.WeatherSearch
 import com.baidu.mapapi.search.weather.WeatherSearchOption
 import com.unicorn.soilmonitoring.databinding.ActivityMainBinding
 import com.unicorn.soilmonitoring.ui.base.BaseAct
+import com.unicorn.soilmonitoring.ui.view.PointRecyclerView
 
 
 class MainActivity : BaseAct<ActivityMainBinding>() {
 
+
     override fun initViews() {
-        binding.tvSearch.setOnClickListener {
-            search()
+        binding.tvPoint.setOnClickListener {
+            MaterialDialog(this, BottomSheet()).show {
+                title(text = "数据点总览")
+                customView(view = PointRecyclerView(this@MainActivity), scrollable = true)
+            }
         }
+        s()
+
+//        DataHelper.getPoints().forEach { showMarker(it) }
+//
+//        showMarker(Pair(31.153891, 121.450991))
     }
 
     private fun search() {
 
         val districtID = "110105" // 天安门区域ID
 
-        val weatherSearchOption = WeatherSearchOption()
-            .weatherDataType(WeatherDataType.WEATHER_DATA_TYPE_ALL)
-            .districtID(districtID)
+        val weatherSearchOption =
+            WeatherSearchOption().weatherDataType(WeatherDataType.WEATHER_DATA_TYPE_ALL)
+                .districtID(districtID)
 
         val mWeatherSearch = WeatherSearch.newInstance()
         mWeatherSearch.setWeatherSearchResultListener {
@@ -42,31 +56,39 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         mWeatherSearch.request(weatherSearchOption);
     }
 
-    private fun search2() {
-        val p = PoiSearch.newInstance();
-        val listener: OnGetPoiSearchResultListener = object : OnGetPoiSearchResultListener {
-            override fun onGetPoiResult(poiResult: PoiResult) {
-                poiResult
+
+    private fun search3() {
+        SuggestionSearch.newInstance().apply {
+            setOnGetSuggestionResultListener {
+                it
             }
-
-            override fun onGetPoiDetailResult(poiDetailSearchResult: PoiDetailSearchResult) {
-                poiDetailSearchResult
-            }
-
-            override fun onGetPoiIndoorResult(poiIndoorResult: PoiIndoorResult) {
-
-            }
-
-            //废弃
-            override fun onGetPoiDetailResult(poiDetailResult: PoiDetailResult) {}
+            requestSuggestion(
+                SuggestionSearchOption().city("上海").keyword("植物园")
+            )
         }
-        p.setOnGetPoiSearchResultListener(listener)
-        p.searchInCity(
-            PoiCitySearchOption()
-                .city("北京") //必填
-                .keyword("美食") //必填
-                .pageNum(0)
-        )
+    }
+
+    private fun s() {
+        val point = LatLng(31.153891, 121.450991)
+        val builder = MapStatus.Builder()
+        builder.target(point).zoom(18.0f)
+        binding.bmapView.map.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+
+    }
+
+
+    private fun showMarker(point: LatLng) {
+        //定义Maker坐标点
+        //定义Maker坐标点
+//构建Marker图标
+//构建Marker图标
+        val bitmap =
+            BitmapDescriptorFactory.fromResource(com.unicorn.soilmonitoring.R.mipmap.icon_mark1)
+//构建MarkerOption，用于在地图上添加Marker
+//构建MarkerOption，用于在地图上添加Marker
+        val option: OverlayOptions = MarkerOptions().position(point).icon(bitmap)
+        binding.bmapView.map.addOverlay(option)
+//在地图上添加Marker，并显示
     }
 
     override fun onPause() {
@@ -85,3 +107,4 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
     }
 
 }
+
