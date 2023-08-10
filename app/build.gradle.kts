@@ -64,30 +64,39 @@ dependencies {
     implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
+    // viewbinding-ktx
     implementation("com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.1.0")
     implementation("com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.1.0")
 
-    // BaiduMapSDK
-    implementation("com.baidu.lbsyun:BaiduMapSDK_Map:7.5.8")
+    // baidu map
+//    implementation("com.baidu.lbsyun:BaiduMapSDK_Map:7.5.8")
     implementation("com.baidu.lbsyun:BaiduMapSDK_Search:7.5.8")
-    implementation("com.baidu.lbsyun:BaiduMapSDK_Util:7.5.8")
+//    implementation("com.baidu.lbsyun:BaiduMapSDK_Util:7.5.8")
+    implementation("com.baidu.lbsyun:BaiduMapSDK_Map-BWNavi:7.5.8")
+    implementation("com.baidu.lbsyun:BaiduMapSDK_Location:9.3.7")
 
+    // dialog
     implementation("com.afollestad.material-dialogs:core:3.3.0")
     implementation("com.afollestad.material-dialogs:bottomsheets:3.3.0")
+
+    // liangjingkanji
     implementation("com.github.liangjingkanji:BRV:1.5.0")
-    implementation("com.github.RuffianZhong:RWidgetHelper:androidx.v0.0.14")
-    implementation("com.louiscad.splitties:splitties-fun-pack-android-base:3.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("com.github.liangjingkanji:Channel:1.1.5")
 
+    // RWidgetHelper
+    implementation("com.github.RuffianZhong:RWidgetHelper:androidx.v0.0.14")
+
+    // splitties
+    implementation("com.louiscad.splitties:splitties-fun-pack-android-base:3.0.0")
+
+    // rxjava
     implementation("io.reactivex.rxjava3:rxjava:3.1.6")
 
-
-    implementation ("com.mikepenz:iconics-core:5.4.0")
-    implementation ("com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar")
-
-//    implementation ("com.mikepenz:iconics-views:5.4.0")
-    implementation ("com.mikepenz:fontawesome-typeface:5.9.0.2-kotlin@aar")
+    // iconics
+    implementation("com.mikepenz:iconics-core:5.4.0")
+    implementation("com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar")
+    implementation("com.mikepenz:fontawesome-typeface:5.9.0.2-kotlin@aar")
 
 }
 

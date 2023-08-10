@@ -1,6 +1,8 @@
 package com.unicorn.soilmonitoring
 
-import android.graphics.Color
+//import com.baidu.mapapi.map.TitleOptions
+
+import android.content.Intent
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.customview.customView
@@ -9,7 +11,6 @@ import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.baidu.mapapi.map.MarkerOptions
 import com.baidu.mapapi.map.OverlayOptions
-import com.baidu.mapapi.map.TitleOptions
 import com.baidu.mapapi.overlayutil.WalkingRouteOverlay
 import com.baidu.mapapi.search.route.BikingRouteResult
 import com.baidu.mapapi.search.route.DrivingRouteResult
@@ -26,6 +27,12 @@ import com.baidu.mapapi.search.sug.SuggestionSearchOption
 import com.baidu.mapapi.search.weather.WeatherDataType
 import com.baidu.mapapi.search.weather.WeatherSearch
 import com.baidu.mapapi.search.weather.WeatherSearchOption
+import com.baidu.mapapi.walknavi.WalkNavigateHelper
+import com.baidu.mapapi.walknavi.adapter.IWEngineInitListener
+import com.baidu.mapapi.walknavi.adapter.IWRoutePlanListener
+import com.baidu.mapapi.walknavi.model.WalkRoutePlanError
+import com.baidu.mapapi.walknavi.params.WalkNaviLaunchParam
+import com.baidu.mapapi.walknavi.params.WalkRouteNodeInfo
 import com.drake.channel.receiveEvent
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
@@ -49,7 +56,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         binding.tvPoint.setOnClickListener {
 //            addMarkers()
 
-            s()
+//            s()
 
 //            showPointDialog()
         }
@@ -61,7 +68,55 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         Observable.timer(500, TimeUnit.MILLISECONDS).subscribe {
             addMarkers()
         }
+
+
+// 获取导航控制类
+// 引擎初始化
+        // 获取导航控制类
+// 引擎初始化
+        WalkNavigateHelper.getInstance().initNaviEngine(this, object : IWEngineInitListener {
+            override fun engineInitSuccess() {
+                //引擎初始化成功的回调
+                s3()
+            }
+
+            override fun engineInitFail() {
+                //引擎初始化失败的回调
+            }
+        })
+
+
+
     }
+
+
+    private fun s3(){
+        val params = WalkNaviLaunchParam().apply {
+            startNodeInfo(WalkRouteNodeInfo().apply {
+                location=(DataHelper.getParents()[0].sublist[0].latLng)
+            })
+            endNodeInfo(WalkRouteNodeInfo().apply {
+                location=(DataHelper.getParents()[0].sublist[2].latLng)
+            })
+        }
+        WalkNavigateHelper.getInstance().routePlanWithRouteNode(params, object : IWRoutePlanListener {
+            override fun onRoutePlanStart() {
+                //开始算路的回调
+            }
+
+            override fun onRoutePlanSuccess() {
+                //算路成功
+                //跳转至诱导页面
+                val intent = Intent(this@MainActivity, WNaviGuideActivity::class.java)
+                startActivity(intent)
+            }
+
+            override fun onRoutePlanFail(walkRoutePlanError: WalkRoutePlanError) {
+                //算路失败的回调
+            }
+        })
+    }
+
 
     private fun s() {
         val mSearch = RoutePlanSearch.newInstance()
@@ -100,11 +155,9 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
         mSearch.walkingSearch(
             WalkingRoutePlanOption().apply {
-
                 from(PlanNode.withLocation(DataHelper.getParents()[0].sublist[0].latLng))
                 to(PlanNode.withLocation(DataHelper.getParents()[0].sublist[2].latLng))
             }
-
         )
 
     }
@@ -175,10 +228,10 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         val color =
             if (point.pointStatus == PointStatus.TAKEN) splitties.material.colors.R.color.green_600 else splitties.material.colors.R.color.red_600
         val color1 = color(color)
-        val titleOptions =
-            TitleOptions().text(point.description)
-                .titleFontColor(Color.WHITE)
-                .titleBgColor(color1)
+//        val titleOptions =
+//            TitleOptions().text(point.description)
+//                .titleFontColor(Color.WHITE)
+//                .titleBgColor(color1)
 
 
         val iconicsDrawable = IconicsDrawable(this, GoogleMaterial.Icon.gmd_location_pin).apply {
@@ -188,8 +241,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
         val bitmap = iconicsDrawable.toBitmap()
         val option: OverlayOptions =
-            MarkerOptions().position(point.latLng).titleOptions(titleOptions)
-                .poiCollided(true)
+            MarkerOptions().position(point.latLng)
                 .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
         binding.mapView.map.addOverlay(option)
     }
