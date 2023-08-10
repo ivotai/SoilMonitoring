@@ -79,6 +79,16 @@ dependencies {
     implementation("com.louiscad.splitties:splitties-fun-pack-android-base:3.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("com.github.liangjingkanji:Channel:1.1.5")
+
+    implementation("io.reactivex.rxjava3:rxjava:3.1.6")
+
+
+    implementation ("com.mikepenz:iconics-core:5.4.0")
+    implementation ("com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar")
+
+//    implementation ("com.mikepenz:iconics-views:5.4.0")
+    implementation ("com.mikepenz:fontawesome-typeface:5.9.0.2-kotlin@aar")
+
 }
 
 

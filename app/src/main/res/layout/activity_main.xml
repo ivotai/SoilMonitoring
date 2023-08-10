@@ -30,7 +30,7 @@
         android:text="采样点总览"
         android:textColor="@color/black"
         android:textSize="18dp"
-        app:background_normal="@color/white"
+        app:background_normal="@color/amber_50"
         app:corner_radius="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
