@@ -3,10 +3,9 @@ package com.unicorn.soilmonitoring
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
-
+import android.widget.Toast
 import com.baidu.mapapi.walknavi.WalkNavigateHelper
-
-
+import com.blankj.utilcode.util.ToastUtils
 
 
 class WNaviGuideActivity:Activity() {
@@ -20,9 +19,19 @@ class WNaviGuideActivity:Activity() {
 //获取诱导页面地图展示View
 //获取诱导页面地图展示View
         val view: View = mNaviHelper.onCreate(this@WNaviGuideActivity)
-        if (view != null) {
-            setContentView(view)
+        setContentView(view)
+
+        mNaviHelper.setTTsPlayer { s, b ->
+            /**
+             * 诱导文本回调
+             * @param s 诱导文本
+             * @param b 是否抢先播报
+             * @return
+             */
+            ToastUtils.showShort(s)
+            0
         }
+
         mNaviHelper.startWalkNavi(this@WNaviGuideActivity)
     }
 

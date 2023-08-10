@@ -2,15 +2,24 @@ package com.unicorn.soilmonitoring
 
 //import com.baidu.mapapi.map.TitleOptions
 
+import android.Manifest
 import android.content.Intent
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.customview.customView
+import com.baidu.location.BDAbstractLocationListener
+import com.baidu.location.BDLocation
+import com.baidu.location.LocationClient
+import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.map.BitmapDescriptorFactory
 import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.baidu.mapapi.map.MarkerOptions
 import com.baidu.mapapi.map.OverlayOptions
+import com.baidu.mapapi.model.LatLng
+import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException
+import com.baidu.mapapi.navi.BaiduMapNavigation
+import com.baidu.mapapi.navi.NaviParaOption
 import com.baidu.mapapi.overlayutil.WalkingRouteOverlay
 import com.baidu.mapapi.search.route.BikingRouteResult
 import com.baidu.mapapi.search.route.DrivingRouteResult
@@ -38,6 +47,7 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
+import com.tbruyelle.rxpermissions3.RxPermissions
 import com.unicorn.soilmonitoring.databinding.ActivityMainBinding
 import com.unicorn.soilmonitoring.ui.app.DataHelper
 import com.unicorn.soilmonitoring.ui.app.Point
@@ -53,20 +63,36 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
 
     override fun initViews() {
+
+        RxPermissions(this)
+            .request(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+            )
+            .subscribe { granted ->
+                if (granted) { // Always true pre-M
+                    // I can control the camera now
+                } else {
+                    // Oups permission denied
+                    finish()
+                }
+            }
+
         binding.tvPoint.setOnClickListener {
 //            addMarkers()
 
-//            s()
+            search3()
 
 //            showPointDialog()
         }
-        animateMapStatus(DataHelper.getParents()[0].sublist[0])
+//        animateMapStatus(DataHelper.getParents()[0].sublist[0])
 
 //        search3()
 
         // 延迟添加，解决标签在缩放后才显示
         Observable.timer(500, TimeUnit.MILLISECONDS).subscribe {
-            addMarkers()
+//            addMarkers()
         }
 
 
@@ -74,10 +100,37 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 // 引擎初始化
         // 获取导航控制类
 // 引擎初始化
+
+        location()
+
+    }
+
+    private fun location() {
+        val option = LocationClientOption();
+        option.setCoorType("bd09ll");
+
+
+        val locationClient = LocationClient(applicationContext); //声明LocationClient类
+        locationClient.locOption = option;
+        locationClient.registerLocationListener(object : BDAbstractLocationListener() {
+            override fun onReceiveLocation(location: BDLocation) {
+                val latitude = location.latitude //获取纬度信息
+                val longitude = location.longitude //获取经度信息
+
+                s4(LatLng(latitude, longitude))
+            }
+        });
+        locationClient.start()
+
+    }
+
+
+    private fun s2(latLng: LatLng) {
         WalkNavigateHelper.getInstance().initNaviEngine(this, object : IWEngineInitListener {
             override fun engineInitSuccess() {
+                s3(latLng)
                 //引擎初始化成功的回调
-                s3()
+
             }
 
             override fun engineInitFail() {
@@ -85,38 +138,63 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
             }
         })
 
-
-
     }
 
 
-    private fun s3(){
+    private fun s3(latLng: LatLng) {
+        val p = Point("", latLng)
+        addMarker(p)
+        animateMapStatus(p)
         val params = WalkNaviLaunchParam().apply {
             startNodeInfo(WalkRouteNodeInfo().apply {
-                location=(DataHelper.getParents()[0].sublist[0].latLng)
+                location = latLng
             })
             endNodeInfo(WalkRouteNodeInfo().apply {
-                location=(DataHelper.getParents()[0].sublist[2].latLng)
+                location = LatLng(31.269909, 121.491697)
             })
         }
-        WalkNavigateHelper.getInstance().routePlanWithRouteNode(params, object : IWRoutePlanListener {
-            override fun onRoutePlanStart() {
-                //开始算路的回调
-            }
+        WalkNavigateHelper.getInstance()
+            .routePlanWithRouteNode(params, object : IWRoutePlanListener {
+                override fun onRoutePlanStart() {
+                    //开始算路的回调
+                }
 
-            override fun onRoutePlanSuccess() {
-                //算路成功
-                //跳转至诱导页面
-                val intent = Intent(this@MainActivity, WNaviGuideActivity::class.java)
-                startActivity(intent)
-            }
+                override fun onRoutePlanSuccess() {
+                    //算路成功
+                    //跳转至诱导页面
+                    val intent = Intent(this@MainActivity, WNaviGuideActivity::class.java)
+                    startActivity(intent)
+                }
 
-            override fun onRoutePlanFail(walkRoutePlanError: WalkRoutePlanError) {
-                //算路失败的回调
-            }
-        })
+                override fun onRoutePlanFail(walkRoutePlanError: WalkRoutePlanError) {
+                    ""
+                    //算路失败的回调
+                }
+            })
     }
 
+
+    private fun s4(latLng: LatLng) {
+        val startPoint = latLng
+        val endPoint = LatLng(31.269609, 121.491697)
+
+//构建导航参数
+
+//构建导航参数
+        val para: NaviParaOption = NaviParaOption()
+            .startPoint(startPoint)
+            .endPoint(endPoint)
+            .startName("天安门")
+            .endName("百度大厦")
+//调起百度地图
+//调起百度地图
+        try {
+            BaiduMapNavigation.openBaiduMapWalkNavi(para, this)
+        } catch (e: BaiduMapAppNotSupportNaviException) {
+            e.printStackTrace()
+            //调起失败的处理
+        }
+    }
 
     private fun s() {
         val mSearch = RoutePlanSearch.newInstance()
@@ -153,12 +231,10 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         mSearch.setOnGetRoutePlanResultListener(l)
 
 
-        mSearch.walkingSearch(
-            WalkingRoutePlanOption().apply {
-                from(PlanNode.withLocation(DataHelper.getParents()[0].sublist[0].latLng))
-                to(PlanNode.withLocation(DataHelper.getParents()[0].sublist[2].latLng))
-            }
-        )
+        mSearch.walkingSearch(WalkingRoutePlanOption().apply {
+            from(PlanNode.withLocation(DataHelper.getParents()[0].sublist[0].latLng))
+            to(PlanNode.withLocation(DataHelper.getParents()[0].sublist[2].latLng))
+        })
 
     }
 
@@ -201,7 +277,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
                 it
             }
             requestSuggestion(
-                SuggestionSearchOption().city("上海").keyword("植物园")
+                SuggestionSearchOption().city("上海").keyword("长山路")
             )
         }
     }
@@ -241,8 +317,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
         val bitmap = iconicsDrawable.toBitmap()
         val option: OverlayOptions =
-            MarkerOptions().position(point.latLng)
-                .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+            MarkerOptions().position(point.latLng).icon(BitmapDescriptorFactory.fromBitmap(bitmap))
         binding.mapView.map.addOverlay(option)
     }
 

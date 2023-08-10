@@ -71,9 +71,10 @@ dependencies {
     // baidu map
 //    implementation("com.baidu.lbsyun:BaiduMapSDK_Map:7.5.8")
     implementation("com.baidu.lbsyun:BaiduMapSDK_Search:7.5.8")
-//    implementation("com.baidu.lbsyun:BaiduMapSDK_Util:7.5.8")
+    implementation("com.baidu.lbsyun:BaiduMapSDK_Util:7.5.8")
     implementation("com.baidu.lbsyun:BaiduMapSDK_Map-BWNavi:7.5.8")
     implementation("com.baidu.lbsyun:BaiduMapSDK_Location:9.3.7")
+    implementation("com.baidu.lbsyun:NaviTts:3.2.8")
 
     // dialog
     implementation("com.afollestad.material-dialogs:core:3.3.0")
@@ -97,6 +98,9 @@ dependencies {
     implementation("com.mikepenz:iconics-core:5.4.0")
     implementation("com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar")
     implementation("com.mikepenz:fontawesome-typeface:5.9.0.2-kotlin@aar")
+
+    implementation ("com.blankj:utilcodex:1.31.1")
+    implementation ("com.github.tbruyelle:rxpermissions:0.12")
 
 }
 
