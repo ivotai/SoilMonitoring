@@ -1,6 +1,5 @@
 package com.unicorn.soilmonitoring
 
-import android.graphics.Bitmap
 import android.graphics.Color
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
@@ -11,6 +10,17 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.baidu.mapapi.map.MarkerOptions
 import com.baidu.mapapi.map.OverlayOptions
 import com.baidu.mapapi.map.TitleOptions
+import com.baidu.mapapi.overlayutil.WalkingRouteOverlay
+import com.baidu.mapapi.search.route.BikingRouteResult
+import com.baidu.mapapi.search.route.DrivingRouteResult
+import com.baidu.mapapi.search.route.IndoorRouteResult
+import com.baidu.mapapi.search.route.MassTransitRouteResult
+import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener
+import com.baidu.mapapi.search.route.PlanNode
+import com.baidu.mapapi.search.route.RoutePlanSearch
+import com.baidu.mapapi.search.route.TransitRouteResult
+import com.baidu.mapapi.search.route.WalkingRoutePlanOption
+import com.baidu.mapapi.search.route.WalkingRouteResult
 import com.baidu.mapapi.search.sug.SuggestionSearch
 import com.baidu.mapapi.search.sug.SuggestionSearchOption
 import com.baidu.mapapi.search.weather.WeatherDataType
@@ -18,11 +28,8 @@ import com.baidu.mapapi.search.weather.WeatherSearch
 import com.baidu.mapapi.search.weather.WeatherSearchOption
 import com.drake.channel.receiveEvent
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
-import com.mikepenz.iconics.utils.color
 import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.colorRes
 import com.mikepenz.iconics.utils.sizeDp
 import com.unicorn.soilmonitoring.databinding.ActivityMainBinding
 import com.unicorn.soilmonitoring.ui.app.DataHelper
@@ -42,7 +49,9 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         binding.tvPoint.setOnClickListener {
 //            addMarkers()
 
-            showPointDialog()
+            s()
+
+//            showPointDialog()
         }
         animateMapStatus(DataHelper.getParents()[0].sublist[0])
 
@@ -52,6 +61,52 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         Observable.timer(500, TimeUnit.MILLISECONDS).subscribe {
             addMarkers()
         }
+    }
+
+    private fun s() {
+        val mSearch = RoutePlanSearch.newInstance()
+
+        val l = object : OnGetRoutePlanResultListener {
+            override fun onGetWalkingRouteResult(p0: WalkingRouteResult) {
+                //创建WalkingRouteOverlay实例
+                //创建WalkingRouteOverlay实例
+                val overlay = WalkingRouteOverlay(binding.mapView.map)
+                if (p0.getRouteLines().size > 0) {
+                    //获取路径规划数据,(以返回的第一条数据为例)
+                    //为WalkingRouteOverlay实例设置路径数据
+                    overlay.setData(p0.getRouteLines().get(0))
+                    //在地图上绘制WalkingRouteOverlay
+                    overlay.addToMap()
+                }
+            }
+
+            override fun onGetTransitRouteResult(p0: TransitRouteResult?) {
+            }
+
+            override fun onGetMassTransitRouteResult(p0: MassTransitRouteResult?) {
+            }
+
+            override fun onGetDrivingRouteResult(p0: DrivingRouteResult?) {
+            }
+
+            override fun onGetIndoorRouteResult(p0: IndoorRouteResult?) {
+            }
+
+            override fun onGetBikingRouteResult(p0: BikingRouteResult?) {
+            }
+        }
+        mSearch.setOnGetRoutePlanResultListener(l)
+
+
+        mSearch.walkingSearch(
+            WalkingRoutePlanOption().apply {
+
+                from(PlanNode.withLocation(DataHelper.getParents()[0].sublist[0].latLng))
+                to(PlanNode.withLocation(DataHelper.getParents()[0].sublist[2].latLng))
+            }
+
+        )
+
     }
 
 
@@ -117,22 +172,25 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
     }
 
     private fun addMarker(point: Point) {
-        val color = if (point.pointStatus == PointStatus.TAKEN) splitties.material.colors.R.color.red_600 else splitties.material.colors.R.color.green_600
+        val color =
+            if (point.pointStatus == PointStatus.TAKEN) splitties.material.colors.R.color.green_600 else splitties.material.colors.R.color.red_600
         val color1 = color(color)
         val titleOptions =
             TitleOptions().text(point.description)
                 .titleFontColor(Color.WHITE)
-                .titleBgColor(color1).titleFontSize(48)
+                .titleBgColor(color1)
 
 
-    val iconicsDrawable=    IconicsDrawable(this, GoogleMaterial.Icon.gmd_location_pin).apply {
+        val iconicsDrawable = IconicsDrawable(this, GoogleMaterial.Icon.gmd_location_pin).apply {
             colorInt = color1
             sizeDp = 24
         }
 
-val bitmap = iconicsDrawable.toBitmap()
+        val bitmap = iconicsDrawable.toBitmap()
         val option: OverlayOptions =
-            MarkerOptions().position(point.latLng).titleOptions(titleOptions).icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+            MarkerOptions().position(point.latLng).titleOptions(titleOptions)
+                .poiCollided(true)
+                .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
         binding.mapView.map.addOverlay(option)
     }
 
