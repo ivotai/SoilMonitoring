@@ -15,6 +15,9 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory
 import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.baidu.mapapi.map.MarkerOptions
+import com.baidu.mapapi.map.MyLocationConfiguration
+import com.baidu.mapapi.map.MyLocationData
+import com.baidu.mapapi.map.Overlay
 import com.baidu.mapapi.map.OverlayOptions
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException
@@ -49,7 +52,9 @@ import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import com.tbruyelle.rxpermissions3.RxPermissions
 import com.unicorn.soilmonitoring.databinding.ActivityMainBinding
+import com.unicorn.soilmonitoring.ui.app.Config
 import com.unicorn.soilmonitoring.ui.app.DataHelper
+import com.unicorn.soilmonitoring.ui.app.MarkerHelper
 import com.unicorn.soilmonitoring.ui.app.Point
 import com.unicorn.soilmonitoring.ui.app.PointStatus
 import com.unicorn.soilmonitoring.ui.base.BaseAct
@@ -64,18 +69,38 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
     override fun initViews() {
 
-        RxPermissions(this).request(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-//                Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS
-            ).subscribe { granted ->
-                if (granted) { // Always true pre-M
-                    // I can control the camera now
-                } else {
-                    // Oups permission denied
-                    finish()
-                }
+        fun initMap() {
+            map.run {
+                // 开启地图的定位图层
+                isMyLocationEnabled = true
+                // 定位跟随态
+                setMyLocationConfiguration(
+                    MyLocationConfiguration(
+                        MyLocationConfiguration.LocationMode.FOLLOWING, true, null
+                    )
+                )
+                // 设置默认 zoom
+                setMapStatus(
+                    MapStatusUpdateFactory.newMapStatus(
+                        MapStatus.Builder().zoom(Config.defaultZoom).build()
+                    )
+                )
             }
+        }
+        initMap()
+
+
+        RxPermissions(this).request(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+        ).subscribe { granted ->
+            if (granted) { // Always true pre-M
+                // I can control the camera now
+            } else {
+                // Oups permission denied
+                finish()
+            }
+        }
 
         binding.tvPoint.setOnClickListener {
 //            addMarkers()
@@ -103,13 +128,32 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
     }
 
+    private var locationClient: LocationClient? = null
+
     private fun initLocationClient() {
-        LocationClient(applicationContext).run {
+        fun updateLocationMarker(location: BDLocation) {
+            val point = Point(
+                "自身定位", LatLng(location.latitude, location.longitude), PointStatus.UN_TAKEN
+            )
+
+            // 如果存在旧的定位标记，先移除
+            marker?.remove()
+
+            marker = MarkerHelper.addOverlay(
+                this@MainActivity,
+                point,
+                splitties.material.colors.R.color.blue_300,
+                GoogleMaterial.Icon.gmd_person,
+                binding.mapView.map
+            )
+        }
+
+        locationClient = LocationClient(applicationContext).apply {
             locOption = LocationClientOption().apply {
                 // 百度经纬度坐标
                 setCoorType("bd09ll");
                 // 设置发起定位请求的间隔，int类型，单位ms
-                setScanSpan(1000)
+                setScanSpan(Config.locationScanSpan)
                 // 是否需要地址信息
                 setIsNeedAddress(true);
             }
@@ -118,9 +162,21 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
                     val latitude = location.latitude
                     val longitude = location.longitude
                     val errorCode = location.locType
+                    // todo district to districtId
                     location.district
 //                    s4(LatLng(latitude, longitude))
+
+                    val locData = MyLocationData.Builder()
+
+                        .accuracy(location.radius) // 此处设置开发者获取到的方向信息，顺时针0-360
+                        .direction(location.direction).latitude(location.latitude)
+                        .longitude(location.longitude).build()
+                    binding.mapView.map.setMyLocationData(locData)
+
+
+//                    updateLocationMarker(location)
                 }
+
             })
             start()
         }
@@ -145,7 +201,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
     private fun s3(latLng: LatLng) {
         val p = Point("", latLng)
-        addMarker(p)
+        drawerMarker(p)
         animateMapStatus(p)
         val params = WalkNaviLaunchParam().apply {
             startNodeInfo(WalkRouteNodeInfo().apply {
@@ -298,10 +354,12 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
     private fun addMarkers() {
 
-        DataHelper.getParents().forEach { parent -> parent.sublist.forEach { addMarker(it) } }
+        DataHelper.getParents().forEach { parent -> parent.sublist.forEach { drawerMarker(it) } }
     }
 
-    private fun addMarker(point: Point) {
+    private var marker: Overlay? = null
+
+    private fun drawerMarker(point: Point) {
         val color =
             if (point.pointStatus == PointStatus.TAKEN) splitties.material.colors.R.color.green_600 else splitties.material.colors.R.color.red_600
         val color1 = color(color)
@@ -333,9 +391,13 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
     }
 
     override fun onDestroy() {
+        locationClient?.stop();
+        map.isMyLocationEnabled = false;
+        binding.mapView.onDestroy();
         super.onDestroy()
-        binding.mapView.onDestroy()
     }
+
+    val map get() = binding.mapView.map
 
 }
 
