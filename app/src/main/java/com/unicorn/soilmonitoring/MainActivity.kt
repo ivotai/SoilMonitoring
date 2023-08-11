@@ -64,13 +64,11 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
     override fun initViews() {
 
-        RxPermissions(this)
-            .request(
+        RxPermissions(this).request(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS
-            )
-            .subscribe { granted ->
+//                Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+            ).subscribe { granted ->
                 if (granted) { // Always true pre-M
                     // I can control the camera now
                 } else {
@@ -82,7 +80,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         binding.tvPoint.setOnClickListener {
 //            addMarkers()
 
-            search3()
+//            search3()
 
 //            showPointDialog()
         }
@@ -101,27 +99,31 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         // 获取导航控制类
 // 引擎初始化
 
-        location()
+        initLocationClient()
 
     }
 
-    private fun location() {
-        val option = LocationClientOption();
-        option.setCoorType("bd09ll");
-
-
-        val locationClient = LocationClient(applicationContext); //声明LocationClient类
-        locationClient.locOption = option;
-        locationClient.registerLocationListener(object : BDAbstractLocationListener() {
-            override fun onReceiveLocation(location: BDLocation) {
-                val latitude = location.latitude //获取纬度信息
-                val longitude = location.longitude //获取经度信息
-
-                s4(LatLng(latitude, longitude))
+    private fun initLocationClient() {
+        LocationClient(applicationContext).run {
+            locOption = LocationClientOption().apply {
+                // 百度经纬度坐标
+                setCoorType("bd09ll");
+                // 设置发起定位请求的间隔，int类型，单位ms
+                setScanSpan(1000)
+                // 是否需要地址信息
+                setIsNeedAddress(true);
             }
-        });
-        locationClient.start()
-
+            registerLocationListener(object : BDAbstractLocationListener() {
+                override fun onReceiveLocation(location: BDLocation) {
+                    val latitude = location.latitude
+                    val longitude = location.longitude
+                    val errorCode = location.locType
+                    location.district
+//                    s4(LatLng(latitude, longitude))
+                }
+            })
+            start()
+        }
     }
 
 
@@ -181,11 +183,9 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 //构建导航参数
 
 //构建导航参数
-        val para: NaviParaOption = NaviParaOption()
-            .startPoint(startPoint)
-            .endPoint(endPoint)
-            .startName("天安门")
-            .endName("百度大厦")
+        val para: NaviParaOption =
+            NaviParaOption().startPoint(startPoint).endPoint(endPoint).startName("天安门")
+                .endName("百度大厦")
 //调起百度地图
 //调起百度地图
         try {
@@ -257,6 +257,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         val weatherSearchOption =
             WeatherSearchOption().weatherDataType(WeatherDataType.WEATHER_DATA_TYPE_ALL)
                 .districtID(districtID)
+
 
         val mWeatherSearch = WeatherSearch.newInstance()
         mWeatherSearch.setWeatherSearchResultListener {

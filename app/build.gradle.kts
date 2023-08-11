@@ -74,7 +74,7 @@ dependencies {
     implementation("com.baidu.lbsyun:BaiduMapSDK_Util:7.5.8")
     implementation("com.baidu.lbsyun:BaiduMapSDK_Map-BWNavi:7.5.8")
     implementation("com.baidu.lbsyun:BaiduMapSDK_Location:9.3.7")
-    implementation("com.baidu.lbsyun:NaviTts:3.2.8")
+//    implementation("com.baidu.lbsyun:NaviTts:3.2.8")
 
     // dialog
     implementation("com.afollestad.material-dialogs:core:3.3.0")
