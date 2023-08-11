@@ -10,7 +10,7 @@ import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.databinding.ItemParentBinding
 import com.unicorn.soilmonitoring.databinding.ItemPointBinding
 import com.unicorn.soilmonitoring.databinding.UiRecyclerViewBinding
-import com.unicorn.soilmonitoring.ui.app.DataHelper
+import com.unicorn.soilmonitoring.ui.app.Config
 import com.unicorn.soilmonitoring.ui.app.Parent
 import com.unicorn.soilmonitoring.ui.app.Point
 
@@ -39,7 +39,7 @@ class PointRecyclerView(context: Context) : ConstraintLayout(context) {
                         sendEvent(getModel<Point>())
                     }
                 }
-            }.models = DataHelper.getParents()
+            }.models = Config.points
         }
     }
 

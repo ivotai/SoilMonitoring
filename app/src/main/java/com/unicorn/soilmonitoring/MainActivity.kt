@@ -7,7 +7,6 @@ import android.content.Intent
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.customview.customView
-import com.baidu.ar.it
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
@@ -16,7 +15,6 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory
 import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.baidu.mapapi.map.MarkerOptions
-import com.baidu.mapapi.map.MyLocationConfiguration
 import com.baidu.mapapi.map.MyLocationData
 import com.baidu.mapapi.map.Overlay
 import com.baidu.mapapi.map.OverlayOptions
@@ -35,7 +33,6 @@ import com.baidu.mapapi.search.route.RoutePlanSearch
 import com.baidu.mapapi.search.route.TransitRouteResult
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption
 import com.baidu.mapapi.search.route.WalkingRouteResult
-import com.baidu.mapapi.search.sug.SuggestionResult
 import com.baidu.mapapi.search.sug.SuggestionSearch
 import com.baidu.mapapi.search.sug.SuggestionSearchOption
 import com.baidu.mapapi.search.weather.WeatherDataType
@@ -61,9 +58,7 @@ import com.unicorn.soilmonitoring.ui.app.Point
 import com.unicorn.soilmonitoring.ui.app.PointStatus
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import com.unicorn.soilmonitoring.ui.view.PointRecyclerView
-import io.reactivex.rxjava3.core.Observable
 import splitties.resources.color
-import java.util.concurrent.TimeUnit
 
 
 class MainActivity : BaseAct<ActivityMainBinding>() {
@@ -85,11 +80,11 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
                 // 开启地图的定位图层
                 isMyLocationEnabled = true
                 // 定位跟随态
-                setMyLocationConfiguration(
-                    MyLocationConfiguration(
-                        MyLocationConfiguration.LocationMode.FOLLOWING, true, null
-                    )
-                )
+//                setMyLocationConfiguration(
+//                    MyLocationConfiguration(
+//                        MyLocationConfiguration.LocationMode.FOLLOWING, true, null
+//                    )
+//                )
                 // 设置默认 zoom
                 setMapStatus(
                     MapStatusUpdateFactory.newMapStatus(
@@ -100,37 +95,14 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         }
         initMap()
 
-
-        // 延迟添加，解决标签在缩放后才显示
-        Observable.timer(500, TimeUnit.MILLISECONDS).subscribe {
-//            addMarkers()
-        }
-
-
-
         initLocationClient()
 
+        binding.tvPoint.setOnClickListener { showPointDialog() }
     }
 
     private var locationClient: LocationClient? = null
 
     private fun initLocationClient() {
-        fun updateLocationMarker(location: BDLocation) {
-            val point = Point(
-                "自身定位", LatLng(location.latitude, location.longitude), PointStatus.UN_TAKEN
-            )
-
-            // 如果存在旧的定位标记，先移除
-            marker?.remove()
-
-            marker = MarkerHelper.addOverlay(
-                this@MainActivity,
-                point,
-                splitties.material.colors.R.color.blue_300,
-                GoogleMaterial.Icon.gmd_person,
-                binding.mapView.map
-            )
-        }
 
         locationClient = LocationClient(applicationContext).apply {
             locOption = LocationClientOption().apply {
@@ -155,28 +127,34 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
                             .longitude(location.longitude).build()
                     )
 
-                    if (isSug) return
+                    // sug
+                    if (t) return
+                    map.setMapStatus(
+                        MapStatusUpdateFactory.newMapStatus(
+                            MapStatus.Builder()
+                                .target(LatLng(location.latitude, location.longitude))
+                                .zoom(Config.defaultZoom).build()
+                        )
+                    )
                     sug(location.addrStr)
-                    isSug = true
+                    t = true
                 }
             })
             start()
         }
     }
 
-    private var isSug = false
-
-    private lateinit var mSuggestionResult: SuggestionResult
+    private var t = false
 
     private fun sug(keyword: String) {
         SuggestionSearch.newInstance().run {
             setOnGetSuggestionResultListener { suggestionResult ->
-                mSuggestionResult = suggestionResult
                 suggestionResult.allSuggestions?.filter { it.pt != null }
                     ?.forEach { suggestionInfo ->
                         val point = Point(
                             suggestionInfo.key, suggestionInfo.pt, PointStatus.UN_TAKEN
                         )
+                        Config.points.add(point)
                         MarkerHelper.addOverlay(
                             this@MainActivity,
                             point,
@@ -212,7 +190,6 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
     private fun s3(latLng: LatLng) {
         val p = Point("", latLng)
         drawerMarker(p)
-        animateMapStatus(p)
         val params = WalkNaviLaunchParam().apply {
             startNodeInfo(WalkRouteNodeInfo().apply {
                 location = latLng
@@ -307,7 +284,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
     private val pointDialog by lazy {
         MaterialDialog(this, BottomSheet()).apply {
-            title(text = "采样点总览")
+//            title(text = "采样点总览")
             customView(view = PointRecyclerView(this@MainActivity), scrollable = true)
         }
     }
@@ -341,15 +318,10 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
     override fun initEvents() {
         receiveEvent<Point> {
             pointDialog.dismiss()
-            animateMapStatus(it)
+            map.animateMapStatus(MapStatusUpdateFactory.newMapStatus(MapStatus.Builder().target(it.latLng).build()))
         }
     }
 
-    private fun animateMapStatus(point: Point) {
-        val builder = MapStatus.Builder()
-        builder.target(point.latLng).zoom(20.0f)
-        binding.mapView.map.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-    }
 
     private fun addMarkers() {
 

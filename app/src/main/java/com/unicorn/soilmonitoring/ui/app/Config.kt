@@ -4,7 +4,8 @@ object Config {
 
     val locationScanSpan = 1000
 
-    val defaultZoom = 16.0f
+    val defaultZoom = 17.0f
 
+    val points = ArrayList<Point>()
 
 }
