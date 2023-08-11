@@ -3,6 +3,7 @@ package com.unicorn.soilmonitoring
 //import com.baidu.mapapi.map.TitleOptions
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
@@ -11,60 +12,44 @@ import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
-import com.baidu.mapapi.map.BitmapDescriptorFactory
 import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
-import com.baidu.mapapi.map.MarkerOptions
 import com.baidu.mapapi.map.MyLocationData
-import com.baidu.mapapi.map.Overlay
-import com.baidu.mapapi.map.OverlayOptions
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException
 import com.baidu.mapapi.navi.BaiduMapNavigation
 import com.baidu.mapapi.navi.NaviParaOption
-import com.baidu.mapapi.overlayutil.WalkingRouteOverlay
-import com.baidu.mapapi.search.route.BikingRouteResult
-import com.baidu.mapapi.search.route.DrivingRouteResult
-import com.baidu.mapapi.search.route.IndoorRouteResult
-import com.baidu.mapapi.search.route.MassTransitRouteResult
-import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener
-import com.baidu.mapapi.search.route.PlanNode
-import com.baidu.mapapi.search.route.RoutePlanSearch
-import com.baidu.mapapi.search.route.TransitRouteResult
-import com.baidu.mapapi.search.route.WalkingRoutePlanOption
-import com.baidu.mapapi.search.route.WalkingRouteResult
 import com.baidu.mapapi.search.sug.SuggestionSearch
 import com.baidu.mapapi.search.sug.SuggestionSearchOption
-import com.baidu.mapapi.search.weather.WeatherDataType
-import com.baidu.mapapi.search.weather.WeatherSearch
-import com.baidu.mapapi.search.weather.WeatherSearchOption
 import com.baidu.mapapi.walknavi.WalkNavigateHelper
 import com.baidu.mapapi.walknavi.adapter.IWEngineInitListener
 import com.baidu.mapapi.walknavi.adapter.IWRoutePlanListener
 import com.baidu.mapapi.walknavi.model.WalkRoutePlanError
 import com.baidu.mapapi.walknavi.params.WalkNaviLaunchParam
 import com.baidu.mapapi.walknavi.params.WalkRouteNodeInfo
+import com.blankj.utilcode.util.BarUtils
+import com.blankj.utilcode.util.ConvertUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.drake.channel.receiveEvent
-import com.mikepenz.iconics.IconicsDrawable
+import com.drake.statusbar.immersive
+import com.drake.statusbar.statusPadding
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import com.tbruyelle.rxpermissions3.RxPermissions
 import com.unicorn.soilmonitoring.databinding.ActivityMainBinding
 import com.unicorn.soilmonitoring.ui.app.Config
-import com.unicorn.soilmonitoring.ui.app.DataHelper
 import com.unicorn.soilmonitoring.ui.app.MarkerHelper
 import com.unicorn.soilmonitoring.ui.app.Point
 import com.unicorn.soilmonitoring.ui.app.PointStatus
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import com.unicorn.soilmonitoring.ui.view.PointRecyclerView
-import splitties.resources.color
+import splitties.views.verticalPadding
 
 
 class MainActivity : BaseAct<ActivityMainBinding>() {
 
 
     override fun initViews() {
+
         fun requestPermissions() {
             RxPermissions(this).request(
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -79,12 +64,6 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
             map.run {
                 // 开启地图的定位图层
                 isMyLocationEnabled = true
-                // 定位跟随态
-//                setMyLocationConfiguration(
-//                    MyLocationConfiguration(
-//                        MyLocationConfiguration.LocationMode.FOLLOWING, true, null
-//                    )
-//                )
                 // 设置默认 zoom
                 setMapStatus(
                     MapStatusUpdateFactory.newMapStatus(
@@ -121,8 +100,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
                     // setMyLocationData
                     map.setMyLocationData(
-                        MyLocationData.Builder()
-                            .accuracy(location.radius)
+                        MyLocationData.Builder().accuracy(location.radius)
                             .direction(location.direction).latitude(location.latitude)
                             .longitude(location.longitude).build()
                     )
@@ -154,6 +132,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
     private fun sug(keyword: String) {
         SuggestionSearch.newInstance().run {
             setOnGetSuggestionResultListener { suggestionResult ->
+                Config.points.clear()
                 suggestionResult.allSuggestions?.filter { it.pt != null }
                     ?.forEach { suggestionInfo ->
                         val point = Point(
@@ -207,25 +186,21 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
                 }
 
                 override fun onRoutePlanSuccess() {
-                    //算路成功
                     //跳转至诱导页面
                     val intent = Intent(this@MainActivity, WNaviGuideActivity::class.java)
                     startActivity(intent)
                 }
 
                 override fun onRoutePlanFail(walkRoutePlanError: WalkRoutePlanError) {
-                    ""
-                    //算路失败的回调
                 }
             })
     }
 
 
     private fun openBaiduMapWalkNavi(point: Point) {
-        val startPoint =Config.selfPoint.latLng
+        val startPoint = Config.selfPoint.latLng
         val para: NaviParaOption =
-            NaviParaOption().startPoint(startPoint).endPoint(point.latLng)
-                .endName("三号采集点")
+            NaviParaOption().startPoint(startPoint).endPoint(point.latLng).endName("三号采集点")
 
         try {
             BaiduMapNavigation.openBaiduMapWalkNavi(para, this)
@@ -236,19 +211,21 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
     }
 
 
-
     private val pointDialog by lazy {
-        MaterialDialog(this, BottomSheet()).apply {
+        MaterialDialog(this,BottomSheet()).apply {
             title(text = "采样点总览")
-            customView(view = PointRecyclerView(this@MainActivity), scrollable = true)
+//            cornerRadius(16f)
+            customView(
+                view = PointRecyclerView(this@MainActivity),
+                scrollable = false,
+                noVerticalPadding = true
+            )
         }
     }
 
     private fun showPointDialog() {
         pointDialog.show()
     }
-
-
 
 
     override fun initEvents() {
@@ -258,8 +235,6 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
             initNaviEngine(it)
         }
     }
-
-
 
 
     override fun onPause() {
