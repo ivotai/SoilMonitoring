@@ -7,6 +7,7 @@ import android.content.Intent
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.customview.customView
+import com.baidu.ar.it
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
@@ -34,6 +35,7 @@ import com.baidu.mapapi.search.route.RoutePlanSearch
 import com.baidu.mapapi.search.route.TransitRouteResult
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption
 import com.baidu.mapapi.search.route.WalkingRouteResult
+import com.baidu.mapapi.search.sug.SuggestionResult
 import com.baidu.mapapi.search.sug.SuggestionSearch
 import com.baidu.mapapi.search.sug.SuggestionSearchOption
 import com.baidu.mapapi.search.weather.WeatherDataType
@@ -68,6 +70,15 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
 
     override fun initViews() {
+        fun requestPermissions() {
+            RxPermissions(this).request(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+            ).subscribe { granted ->
+                if (!granted) finish()
+            }
+        }
+        requestPermissions()
 
         fun initMap() {
             map.run {
@@ -90,39 +101,12 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         initMap()
 
 
-        RxPermissions(this).request(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-        ).subscribe { granted ->
-            if (granted) { // Always true pre-M
-                // I can control the camera now
-            } else {
-                // Oups permission denied
-                finish()
-            }
-        }
-
-        binding.tvPoint.setOnClickListener {
-//            addMarkers()
-
-//            search3()
-
-//            showPointDialog()
-        }
-//        animateMapStatus(DataHelper.getParents()[0].sublist[0])
-
-//        search3()
-
         // 延迟添加，解决标签在缩放后才显示
         Observable.timer(500, TimeUnit.MILLISECONDS).subscribe {
 //            addMarkers()
         }
 
 
-// 获取导航控制类
-// 引擎初始化
-        // 获取导航控制类
-// 引擎初始化
 
         initLocationClient()
 
@@ -159,26 +143,52 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
             }
             registerLocationListener(object : BDAbstractLocationListener() {
                 override fun onReceiveLocation(location: BDLocation) {
-                    val latitude = location.latitude
-                    val longitude = location.longitude
-                    val errorCode = location.locType
+
                     // todo district to districtId
                     location.district
-//                    s4(LatLng(latitude, longitude))
 
-                    val locData = MyLocationData.Builder()
+                    // setMyLocationData
+                    map.setMyLocationData(
+                        MyLocationData.Builder()
+                            .accuracy(location.radius)
+                            .direction(location.direction).latitude(location.latitude)
+                            .longitude(location.longitude).build()
+                    )
 
-                        .accuracy(location.radius) // 此处设置开发者获取到的方向信息，顺时针0-360
-                        .direction(location.direction).latitude(location.latitude)
-                        .longitude(location.longitude).build()
-                    binding.mapView.map.setMyLocationData(locData)
-
-
-//                    updateLocationMarker(location)
+                    if (isSug) return
+                    sug(location.addrStr)
+                    isSug = true
                 }
-
             })
             start()
+        }
+    }
+
+    private var isSug = false
+
+    private lateinit var mSuggestionResult: SuggestionResult
+
+    private fun sug(keyword: String) {
+        SuggestionSearch.newInstance().run {
+            setOnGetSuggestionResultListener { suggestionResult ->
+                mSuggestionResult = suggestionResult
+                suggestionResult.allSuggestions?.filter { it.pt != null }
+                    ?.forEach { suggestionInfo ->
+                        val point = Point(
+                            suggestionInfo.key, suggestionInfo.pt, PointStatus.UN_TAKEN
+                        )
+                        MarkerHelper.addOverlay(
+                            this@MainActivity,
+                            point,
+                            splitties.material.colors.R.color.red_300,
+                            GoogleMaterial.Icon.gmd_location_pin,
+                            binding.mapView.map
+                        )
+                    }
+            }
+            requestSuggestion(
+                SuggestionSearchOption().city("上海").keyword(keyword)
+            )
         }
     }
 
@@ -327,17 +337,6 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         mWeatherSearch.request(weatherSearchOption);
     }
 
-
-    private fun search3() {
-        SuggestionSearch.newInstance().apply {
-            setOnGetSuggestionResultListener {
-                it
-            }
-            requestSuggestion(
-                SuggestionSearchOption().city("上海").keyword("长山路")
-            )
-        }
-    }
 
     override fun initEvents() {
         receiveEvent<Point> {

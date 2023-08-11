@@ -4,7 +4,7 @@ object Config {
 
     val locationScanSpan = 1000
 
-    val defaultZoom = 20.0f
+    val defaultZoom = 16.0f
 
 
 }
