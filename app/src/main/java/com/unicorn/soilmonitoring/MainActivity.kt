@@ -127,6 +127,11 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
                             .longitude(location.longitude).build()
                     )
 
+                    // self point
+                    Config.selfPoint = Point(
+                        "自己", LatLng(location.latitude, location.longitude), PointStatus.UN_TAKEN
+                    )
+
                     // sug
                     if (t) return
                     map.setMapStatus(
@@ -171,10 +176,10 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
     }
 
 
-    private fun s2(latLng: LatLng) {
+    private fun initNaviEngine(point: Point) {
         WalkNavigateHelper.getInstance().initNaviEngine(this, object : IWEngineInitListener {
             override fun engineInitSuccess() {
-                s3(latLng)
+                routeWalkPlanWithParam(point)
                 //引擎初始化成功的回调
 
             }
@@ -183,19 +188,16 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
                 //引擎初始化失败的回调
             }
         })
-
     }
 
 
-    private fun s3(latLng: LatLng) {
-        val p = Point("", latLng)
-        drawerMarker(p)
+    private fun routeWalkPlanWithParam(point: Point) {
         val params = WalkNaviLaunchParam().apply {
             startNodeInfo(WalkRouteNodeInfo().apply {
-                location = latLng
+                location = Config.selfPoint.latLng
             })
             endNodeInfo(WalkRouteNodeInfo().apply {
-                location = LatLng(31.269909, 121.491697)
+                location = point.latLng
             })
         }
         WalkNavigateHelper.getInstance()
@@ -219,72 +221,25 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
     }
 
 
-    private fun s4(latLng: LatLng) {
-        val startPoint = latLng
-        val endPoint = LatLng(31.269609, 121.491697)
-
-//构建导航参数
-
-//构建导航参数
+    private fun openBaiduMapWalkNavi(point: Point) {
+        val startPoint =Config.selfPoint.latLng
         val para: NaviParaOption =
-            NaviParaOption().startPoint(startPoint).endPoint(endPoint).startName("天安门")
-                .endName("百度大厦")
-//调起百度地图
-//调起百度地图
+            NaviParaOption().startPoint(startPoint).endPoint(point.latLng)
+                .endName("三号采集点")
+
         try {
             BaiduMapNavigation.openBaiduMapWalkNavi(para, this)
         } catch (e: BaiduMapAppNotSupportNaviException) {
             e.printStackTrace()
-            //调起失败的处理
         }
+        BaiduMapNavigation.finish(this);
     }
 
-    private fun s() {
-        val mSearch = RoutePlanSearch.newInstance()
-
-        val l = object : OnGetRoutePlanResultListener {
-            override fun onGetWalkingRouteResult(p0: WalkingRouteResult) {
-                //创建WalkingRouteOverlay实例
-                //创建WalkingRouteOverlay实例
-                val overlay = WalkingRouteOverlay(binding.mapView.map)
-                if (p0.getRouteLines().size > 0) {
-                    //获取路径规划数据,(以返回的第一条数据为例)
-                    //为WalkingRouteOverlay实例设置路径数据
-                    overlay.setData(p0.getRouteLines().get(0))
-                    //在地图上绘制WalkingRouteOverlay
-                    overlay.addToMap()
-                }
-            }
-
-            override fun onGetTransitRouteResult(p0: TransitRouteResult?) {
-            }
-
-            override fun onGetMassTransitRouteResult(p0: MassTransitRouteResult?) {
-            }
-
-            override fun onGetDrivingRouteResult(p0: DrivingRouteResult?) {
-            }
-
-            override fun onGetIndoorRouteResult(p0: IndoorRouteResult?) {
-            }
-
-            override fun onGetBikingRouteResult(p0: BikingRouteResult?) {
-            }
-        }
-        mSearch.setOnGetRoutePlanResultListener(l)
-
-
-        mSearch.walkingSearch(WalkingRoutePlanOption().apply {
-            from(PlanNode.withLocation(DataHelper.getParents()[0].sublist[0].latLng))
-            to(PlanNode.withLocation(DataHelper.getParents()[0].sublist[2].latLng))
-        })
-
-    }
 
 
     private val pointDialog by lazy {
         MaterialDialog(this, BottomSheet()).apply {
-//            title(text = "采样点总览")
+            title(text = "采样点总览")
             customView(view = PointRecyclerView(this@MainActivity), scrollable = true)
         }
     }
@@ -293,63 +248,19 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         pointDialog.show()
     }
 
-    private fun search() {
 
-        val districtID = "110105" // 天安门区域ID
-
-        val weatherSearchOption =
-            WeatherSearchOption().weatherDataType(WeatherDataType.WEATHER_DATA_TYPE_ALL)
-                .districtID(districtID)
-
-
-        val mWeatherSearch = WeatherSearch.newInstance()
-        mWeatherSearch.setWeatherSearchResultListener {
-            it
-            it.realTimeWeather
-            val realTimeWeather = it.realTimeWeather
-            realTimeWeather.temperature
-
-        }
-
-        mWeatherSearch.request(weatherSearchOption);
-    }
 
 
     override fun initEvents() {
         receiveEvent<Point> {
             pointDialog.dismiss()
-            map.animateMapStatus(MapStatusUpdateFactory.newMapStatus(MapStatus.Builder().target(it.latLng).build()))
+//            map.animateMapStatus(MapStatusUpdateFactory.newMapStatus(MapStatus.Builder().target(it.latLng).build()))
+            initNaviEngine(it)
         }
     }
 
 
-    private fun addMarkers() {
 
-        DataHelper.getParents().forEach { parent -> parent.sublist.forEach { drawerMarker(it) } }
-    }
-
-    private var marker: Overlay? = null
-
-    private fun drawerMarker(point: Point) {
-        val color =
-            if (point.pointStatus == PointStatus.TAKEN) splitties.material.colors.R.color.green_600 else splitties.material.colors.R.color.red_600
-        val color1 = color(color)
-//        val titleOptions =
-//            TitleOptions().text(point.description)
-//                .titleFontColor(Color.WHITE)
-//                .titleBgColor(color1)
-
-
-        val iconicsDrawable = IconicsDrawable(this, GoogleMaterial.Icon.gmd_location_pin).apply {
-            colorInt = color1
-            sizeDp = 24
-        }
-
-        val bitmap = iconicsDrawable.toBitmap()
-        val option: OverlayOptions =
-            MarkerOptions().position(point.latLng).icon(BitmapDescriptorFactory.fromBitmap(bitmap))
-        binding.mapView.map.addOverlay(option)
-    }
 
     override fun onPause() {
         super.onPause()
@@ -368,7 +279,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
         super.onDestroy()
     }
 
-    val map get() = binding.mapView.map
+    private val map get() = binding.mapView.map
 
 }
 

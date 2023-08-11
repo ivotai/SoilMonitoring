@@ -9,3 +9,82 @@
 
 4.
 列表展示附近采集点，点击后地图跳转。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private fun s() {
+        val mSearch = RoutePlanSearch.newInstance()
+
+        val l = object : OnGetRoutePlanResultListener {
+            override fun onGetWalkingRouteResult(p0: WalkingRouteResult) {
+                //创建WalkingRouteOverlay实例
+                //创建WalkingRouteOverlay实例
+                val overlay = WalkingRouteOverlay(binding.mapView.map)
+                if (p0.getRouteLines().size > 0) {
+                    //获取路径规划数据,(以返回的第一条数据为例)
+                    //为WalkingRouteOverlay实例设置路径数据
+                    overlay.setData(p0.getRouteLines().get(0))
+                    //在地图上绘制WalkingRouteOverlay
+                    overlay.addToMap()
+                }
+            }
+
+            override fun onGetTransitRouteResult(p0: TransitRouteResult?) {
+            }
+
+            override fun onGetMassTransitRouteResult(p0: MassTransitRouteResult?) {
+            }
+
+            override fun onGetDrivingRouteResult(p0: DrivingRouteResult?) {
+            }
+
+            override fun onGetIndoorRouteResult(p0: IndoorRouteResult?) {
+            }
+
+            override fun onGetBikingRouteResult(p0: BikingRouteResult?) {
+            }
+        }
+        mSearch.setOnGetRoutePlanResultListener(l)
+
+
+        mSearch.walkingSearch(WalkingRoutePlanOption().apply {
+            from(PlanNode.withLocation(DataHelper.getParents()[0].sublist[0].latLng))
+            to(PlanNode.withLocation(DataHelper.getParents()[0].sublist[2].latLng))
+        })
+
+    }
+
+
+    private fun search() {
+
+        val districtID = "110105" // 天安门区域ID
+
+        val weatherSearchOption =
+            WeatherSearchOption().weatherDataType(WeatherDataType.WEATHER_DATA_TYPE_ALL)
+                .districtID(districtID)
+
+
+        val mWeatherSearch = WeatherSearch.newInstance()
+        mWeatherSearch.setWeatherSearchResultListener {
+            it
+            it.realTimeWeather
+            val realTimeWeather = it.realTimeWeather
+            realTimeWeather.temperature
+
+        }
+
+        mWeatherSearch.request(weatherSearchOption);
+    }
