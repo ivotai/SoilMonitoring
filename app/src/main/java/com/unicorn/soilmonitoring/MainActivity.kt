@@ -1,7 +1,5 @@
 package com.unicorn.soilmonitoring
 
-//import com.baidu.mapapi.map.TitleOptions
-
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
@@ -82,7 +80,6 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
     private var locationClient: LocationClient? = null
 
     private fun initLocationClient() {
-
         locationClient = LocationClient(applicationContext).apply {
             locOption = LocationClientOption().apply {
                 // 百度经纬度坐标
