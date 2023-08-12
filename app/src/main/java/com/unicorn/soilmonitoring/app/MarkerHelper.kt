@@ -1,4 +1,4 @@
-package com.unicorn.soilmonitoring.ui.app
+package com.unicorn.soilmonitoring.app
 
 import android.content.Context
 import androidx.annotation.ColorRes

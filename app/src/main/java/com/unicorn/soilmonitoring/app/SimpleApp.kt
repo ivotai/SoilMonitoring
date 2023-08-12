@@ -1,4 +1,4 @@
-package com.unicorn.soilmonitoring.ui.app
+package com.unicorn.soilmonitoring.app
 
 import android.app.Application
 import android.util.Log

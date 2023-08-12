@@ -36,10 +36,10 @@ import com.drake.statusbar.statusPadding
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.tbruyelle.rxpermissions3.RxPermissions
 import com.unicorn.soilmonitoring.databinding.ActivityMainBinding
-import com.unicorn.soilmonitoring.ui.app.Config
-import com.unicorn.soilmonitoring.ui.app.MarkerHelper
-import com.unicorn.soilmonitoring.ui.app.Point
-import com.unicorn.soilmonitoring.ui.app.PointStatus
+import com.unicorn.soilmonitoring.app.Config
+import com.unicorn.soilmonitoring.app.MarkerHelper
+import com.unicorn.soilmonitoring.app.Point
+import com.unicorn.soilmonitoring.app.PointStatus
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import com.unicorn.soilmonitoring.ui.view.PointRecyclerView
 import splitties.views.verticalPadding
