@@ -9,15 +9,13 @@ import com.unicorn.soilmonitoring.ui.fra.TaskTodayFra
 class TaskFragmentStateAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
 
-    val titles = listOf("今日任务", "全部任务")
+    val titles = listOf("今日任务", "全部采样点")
 
     override fun getItemCount(): Int = titles.size
 
     override fun createFragment(position: Int): Fragment {
-        return if (position == 0)
-            TaskTodayFra()
-        else
-            TaskAllFra()
+        return if (position == 0) TaskTodayFra()
+        else TaskAllFra()
     }
 
 }

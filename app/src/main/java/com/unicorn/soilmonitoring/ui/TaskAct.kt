@@ -10,13 +10,13 @@ class TaskAct : BaseAct<ActTaskBinding>() {
         super.initViews()
 
         binding.run {
-            val taskFragmentStateAdapter = TaskFragmentStateAdapter(this@TaskAct)
-            viewPager2.offscreenPageLimit = taskFragmentStateAdapter.itemCount - 1
-            viewPager2.adapter = taskFragmentStateAdapter
-
-            TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
-                tab.text = taskFragmentStateAdapter.titles[position]
-            }.attach()
+            TaskFragmentStateAdapter(this@TaskAct).run {
+                viewPager2.offscreenPageLimit = itemCount - 1
+                viewPager2.adapter = this
+                TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
+                    tab.text = titles[position]
+                }.attach()
+            }
         }
     }
 
