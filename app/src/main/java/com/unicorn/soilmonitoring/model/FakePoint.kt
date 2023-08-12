@@ -1,7 +1,7 @@
 package com.unicorn.soilmonitoring.model
 
 data class FakePoint(
-    val description: String, var isChecked: Boolean = false
+    val description: String
 ) {
 
     companion object {

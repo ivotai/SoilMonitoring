@@ -2,6 +2,7 @@ package com.unicorn.soilmonitoring.ui.fra
 
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import com.blankj.utilcode.util.ToastUtils
 import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.divider
@@ -31,14 +32,15 @@ class TaskAllFra : BaseFra<FraTaskAllBinding>() {
                     getBinding<ItemTaskAllBinding>().run {
                         tvDescription.text = model.description
 
+                        val isChecked = model in getCheckedModels<FakePoint>()
                         val borderColorRes =
-                            if (model.isChecked) splitties.material.colors.R.color.blue_400 else splitties.material.colors.R.color.grey_100
+                            if (isChecked) splitties.material.colors.R.color.blue_400 else splitties.material.colors.R.color.grey_100
                         val color =
-                            if (model.isChecked) splitties.material.colors.R.color.blue_50 else splitties.material.colors.R.color.grey_50
+                            if (isChecked) splitties.material.colors.R.color.blue_50 else splitties.material.colors.R.color.grey_50
 
                         root.helper.run {
-                        backgroundColorNormal  = context.color(color)
-                        borderColorNormal = context.color(borderColorRes)
+                            backgroundColorNormal = context.color(color)
+                            borderColorNormal = context.color(borderColorRes)
                         }
                     }
                 }
@@ -59,8 +61,8 @@ class TaskAllFra : BaseFra<FraTaskAllBinding>() {
 
                 // 监听列表选中
                 onChecked { position, isChecked, _ ->
-                    val model = getModel<FakePoint>(position)
-                    model.isChecked = isChecked
+//                    val model = getModel<FakePoint>(position)
+//                    model.isChecked = isChecked
                     notifyItemChanged(position)
 
                     tvConfirm.visibility = if (checkedCount > 0) VISIBLE else INVISIBLE
@@ -81,6 +83,12 @@ class TaskAllFra : BaseFra<FraTaskAllBinding>() {
     override fun initIntents() {
         binding.run {
             tvManage.setOnClickListener {
+                rvTaskAll.bindingAdapter.toggle()
+            }
+
+            tvConfirm.setOnClickListener {
+                rvTaskAll.bindingAdapter.getCheckedModels<FakePoint>().joinToString { it.description }
+                    .let { ToastUtils.showLong(it) }
                 rvTaskAll.bindingAdapter.toggle()
             }
         }
