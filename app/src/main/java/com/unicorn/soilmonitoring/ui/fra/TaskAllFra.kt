@@ -75,7 +75,7 @@ class TaskAllFra : BaseFra<FraTaskAllBinding>() {
                     if (!toggleMode) checkedAll(false)
                 }
 
-            }.models = FakePoint.all
+            }.models = FakePoint.all()
         }
 
     }
