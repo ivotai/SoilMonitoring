@@ -125,7 +125,6 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
     }
 
     private var t = false
-
     private fun sug(keyword: String) {
         SuggestionSearch.newInstance().run {
             setOnGetSuggestionResultListener { suggestionResult ->
