@@ -1,17 +1,20 @@
 package com.unicorn.soilmonitoring.ui.fra
 
+import android.graphics.Color
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import androidx.recyclerview.widget.GridLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.divider
-import com.drake.brv.utils.grid
 import com.drake.brv.utils.setup
 import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.databinding.FraTaskAllBinding
+import com.unicorn.soilmonitoring.databinding.ItemParkBinding
 import com.unicorn.soilmonitoring.databinding.ItemTaskAllBinding
 import com.unicorn.soilmonitoring.model.FakePoint
+import com.unicorn.soilmonitoring.model.Park
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.resources.color
 
@@ -21,48 +24,81 @@ class TaskAllFra : BaseFra<FraTaskAllBinding>() {
     override fun initViews() {
 
         binding.run {
-            rvTaskAll.grid(1).divider {
+
+            val layoutManager = GridLayoutManager(requireContext(), 3) // 则代表列表一行铺满要求跨度为3
+            layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    if (position < 0) return 1 // 如果添加分割线可能导致position为负数
+                    // 根据类型设置列表item跨度
+                    return when (rvTaskAll.bindingAdapter.getItemViewType(position)) {
+                        R.layout.item_task_all -> 1 // 设置指定类型的跨度为1, 假设spanCount为2则代表此类型占据宽度为二分之一
+                        else -> 3
+                    }
+                }
+            }
+
+            rvTaskAll.layoutManager = layoutManager
+            rvTaskAll.divider {
+//                orientation = DividerOrientation.GRID
+//                setDivider(16, true)
+//                includeVisible = true
+
                 orientation = DividerOrientation.GRID
                 setDivider(16, true)
-                includeVisible = true
+                setMargin(16, 16, dp = true)
+                setColor(Color.WHITE)
+
             }.setup {
-                addType<FakePoint>(com.unicorn.soilmonitoring.R.layout.item_task_all)
+                addType<FakePoint>(R.layout.item_task_all)
+                addType<Park>(R.layout.item_park)
+
                 onBind {
-                    val model = getModel<FakePoint>()
-                    getBinding<ItemTaskAllBinding>().run {
-                        tvDescription.text = model.description
+                    when (val model = getModel<Any>()) {
+                        is FakePoint -> {
+                            getBinding<ItemTaskAllBinding>().run {
+                                tvDescription.text = model.description
 
-                        val isChecked = model in getCheckedModels<FakePoint>()
-                        val borderColorRes =
-                            if (isChecked) splitties.material.colors.R.color.blue_400 else splitties.material.colors.R.color.grey_100
-                        val color =
-                            if (isChecked) splitties.material.colors.R.color.blue_50 else splitties.material.colors.R.color.grey_50
+                                val isChecked = model in getCheckedModels<FakePoint>()
+                                val borderColorRes =
+                                    if (isChecked) splitties.material.colors.R.color.blue_400 else splitties.material.colors.R.color.grey_100
+                                val color =
+                                    if (isChecked) splitties.material.colors.R.color.blue_50 else splitties.material.colors.R.color.grey_50
 
-                        root.helper.run {
-                            backgroundColorNormal = context.color(color)
-                            borderColorNormal = context.color(borderColorRes)
+                                root.helper.run {
+                                    backgroundColorNormal = context.color(color)
+                                    borderColorNormal = context.color(borderColorRes)
+                                }
+                            }
+                        }
+
+                        is Park -> {
+                            getBinding<ItemParkBinding>().run {
+                                tvDescription.text = model.description
+                            }
                         }
                     }
                 }
 
                 // 长按列表进入编辑模式
                 onLongClick(R.id.root) {
-                    if (!toggleMode) {
-                        toggle()
-                        setChecked(layoutPosition, true)
+                    if (getModel<Any>() is FakePoint) {
+                        if (!toggleMode) {
+                            toggle()
+                            setChecked(layoutPosition, true)
+                        }
                     }
                 }
 
                 // 点击列表触发选中
                 onClick(R.id.root) {
-                    // 如果当前未处于选择模式下 点击无效
-                    if (toggleMode) checkedSwitch(layoutPosition)
+                    if (getModel<Any>() is FakePoint) {
+                        // 如果当前未处于选择模式下 点击无效
+                        if (toggleMode) checkedSwitch(layoutPosition)
+                    }
                 }
 
                 // 监听列表选中
                 onChecked { position, isChecked, _ ->
-//                    val model = getModel<FakePoint>(position)
-//                    model.isChecked = isChecked
                     notifyItemChanged(position)
 
                     tvConfirm.visibility = if (checkedCount > 0) VISIBLE else INVISIBLE
@@ -75,7 +111,7 @@ class TaskAllFra : BaseFra<FraTaskAllBinding>() {
                     if (!toggleMode) checkedAll(false)
                 }
 
-            }.models = FakePoint.all()
+            }.models = Park.all()
         }
 
     }
@@ -87,8 +123,8 @@ class TaskAllFra : BaseFra<FraTaskAllBinding>() {
             }
 
             tvConfirm.setOnClickListener {
-                rvTaskAll.bindingAdapter.getCheckedModels<FakePoint>().joinToString { it.description }
-                    .let { ToastUtils.showLong(it) }
+                rvTaskAll.bindingAdapter.getCheckedModels<FakePoint>()
+                    .joinToString { it.description }.let { ToastUtils.showLong(it) }
                 rvTaskAll.bindingAdapter.toggle()
             }
         }

@@ -7,7 +7,7 @@ class Park(val description: String) : ItemExpand {
     override var itemGroupPosition: Int = 0
 
     // 当前条目是否展开
-    override var itemExpand: Boolean = false
+    override var itemExpand: Boolean = true
 
     // 返回子列表
     override fun getItemSublist(): List<FakePoint> {
@@ -24,10 +24,9 @@ class Park(val description: String) : ItemExpand {
                 for (i in 1..10) {
                     val park = Park("园区$i")
                     park.itemGroupPosition = i
-                    park.itemExpand = false
                     val sublist = ArrayList<FakePoint>()
                     for (j in 1..10) {
-                        sublist.add(FakePoint("${park.description}采样点$i-$j"))
+                        sublist.add(FakePoint("采样点$i-$j"))
                     }
                     park.sublist = sublist
                     parks.add(park)
