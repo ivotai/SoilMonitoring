@@ -3,9 +3,9 @@ package com.unicorn.soilmonitoring.ui.fra
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import androidx.recyclerview.widget.GridLayoutManager
-import com.blankj.utilcode.util.ToastUtils
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.setup
+import com.drake.channel.sendEvent
 import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.databinding.FraFakePointAllBinding
 import com.unicorn.soilmonitoring.databinding.ItemFakePointBinding
@@ -16,7 +16,7 @@ import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.resources.color
 
 
-class AllFakePointFra : BaseFra<FraFakePointAllBinding>() {
+class FakePointAllFra : BaseFra<FraFakePointAllBinding>() {
 
     override fun initViews() {
 
@@ -28,15 +28,15 @@ class AllFakePointFra : BaseFra<FraFakePointAllBinding>() {
                 override fun getSpanSize(position: Int): Int {
                     if (position < 0) return 1 // 如果添加分割线可能导致position为负数
                     // 根据类型设置列表item跨度
-                    return when (rvTaskAll.bindingAdapter.getItemViewType(position)) {
+                    return when (rv.bindingAdapter.getItemViewType(position)) {
                         R.layout.item_fake_point -> 1 // 设置指定类型的跨度为1, 假设spanCount为3则代表此类型占据宽度为二分之一
                         else -> scanCount
                     }
                 }
             }
 
-            rvTaskAll.layoutManager = layoutManager
-            rvTaskAll
+            rv.layoutManager = layoutManager
+            rv
 
                 // 原来的间隔方案
 //                .divider { // 水平间距
@@ -118,14 +118,14 @@ class AllFakePointFra : BaseFra<FraFakePointAllBinding>() {
     override fun initIntents() {
         binding.run {
             tvManage.setOnClickListener {
-                rvTaskAll.bindingAdapter.toggle()
+                rv.bindingAdapter.toggle()
             }
 
             tvConfirm.setOnClickListener {
-                rvTaskAll.bindingAdapter.getCheckedModels<FakePoint>()
-                    .joinToString { it.description }.let { ToastUtils.showLong(it) }
-                rvTaskAll.bindingAdapter.toggle()
+                sendEvent(rv.bindingAdapter.getCheckedModels<FakePoint>())
+                rv.bindingAdapter.toggle()
             }
         }
     }
+
 }
