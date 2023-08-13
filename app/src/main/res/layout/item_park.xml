@@ -4,21 +4,20 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:background_normal="@color/grey_50"
-    app:border_color_normal="@color/grey_100"
-    app:border_width_normal="1dp"
-    app:corner_radius="16dp">
+    android:layout_marginVertical="8dp"
+    app:background_normal="@color/green_50"
+    app:border_width_normal="1dp">
 
     <TextView
-        android:textStyle="bold"
         android:id="@+id/tv_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="Hello World!"
+        android:textColor="@color/green_400"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

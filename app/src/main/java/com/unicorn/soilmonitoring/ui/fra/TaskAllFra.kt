@@ -1,6 +1,5 @@
 package com.unicorn.soilmonitoring.ui.fra
 
-import android.graphics.Color
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import androidx.recyclerview.widget.GridLayoutManager
@@ -38,17 +37,15 @@ class TaskAllFra : BaseFra<FraTaskAllBinding>() {
             }
 
             rvTaskAll.layoutManager = layoutManager
-            rvTaskAll.divider {
+            rvTaskAll
+//                .divider { // 水平间距
 //                orientation = DividerOrientation.GRID
 //                setDivider(16, true)
-//                includeVisible = true
+//                startVisible = true
+//                endVisible= true
+//            }
 
-                orientation = DividerOrientation.GRID
-                setDivider(16, true)
-                setMargin(16, 16, dp = true)
-                setColor(Color.WHITE)
-
-            }.setup {
+                .setup {
                 addType<FakePoint>(R.layout.item_task_all)
                 addType<Park>(R.layout.item_park)
 
