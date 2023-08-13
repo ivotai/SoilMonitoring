@@ -3,7 +3,7 @@ package com.unicorn.soilmonitoring.ui
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.unicorn.soilmonitoring.ui.fra.TaskAllFra
+import com.unicorn.soilmonitoring.ui.fra.AllFakePointFra
 import com.unicorn.soilmonitoring.ui.fra.TaskTodayFra
 
 class TaskFragmentStateAdapter(fragmentActivity: FragmentActivity) :
@@ -15,7 +15,7 @@ class TaskFragmentStateAdapter(fragmentActivity: FragmentActivity) :
 
     override fun createFragment(position: Int): Fragment {
         return if (position == 0) TaskTodayFra()
-        else TaskAllFra()
+        else AllFakePointFra()
     }
 
 }
