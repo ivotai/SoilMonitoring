@@ -17,12 +17,12 @@ import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.resources.color
 
 
-class FakePointAllFra : BaseFra<FraFakePointAllBinding>() {
+class FakePointAllFra(val title:String) : BaseFra<FraFakePointAllBinding>() {
 
     override fun initViews() {
 
         binding.run {
-            titleBar.setTitle("全部采样点")
+            titleBar.setTitle( title)
 
             val scanCount = 3
             val layoutManager = GridLayoutManager(requireContext(), scanCount) // 则代表列表一行铺满要求跨度为3

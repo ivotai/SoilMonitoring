@@ -8,7 +8,7 @@ class LoginAct : BaseAct<ActLoginBinding>() {
 
     override fun initIntents() {
 
-        start<TaskAct> { }
+        start<MainAct> { }
         finish()
     }
 

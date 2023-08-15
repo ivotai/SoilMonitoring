@@ -8,28 +8,28 @@ import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.mikepenz.iconics.utils.colorInt
 import com.unicorn.soilmonitoring.app.setUpWithViewPager2
-import com.unicorn.soilmonitoring.databinding.ActTaskBinding
+import com.unicorn.soilmonitoring.databinding.ActMainBinding
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import com.unicorn.soilmonitoring.ui.fra.FakePointAllFra
 import com.unicorn.soilmonitoring.ui.fra.TaskTodayFra
 import me.majiajie.pagerbottomtabstrip.item.NormalItemView
 import splitties.resources.color
 
-class TaskAct : BaseAct<ActTaskBinding>() {
+class MainAct : BaseAct<ActMainBinding>() {
 
     override fun initViews() {
         super.initViews()
 
-        val titles = listOf("今日任务", "全部采样点")
+        val titles = listOf("采样点", "今日任务")
 
         binding.run {
-            object : FragmentStateAdapter(this@TaskAct) {
+            object : FragmentStateAdapter(this@MainAct) {
 
                 override fun getItemCount(): Int = titles.size
 
                 override fun createFragment(position: Int): Fragment {
-                    return if (position == 0) TaskTodayFra()
-                    else FakePointAllFra()
+                    return if (position == 0) FakePointAllFra(title = titles[position])
+                    else TaskTodayFra()
                 }
 
             }.run {
@@ -59,14 +59,14 @@ class TaskAct : BaseAct<ActTaskBinding>() {
             val navigationController = binding.tab.custom().addItem(
                 newItem(
                     titles[0],
-                    GoogleMaterial.Icon.gmd_today,
-                    GoogleMaterial.Icon.gmd_today,
+                    GoogleMaterial.Icon.gmd_location_pin,
+                    GoogleMaterial.Icon.gmd_location_pin,
                 )
             ).addItem(
                 newItem(
                     titles[1],
-                    GoogleMaterial.Icon.gmd_location_pin,
-                    GoogleMaterial.Icon.gmd_location_pin,
+                    GoogleMaterial.Icon.gmd_today,
+                    GoogleMaterial.Icon.gmd_today,
                 )
             ).build()
             navigationController.setUpWithViewPager2(viewPager2 = viewPager2)
