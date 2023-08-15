@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.setup
 import com.drake.channel.sendEvent
+import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.databinding.FraFakePointAllBinding
 import com.unicorn.soilmonitoring.databinding.ItemFakePointBinding
@@ -21,6 +22,7 @@ class FakePointAllFra : BaseFra<FraFakePointAllBinding>() {
     override fun initViews() {
 
         binding.run {
+            titleBar.setTitle("全部采样点")
 
             val scanCount = 3
             val layoutManager = GridLayoutManager(requireContext(), scanCount) // 则代表列表一行铺满要求跨度为3
@@ -100,12 +102,14 @@ class FakePointAllFra : BaseFra<FraFakePointAllBinding>() {
                     onChecked { position, isChecked, _ ->
                         notifyItemChanged(position)
 
-                        tvConfirm.visibility = if (checkedCount > 0) VISIBLE else INVISIBLE
+                        // 显示打钩
+                        titleBar.getCiv2().visibility =
+                            if (toggleMode && checkedCount > 0) VISIBLE else INVISIBLE
                     }
 
                     onToggle { position, toggleMode, _ ->
-                        // 管理按钮
-                        tvManage.text = if (toggleMode) "取消" else "选取今日采样点"
+                        // 显示打叉
+                        titleBar.getCiv1().visibility = if (toggleMode) VISIBLE else INVISIBLE
                         // 如果取消管理模式则取消全部已选择
                         if (!toggleMode) checkedAll(false)
                     }
@@ -117,15 +121,19 @@ class FakePointAllFra : BaseFra<FraFakePointAllBinding>() {
 
     override fun initIntents() {
         binding.run {
-            tvManage.setOnClickListener {
-                rv.bindingAdapter.toggle()
+            titleBar.getCiv1().run {
+                icon?.icon = GoogleMaterial.Icon.gmd_close
+                setOnClickListener { rv.bindingAdapter.toggle() }
             }
-
-            tvConfirm.setOnClickListener {
-                sendEvent(rv.bindingAdapter.getCheckedModels<FakePoint>())
-                rv.bindingAdapter.toggle()
+            titleBar.getCiv2().run {
+                icon?.icon = GoogleMaterial.Icon.gmd_check
+                setOnClickListener {
+                    sendEvent(rv.bindingAdapter.getCheckedModels<FakePoint>())
+                    rv.bindingAdapter.toggle()
+                }
             }
         }
     }
+
 
 }

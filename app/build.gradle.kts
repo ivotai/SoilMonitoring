@@ -59,7 +59,7 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -97,6 +97,7 @@ dependencies {
 
     // iconics
     implementation("com.mikepenz:iconics-core:5.4.0")
+    implementation ("com.mikepenz:iconics-views:5.4.0")
     implementation("com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar")
     implementation("com.mikepenz:fontawesome-typeface:5.9.0.2-kotlin@aar")
 

@@ -13,12 +13,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    android:background="#FFF"-->
-    <!--        android:elevation="8dp"-->
     <me.majiajie.pagerbottomtabstrip.PageNavigationView
         android:id="@+id/tab"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:background="@color/white"
+        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
