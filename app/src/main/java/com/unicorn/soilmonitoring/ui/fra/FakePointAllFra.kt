@@ -3,6 +3,7 @@ package com.unicorn.soilmonitoring.ui.fra
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import androidx.recyclerview.widget.GridLayoutManager
+import com.drake.brv.layoutmanager.HoverGridLayoutManager
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.setup
 import com.drake.channel.sendEvent

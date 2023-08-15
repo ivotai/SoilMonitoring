@@ -3,12 +3,14 @@ package com.unicorn.soilmonitoring.ui
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.drake.channel.receiveEvent
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.mikepenz.iconics.utils.colorInt
 import com.unicorn.soilmonitoring.app.setUpWithViewPager2
 import com.unicorn.soilmonitoring.databinding.ActMainBinding
+import com.unicorn.soilmonitoring.model.FakePoint
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import com.unicorn.soilmonitoring.ui.fra.FakePointAllFra
 import com.unicorn.soilmonitoring.ui.fra.TaskTodayFra
@@ -72,6 +74,13 @@ class MainAct : BaseAct<ActMainBinding>() {
             navigationController.setUpWithViewPager2(viewPager2 = viewPager2)
         }
         initTab(binding.vp)
+    }
+
+
+    override fun initEvents() {
+        receiveEvent<List<FakePoint>> {
+            binding.vp.currentItem = 1
+        }
     }
 
 }
