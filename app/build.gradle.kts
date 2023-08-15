@@ -103,6 +103,13 @@ dependencies {
     implementation ("com.blankj:utilcodex:1.31.1")
     implementation ("com.github.tbruyelle:rxpermissions:0.12")
 
+
+    implementation ("me.majiajie:pager-bottom-tab-strip:2.4.0")
+
+
+//    implementation ("com.github.angcyo.DslTablayout:TabLayout:3.5.5")
+//    implementation ("com.github.angcyo.DslTablayout:ViewPager2Delegate:3.5.5")
+
 }
 
 

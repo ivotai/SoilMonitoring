@@ -9,7 +9,7 @@ class LoginAct : BaseAct<ActLoginBinding>() {
     override fun initIntents() {
 
         start<TaskAct> { }
-
+        finish()
     }
 
 }
