@@ -32,6 +32,9 @@ import com.unicorn.soilmonitoring.app.MarkerHelper
 import com.unicorn.soilmonitoring.app.Point
 import com.unicorn.soilmonitoring.app.PointStatus
 import com.unicorn.soilmonitoring.databinding.FraMapBinding
+import com.unicorn.soilmonitoring.event.MapEvent
+import com.unicorn.soilmonitoring.event.NavigationEvent
+import com.unicorn.soilmonitoring.event.NavigationOutEvent
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import com.unicorn.soilmonitoring.ui.view.PointRecyclerView
 
@@ -137,8 +140,11 @@ class MapFra : BaseFra<FraMapBinding>() {
                         )
                     }
 
-                suggestionResult.allSuggestions?.filter { it.pt!=null }
-                    .let { sendEvent(it!!) }
+                suggestionResult.allSuggestions?.filter { it.pt != null }?.map {
+                    Point(
+                        it.key, it.pt, PointStatus.UN_TAKEN
+                    )
+                }.let { sendEvent(it!!) }
             }
             requestSuggestion(
                 SuggestionSearchOption().city("上海").keyword(keyword)
@@ -222,10 +228,18 @@ class MapFra : BaseFra<FraMapBinding>() {
 
 
     override fun initEvents() {
-        receiveEvent<Point> {
-            pointDialog.dismiss()
-//            map.animateMapStatus(MapStatusUpdateFactory.newMapStatus(MapStatus.Builder().target(it.latLng).build()))
-            initNaviEngine(it)
+        receiveEvent<NavigationEvent> {
+            initNaviEngine(it.point)
+        }
+        receiveEvent<MapEvent> {
+            map.setMapStatus(
+                MapStatusUpdateFactory.newMapStatus(
+                    MapStatus.Builder().target(it.point.latLng).build()
+                )
+            )
+        }
+        receiveEvent<NavigationOutEvent> {
+            openBaiduMapWalkNavi(it.point)
         }
     }
 

@@ -11,6 +11,7 @@ import com.mikepenz.iconics.utils.colorInt
 import com.unicorn.soilmonitoring.MapFra
 import com.unicorn.soilmonitoring.app.setUpWithViewPager2
 import com.unicorn.soilmonitoring.databinding.ActMainBinding
+import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.model.FakePoint
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import com.unicorn.soilmonitoring.ui.fra.FakePointAllFra
@@ -82,8 +83,8 @@ class MainAct : BaseAct<ActMainBinding>() {
 
 
     override fun initEvents() {
-        receiveEvent<List<FakePoint>> {
-//            binding.vp.setCurrentItem(1, false)
+        receiveEvent<MapEvent> {
+            binding.vp.setCurrentItem(2, false)
         }
     }
 
