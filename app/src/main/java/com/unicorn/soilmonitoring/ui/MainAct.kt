@@ -9,6 +9,7 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.mikepenz.iconics.utils.colorInt
+import com.unicorn.soilmonitoring.MapFra
 import com.unicorn.soilmonitoring.app.setUpWithViewPager2
 import com.unicorn.soilmonitoring.databinding.ActMainBinding
 import com.unicorn.soilmonitoring.model.FakePoint
@@ -23,7 +24,7 @@ class MainAct : BaseAct<ActMainBinding>() {
     override fun initViews() {
         super.initViews()
 
-        val titles = listOf("采样点", "今日任务")
+        val titles = listOf("采样点", "今日任务", "地图导航")
 
         binding.run {
             object : FragmentStateAdapter(this@MainAct) {
@@ -31,8 +32,11 @@ class MainAct : BaseAct<ActMainBinding>() {
                 override fun getItemCount(): Int = titles.size
 
                 override fun createFragment(position: Int): Fragment {
-                    return if (position == 0) FakePointAllFra(title = titles[position])
-                    else TaskTodayFra()
+                    return when (position) {
+                        0 -> FakePointAllFra(titles[position])
+                        1 -> TaskTodayFra()
+                        else -> MapFra()
+                    }
                 }
 
             }.run {
@@ -71,7 +75,14 @@ class MainAct : BaseAct<ActMainBinding>() {
                     GoogleMaterial.Icon.gmd_today,
                     GoogleMaterial.Icon.gmd_today,
                 )
-            ).build()
+            )
+                .addItem(
+                    newItem(
+                        titles[2],
+                        GoogleMaterial.Icon.gmd_map,
+                        GoogleMaterial.Icon.gmd_map,
+                    )
+                ).build()
             navigationController.setUpWithViewPager2(viewPager2 = viewPager2)
         }
         initTab(binding.vp)

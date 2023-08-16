@@ -68,7 +68,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.MainAct"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MapFra"/>
         <activity android:name=".WNaviGuideActivity" />
     </application>
 

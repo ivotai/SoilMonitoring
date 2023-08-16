@@ -1,7 +1,5 @@
 package com.unicorn.soilmonitoring
 
-import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
@@ -25,35 +23,29 @@ import com.baidu.mapapi.walknavi.adapter.IWRoutePlanListener
 import com.baidu.mapapi.walknavi.model.WalkRoutePlanError
 import com.baidu.mapapi.walknavi.params.WalkNaviLaunchParam
 import com.baidu.mapapi.walknavi.params.WalkRouteNodeInfo
-import com.blankj.utilcode.util.BarUtils
-import com.blankj.utilcode.util.ConvertUtils
-import com.blankj.utilcode.util.ToastUtils
 import com.drake.channel.receiveEvent
-import com.drake.statusbar.immersive
-import com.drake.statusbar.statusPadding
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.tbruyelle.rxpermissions3.RxPermissions
-import com.unicorn.soilmonitoring.databinding.ActivityMainBinding
 import com.unicorn.soilmonitoring.app.Config
 import com.unicorn.soilmonitoring.app.MarkerHelper
 import com.unicorn.soilmonitoring.app.Point
 import com.unicorn.soilmonitoring.app.PointStatus
-import com.unicorn.soilmonitoring.ui.base.BaseAct
+import com.unicorn.soilmonitoring.databinding.FraMapBinding
+import com.unicorn.soilmonitoring.ui.base.BaseFra
 import com.unicorn.soilmonitoring.ui.view.PointRecyclerView
-import splitties.views.verticalPadding
 
 
-class MainActivity : BaseAct<ActivityMainBinding>() {
+class MapFra : BaseFra<FraMapBinding>() {
 
 
     override fun initViews() {
 
         fun requestPermissions() {
             RxPermissions(this).request(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
             ).subscribe { granted ->
-                if (!granted) finish()
+                if (!granted) activity?.finish()
             }
         }
         requestPermissions()
@@ -80,7 +72,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
     private var locationClient: LocationClient? = null
 
     private fun initLocationClient() {
-        locationClient = LocationClient(applicationContext).apply {
+        locationClient = LocationClient(requireContext()).apply {
             locOption = LocationClientOption().apply {
                 // 百度经纬度坐标
                 setCoorType("bd09ll");
@@ -136,7 +128,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
                         )
                         Config.points.add(point)
                         MarkerHelper.addOverlay(
-                            this@MainActivity,
+                            requireContext(),
                             point,
                             splitties.material.colors.R.color.red_300,
                             GoogleMaterial.Icon.gmd_location_pin,
@@ -152,17 +144,18 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
 
     private fun initNaviEngine(point: Point) {
-        WalkNavigateHelper.getInstance().initNaviEngine(this, object : IWEngineInitListener {
-            override fun engineInitSuccess() {
-                routeWalkPlanWithParam(point)
-                //引擎初始化成功的回调
+        WalkNavigateHelper.getInstance()
+            .initNaviEngine(requireActivity(), object : IWEngineInitListener {
+                override fun engineInitSuccess() {
+                    routeWalkPlanWithParam(point)
+                    //引擎初始化成功的回调
 
-            }
+                }
 
-            override fun engineInitFail() {
-                //引擎初始化失败的回调
-            }
-        })
+                override fun engineInitFail() {
+                    //引擎初始化失败的回调
+                }
+            })
     }
 
 
@@ -183,7 +176,7 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
 
                 override fun onRoutePlanSuccess() {
                     //跳转至诱导页面
-                    val intent = Intent(this@MainActivity, WNaviGuideActivity::class.java)
+                    val intent = Intent(requireContext(), WNaviGuideActivity::class.java)
                     startActivity(intent)
                 }
 
@@ -199,20 +192,20 @@ class MainActivity : BaseAct<ActivityMainBinding>() {
             NaviParaOption().startPoint(startPoint).endPoint(point.latLng).endName("三号采集点")
 
         try {
-            BaiduMapNavigation.openBaiduMapWalkNavi(para, this)
+            BaiduMapNavigation.openBaiduMapWalkNavi(para, requireContext())
         } catch (e: BaiduMapAppNotSupportNaviException) {
             e.printStackTrace()
         }
-        BaiduMapNavigation.finish(this);
+        BaiduMapNavigation.finish(requireContext());
     }
 
 
     private val pointDialog by lazy {
-        MaterialDialog(this,BottomSheet()).apply {
+        MaterialDialog(requireContext(), BottomSheet()).apply {
             title(text = "采样点总览")
 //            cornerRadius(16f)
             customView(
-                view = PointRecyclerView(this@MainActivity),
+                view = PointRecyclerView(requireContext()),
                 scrollable = false,
                 noVerticalPadding = true
             )
