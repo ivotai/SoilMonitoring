@@ -10,6 +10,11 @@ class LoginAct : BaseAct<ActLoginBinding>() {
 
         start<MainAct> { }
         finish()
+
+        binding.btnLogin.setOnClickListener {
+            start<MainAct> { }
+            finish()
+        }
     }
 
 }

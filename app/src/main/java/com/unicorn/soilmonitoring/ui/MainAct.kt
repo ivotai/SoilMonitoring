@@ -1,5 +1,6 @@
 package com.unicorn.soilmonitoring.ui
 
+import android.graphics.Color
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -46,7 +47,7 @@ class MainAct : BaseAct<ActMainBinding>() {
             fun newItem(vTitle: String, iconDefault: IIcon, iconChecked: IIcon) =
                 NormalItemView(this).apply {
                     val defaultColor = color(splitties.material.colors.R.color.grey_400)
-                    val checkedColor = color(splitties.material.colors.R.color.light_green_400)
+                    val checkedColor = Color.parseColor("#4485E1")
                     title = vTitle
                     setDefaultDrawable(IconicsDrawable(context, iconDefault).apply {
                         colorInt = defaultColor
