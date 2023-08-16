@@ -23,7 +23,7 @@ class MainAct : BaseAct<ActMainBinding>() {
     override fun initViews() {
         super.initViews()
 
-        val titles = listOf("采样点", "今日任务", "地图总览")
+        val titles = listOf("采样点总览", "今日任务", "地图总览")
 
         binding.run {
             object : FragmentStateAdapter(this@MainAct) {
@@ -83,7 +83,7 @@ class MainAct : BaseAct<ActMainBinding>() {
 
     override fun initEvents() {
         receiveEvent<List<FakePoint>> {
-            binding.vp.currentItem = 1
+//            binding.vp.setCurrentItem(1, false)
         }
     }
 

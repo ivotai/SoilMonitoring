@@ -26,7 +26,7 @@ class Park(val description: String) : ItemExpand {
                     park.itemGroupPosition = i
                     val sublist = ArrayList<FakePoint>()
                     for (j in 1..10) {
-                        sublist.add(FakePoint("采样点$i-$j", park))
+                        sublist.add(FakePoint("采样点 $i-$j HNC1501A274-1", park))
                     }
                     park.sublist = sublist
                     parks.add(park)
