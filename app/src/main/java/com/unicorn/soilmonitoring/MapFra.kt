@@ -24,6 +24,7 @@ import com.baidu.mapapi.walknavi.model.WalkRoutePlanError
 import com.baidu.mapapi.walknavi.params.WalkNaviLaunchParam
 import com.baidu.mapapi.walknavi.params.WalkRouteNodeInfo
 import com.drake.channel.receiveEvent
+import com.drake.channel.sendEvent
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.tbruyelle.rxpermissions3.RxPermissions
 import com.unicorn.soilmonitoring.app.Config
@@ -66,7 +67,7 @@ class MapFra : BaseFra<FraMapBinding>() {
 
         initLocationClient()
 
-        binding.tvPoint.setOnClickListener { showPointDialog() }
+//        binding.tvPoint.setOnClickListener { showPointDialog() }
     }
 
     private var locationClient: LocationClient? = null
@@ -135,6 +136,9 @@ class MapFra : BaseFra<FraMapBinding>() {
                             binding.mapView.map
                         )
                     }
+
+                suggestionResult.allSuggestions?.filter { it.pt!=null }
+                    .let { sendEvent(it!!) }
             }
             requestSuggestion(
                 SuggestionSearchOption().city("上海").keyword(keyword)

@@ -16,24 +16,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.ruffian.library.widget.RTextView
-        android:id="@+id/tv_point"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="8dp"
-        android:text="采样点总览"
-        android:textColor="@color/grey_800"
-        android:textSize="16dp"
-        app:background_normal="@color/amber_50"
-        app:corner_radius="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shadow_color="@color/amber_100"
-        app:shadow_dx="1dp"
-        app:shadow_dy="1dp"
-        app:shadow_radius="2dp" />
+<!--    <com.ruffian.library.widget.RTextView-->
+<!--        android:id="@+id/tv_point"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:paddingHorizontal="24dp"-->
+<!--        android:paddingVertical="8dp"-->
+<!--        android:text="采样点总览"-->
+<!--        android:textColor="@color/grey_800"-->
+<!--        android:textSize="16dp"-->
+<!--        app:background_normal="@color/amber_50"-->
+<!--        app:corner_radius="100dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:shadow_color="@color/amber_100"-->
+<!--        app:shadow_dx="1dp"-->
+<!--        app:shadow_dy="1dp"-->
+<!--        app:shadow_radius="2dp" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

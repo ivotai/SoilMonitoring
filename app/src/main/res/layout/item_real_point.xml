@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ruffian.library.widget.RConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:background_normal="@color/white"
+    app:border_width_normal="1dp"
+    app:corner_radius="16dp"
+    app:shadow_color="@color/blue_50"
+    app:shadow_dx="1dp"
+    app:shadow_dy="1dp"
+    app:shadow_radius="1dp">
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="采样点"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ruffian.library.widget.RConstraintLayout
+        android:id="@+id/RConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:background_normal="#F5F7F9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_description">
+
+        <TextView
+            android:id="@+id/l_basic_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="基本信息"
+            android:textColor="@color/grey_400"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/l_sampling_requirement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="采样要求"
+            android:textColor="@color/grey_400"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="@+id/l_basic_info"
+            app:layout_constraintTop_toBottomOf="@+id/l_basic_info" />
+
+        <TextView
+            android:id="@+id/l_vegetation_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="植被的描述"
+            android:textColor="@color/grey_400"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/l_sampling_requirement"
+            app:layout_constraintTop_toBottomOf="@+id/l_sampling_requirement" />
+
+        <TextView
+            android:id="@+id/tv_basic_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="崇明区，瀛洲公园，青色墙正对香樟树下"
+            android:textColor="@color/grey_700"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="@+id/l_basic_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/l_vegetation_description"
+            app:layout_constraintTop_toTopOf="@+id/l_basic_info" />
+
+        <TextView
+            android:id="@+id/tv_sampling_requirement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="0-20cm"
+            android:textColor="@color/grey_700"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="@+id/l_sampling_requirement"
+            app:layout_constraintEnd_toEndOf="@+id/tv_basic_info"
+            app:layout_constraintStart_toStartOf="@+id/tv_basic_info"
+            app:layout_constraintTop_toTopOf="@+id/l_sampling_requirement" />
+
+        <TextView
+            android:id="@+id/tv_vegetation_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="乔：香樟  草：鸢尾"
+            android:textColor="@color/grey_700"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="@+id/l_vegetation_description"
+            app:layout_constraintEnd_toEndOf="@+id/tv_sampling_requirement"
+            app:layout_constraintStart_toStartOf="@+id/tv_sampling_requirement"
+            app:layout_constraintTop_toTopOf="@+id/l_vegetation_description" />
+
+    </com.ruffian.library.widget.RConstraintLayout>
+
+    <com.ruffian.library.widget.RTextView
+        android:id="@+id/tv_route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="4dp"
+        android:text="规划路线"
+        android:textColor="@color/green_400"
+        android:textSize="14dp"
+        app:border_color_normal="@color/green_400"
+        app:border_width_normal="1dp"
+        app:corner_radius="100dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_gather"
+        app:layout_constraintEnd_toStartOf="@+id/tv_navigation"
+        app:layout_constraintTop_toTopOf="@+id/tv_gather"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.ruffian.library.widget.RTextView
+        android:id="@+id/tv_navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="4dp"
+        android:text="内置导航"
+        android:textColor="@color/green_400"
+        android:textSize="14dp"
+        app:border_color_normal="@color/green_400"
+        app:border_width_normal="1dp"
+        app:corner_radius="100dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_gather"
+        app:layout_constraintEnd_toStartOf="@+id/tv_gather"
+        app:layout_constraintTop_toTopOf="@+id/tv_gather" />
+
+    <com.ruffian.library.widget.RTextView
+        android:id="@+id/tv_gather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="4dp"
+        android:text="开始采样"
+        android:textColor="@color/white"
+        android:textSize="14dp"
+        app:background_normal="@color/green_400"
+        app:border_color_normal="@color/green_400"
+        app:border_width_normal="1dp"
+        app:corner_radius="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/RConstraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/RConstraintLayout" />
+
+</com.ruffian.library.widget.RConstraintLayout>

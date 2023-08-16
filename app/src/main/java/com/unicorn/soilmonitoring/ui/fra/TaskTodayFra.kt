@@ -1,58 +1,47 @@
 package com.unicorn.soilmonitoring.ui.fra
 
+import com.baidu.mapapi.search.sug.SuggestionResult
+import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
-import com.drake.brv.utils.linear
+import com.drake.brv.utils.divider
+import com.drake.brv.utils.grid
 import com.drake.brv.utils.setup
 import com.drake.channel.receiveEvent
 import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.databinding.FraTaskTodayBinding
 import com.unicorn.soilmonitoring.databinding.ItemFakePointBinding
-import com.unicorn.soilmonitoring.model.FakePoint
+import com.unicorn.soilmonitoring.databinding.ItemRealPointBinding
 import com.unicorn.soilmonitoring.ui.base.BaseFra
-import splitties.resources.color
 
-class TaskTodayFra : BaseFra<FraTaskTodayBinding>() {
+class TaskTodayFra(val title: String) : BaseFra<FraTaskTodayBinding>() {
 
     override fun initViews() {
 
         binding.run {
+            titleBar.setTitle(title)
 
+            rv.grid(1).divider { // 水平间距
+                orientation = DividerOrientation.GRID
+                setDivider(16, true)
+                includeVisible = true
+            }.setup {
 
-            rv.linear()
+                addType<SuggestionResult.SuggestionInfo>(R.layout.item_real_point)
 
-                // 原来的间隔方案
-//                .divider { // 水平间距
-//                orientation = DividerOrientation.GRID
-//                setDivider(16, true)
-//                startVisible = true
-//                endVisible= true
-//            }
-
-                .setup {
-
-                    addType<FakePoint>(R.layout.item_fake_point)
-
-                    onBind {
-                        val model = getModel<FakePoint>()
-                        getBinding<ItemFakePointBinding>().run {
-                            tvDescription.text = "${model.park.description} - ${model.description}"
-
-                            val backgroundColorNormalRes = splitties.material.colors.R.color.grey_50
-                            val borderColorNormalRes = splitties.material.colors.R.color.blue_400
-                            root.helper.run {
-                                backgroundColorNormal = context.color(backgroundColorNormalRes)
-                                borderColorNormal = context.color(borderColorNormalRes)
-                            }
-                        }
+                onBind {
+                    val model = getModel<SuggestionResult.SuggestionInfo>()
+                    getBinding<ItemRealPointBinding>().run {
+                        tvDescription.text = "${model.key}"
                     }
-
                 }
+
+            }
         }
 
     }
 
     override fun initEvents() {
-        receiveEvent<List<FakePoint>> {
+        receiveEvent<List<SuggestionResult.SuggestionInfo>> {
             binding.rv.bindingAdapter.models = it
         }
     }

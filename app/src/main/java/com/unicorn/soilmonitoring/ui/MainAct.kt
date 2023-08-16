@@ -33,7 +33,7 @@ class MainAct : BaseAct<ActMainBinding>() {
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
                         0 -> FakePointAllFra(titles[position])
-                        1 -> TaskTodayFra()
+                        1 -> TaskTodayFra(titles[position])
                         else -> MapFra()
                     }
                 }
