@@ -7,7 +7,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.drake.channel.receiveEvent
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
-import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.mikepenz.iconics.utils.colorInt
 import com.unicorn.soilmonitoring.MapFra
 import com.unicorn.soilmonitoring.app.setUpWithViewPager2
@@ -24,7 +23,7 @@ class MainAct : BaseAct<ActMainBinding>() {
     override fun initViews() {
         super.initViews()
 
-        val titles = listOf("采样点", "今日任务", "地图导航")
+        val titles = listOf("采样点", "今日任务", "地图总览")
 
         binding.run {
             object : FragmentStateAdapter(this@MainAct) {
@@ -65,24 +64,17 @@ class MainAct : BaseAct<ActMainBinding>() {
 
             val navigationController = binding.tab.custom().addItem(
                 newItem(
-                    titles[0],
-                    GoogleMaterial.Icon.gmd_location_pin,
-                    GoogleMaterial.Icon.gmd_location_pin,
+                    titles[0], Fas.Icon.fas_map_pin, Fas.Icon.fas_map_pin
                 )
             ).addItem(
                 newItem(
-                    titles[1],
-                    GoogleMaterial.Icon.gmd_today,
-                    GoogleMaterial.Icon.gmd_today,
+                    titles[1], Fas.Icon.fas_calendar_check, Fas.Icon.fas_calendar_check
                 )
-            )
-                .addItem(
-                    newItem(
-                        titles[2],
-                        GoogleMaterial.Icon.gmd_map,
-                        GoogleMaterial.Icon.gmd_map,
-                    )
-                ).build()
+            ).addItem(
+                newItem(
+                    titles[2], Fas.Icon.fas_map_marked_alt, Fas.Icon.fas_map_marked_alt
+                )
+            ).build()
             navigationController.setUpWithViewPager2(viewPager2 = viewPager2)
         }
         initTab(binding.vp)

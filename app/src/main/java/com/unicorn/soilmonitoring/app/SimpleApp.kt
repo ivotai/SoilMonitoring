@@ -8,12 +8,27 @@ import com.baidu.mapapi.SDKInitializer
 import com.baidu.mapapi.tts.WNTTSManager
 import com.baidu.mapapi.tts.WNTTSManager.IOnTTSPlayStateChangedListener
 import com.baidu.mapapi.tts.WNTTsInitConfig
+import com.mikepenz.iconics.Iconics
+import com.unicorn.soilmonitoring.ui.Fad
+import com.unicorn.soilmonitoring.ui.Fal
+import com.unicorn.soilmonitoring.ui.Far
+import com.unicorn.soilmonitoring.ui.Fas
 
 
 class SimpleApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+         fun initIconics() {
+//             Iconics.init(applicationContext)
+             Iconics.registerFont(Fal)
+             Iconics.registerFont(Far)
+             Iconics.registerFont(Fas)
+             Iconics.registerFont(Fad)
+         }
+        initIconics()
+
 
         //
         LocationClient.setAgreePrivacy(true);

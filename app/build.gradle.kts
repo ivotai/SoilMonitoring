@@ -97,15 +97,15 @@ dependencies {
 
     // iconics
     implementation("com.mikepenz:iconics-core:5.4.0")
-    implementation ("com.mikepenz:iconics-views:5.4.0")
+    implementation("com.mikepenz:iconics-views:5.4.0")
     implementation("com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar")
     implementation("com.mikepenz:fontawesome-typeface:5.9.0.2-kotlin@aar")
 
-    implementation ("com.blankj:utilcodex:1.31.1")
-    implementation ("com.github.tbruyelle:rxpermissions:0.12")
+    implementation("com.blankj:utilcodex:1.31.1")
+    implementation("com.github.tbruyelle:rxpermissions:0.12")
 
 
-    implementation ("me.majiajie:pager-bottom-tab-strip:2.4.0")
+    implementation("me.majiajie:pager-bottom-tab-strip:2.4.0")
 
 
 //    implementation ("com.github.angcyo.DslTablayout:TabLayout:3.5.5")
