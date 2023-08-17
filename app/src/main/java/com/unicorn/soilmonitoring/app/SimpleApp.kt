@@ -1,13 +1,9 @@
 package com.unicorn.soilmonitoring.app
 
 import android.app.Application
-import android.util.Log
 import com.baidu.location.LocationClient
 import com.baidu.mapapi.CoordType
 import com.baidu.mapapi.SDKInitializer
-import com.baidu.mapapi.tts.WNTTSManager
-import com.baidu.mapapi.tts.WNTTSManager.IOnTTSPlayStateChangedListener
-import com.baidu.mapapi.tts.WNTTsInitConfig
 import com.mikepenz.iconics.Iconics
 import com.unicorn.soilmonitoring.ui.Fad
 import com.unicorn.soilmonitoring.ui.Fal
@@ -20,13 +16,13 @@ class SimpleApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-         fun initIconics() {
+        fun initIconics() {
 //             Iconics.init(applicationContext)
-             Iconics.registerFont(Fal)
-             Iconics.registerFont(Far)
-             Iconics.registerFont(Fas)
-             Iconics.registerFont(Fad)
-         }
+            Iconics.registerFont(Fal)
+            Iconics.registerFont(Far)
+            Iconics.registerFont(Fas)
+            Iconics.registerFont(Fad)
+        }
         initIconics()
 
 
@@ -41,7 +37,6 @@ class SimpleApp : Application() {
         //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
         //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
         SDKInitializer.setCoordType(CoordType.BD09LL);
-
 
 
 //        val config = WNTTsInitConfig.Builder()
