@@ -144,7 +144,7 @@ class MapFra : BaseFra<FraMapBinding>() {
                     Point(
                         it.key, it.pt, PointStatus.UN_TAKEN
                     )
-                }.let { sendEvent(it!!) }
+                }?.let { sendEvent(it) }
             }
             requestSuggestion(
                 SuggestionSearchOption().city("上海").keyword(keyword)

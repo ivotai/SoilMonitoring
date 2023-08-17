@@ -1,10 +1,10 @@
 package com.unicorn.soilmonitoring.ui
 
-import android.graphics.Color
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.drake.channel.receiveEvent
+import com.drake.statusbar.immersive
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.utils.colorInt
@@ -12,7 +12,6 @@ import com.unicorn.soilmonitoring.MapFra
 import com.unicorn.soilmonitoring.app.setUpWithViewPager2
 import com.unicorn.soilmonitoring.databinding.ActMainBinding
 import com.unicorn.soilmonitoring.event.MapEvent
-import com.unicorn.soilmonitoring.model.FakePoint
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import com.unicorn.soilmonitoring.ui.fra.FakePointAllFra
 import com.unicorn.soilmonitoring.ui.fra.TaskTodayFra
@@ -22,9 +21,9 @@ import splitties.resources.color
 class MainAct : BaseAct<ActMainBinding>() {
 
     override fun initViews() {
-        super.initViews()
+        immersive()
 
-        val titles = listOf("采样点总览", "今日任务", "地图总览")
+        val titles = listOf("采样点", "任务", "地图")
 
         binding.run {
             object : FragmentStateAdapter(this@MainAct) {
@@ -51,7 +50,9 @@ class MainAct : BaseAct<ActMainBinding>() {
             fun newItem(vTitle: String, iconDefault: IIcon, iconChecked: IIcon) =
                 NormalItemView(this).apply {
                     val defaultColor = color(splitties.material.colors.R.color.grey_400)
-                    val checkedColor = Color.parseColor("#4485E1")
+                    val checkedColor = color(splitties.material.colors.R.color.blue_600)
+
+//                    val checkedColor = Color.parseColor("#4485E1")
                     title = vTitle
                     setDefaultDrawable(IconicsDrawable(context, iconDefault).apply {
                         colorInt = defaultColor

@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.blankj.utilcode.util.ActivityUtils
 import com.dylanc.viewbinding.inflate
 import com.mikepenz.iconics.view.IconicsImageView
+import com.mikepenz.iconics.view.IconicsTextView
 import com.unicorn.soilmonitoring.databinding.LayoutTitleBarBinding
 
 
@@ -34,12 +35,18 @@ class TitleBar(context: Context, attrs: AttributeSet? = null) : ConstraintLayout
         }
     }
 
-    fun getCiv1(): IconicsImageView {
+    fun setTitleColor(color: Int) {
+        binding.apply {
+            ctv.setTextColor(color)
+        }
+    }
+
+    fun getCiv1(): IconicsTextView {
         return binding.civ1.apply {
         }
     }
 
-    fun getCiv2(): IconicsImageView {
+    fun getCiv2(): IconicsTextView {
         return binding.civ2.apply {
         }
     }

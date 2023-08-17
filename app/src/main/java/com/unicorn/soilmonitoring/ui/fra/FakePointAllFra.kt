@@ -9,27 +9,34 @@ import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.divider
 import com.drake.brv.utils.setup
-import com.drake.channel.sendEvent
-import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
+import com.drake.statusbar.statusPadding
 import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.databinding.FraFakePointAllBinding
 import com.unicorn.soilmonitoring.databinding.ItemFakePointBinding
 import com.unicorn.soilmonitoring.databinding.ItemParkBinding
 import com.unicorn.soilmonitoring.model.FakePoint
 import com.unicorn.soilmonitoring.model.Park
-import com.unicorn.soilmonitoring.ui.Fal
-import com.unicorn.soilmonitoring.ui.Far
-import com.unicorn.soilmonitoring.ui.Fas
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.resources.color
+import splitties.toast.toast
 
 
-class FakePointAllFra(val title: String) : BaseFra<FraFakePointAllBinding>() {
+class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBinding>() {
 
     override fun initViews() {
 
         binding.run {
-            titleBar.setTitle(title)
+
+
+            titleBar.run {
+                titleBar.statusPadding()
+                setTitle(title)
+                setTitleColor(color(R.color.white))
+                listOf(getCiv1(), getCiv2()).forEach {
+                    it.textSize = 16f
+                    it.setTextColor(color(R.color.white))
+                }
+            }
 
             val scanCount = 3
             val layoutManager = GridLayoutManager(requireContext(), scanCount) // 则代表列表一行铺满要求跨度为3
@@ -64,7 +71,10 @@ class FakePointAllFra(val title: String) : BaseFra<FraFakePointAllBinding>() {
                         // 这时还没有 model 所以只能根据 viewType 来设置
                         if (itemViewType == R.layout.item_park) {
                             getBinding<ItemParkBinding>().run {
-                                tvDescription.typeface = Typeface.createFromAsset(requireActivity().assets, "SanJiNengLiangHeiJianTi-2.ttf")
+                                tvDescription.typeface = Typeface.createFromAsset(
+                                    requireActivity().assets,
+                                    "SanJiNengLiangHeiJianTi-2.ttf"
+                                )
                             }
                         }
                     }
@@ -77,7 +87,9 @@ class FakePointAllFra(val title: String) : BaseFra<FraFakePointAllBinding>() {
 
                                     val isChecked = model in getCheckedModels<FakePoint>()
                                     val backgroundColorNormalInt =
-                                        if (isChecked) context.color(splitties.material.colors.R.color.blue_50) else context.color(splitties.material.colors.R.color.grey_100)
+                                        if (isChecked) context.color(splitties.material.colors.R.color.blue_50) else context.color(
+                                            splitties.material.colors.R.color.grey_100
+                                        )
                                     val borderColorNormalInt =
                                         if (isChecked) context.color(splitties.material.colors.R.color.blue_400) else Color.parseColor(
                                             "#F6F6F6"
@@ -139,22 +151,19 @@ class FakePointAllFra(val title: String) : BaseFra<FraFakePointAllBinding>() {
     override fun initIntents() {
         binding.run {
             titleBar.getCiv1().run {
-                icon?.icon = Fal.Icon.fal_times
+                text = "取消"
                 setOnClickListener { rv.bindingAdapter.toggle() }
             }
             titleBar.getCiv2().run {
-
-                icon?.icon = Fas.Icon.fas_check
-
+                text = "确认"
                 setOnClickListener {
-//                    sendEvent(rv.bindingAdapter.getCheckedModels<FakePoint>())
+                    rv.bindingAdapter.getCheckedModels<FakePoint>().joinToString { it.description }
+                        .let { toast(it) }
                     rv.bindingAdapter.toggle()
                 }
             }
         }
     }
-
-
 
 
 }
