@@ -6,8 +6,8 @@
 
     <com.mikepenz.iconics.view.IconicsTextView
         android:id="@+id/civ1"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:visibility="invisible"
         android:textSize="18dp"
         android:gravity="center"
@@ -40,8 +40,8 @@
 
     <com.mikepenz.iconics.view.IconicsTextView
         android:id="@+id/civ2"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:visibility="invisible"
         android:textSize="18dp"
         android:gravity="center"

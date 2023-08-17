@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import androidx.recyclerview.widget.GridLayoutManager
+import com.blankj.utilcode.util.ToastUtils
 import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.divider
@@ -18,7 +19,6 @@ import com.unicorn.soilmonitoring.model.FakePoint
 import com.unicorn.soilmonitoring.model.Park
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.resources.color
-import splitties.toast.toast
 
 
 class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBinding>() {
@@ -72,8 +72,7 @@ class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBindin
                         if (itemViewType == R.layout.item_park) {
                             getBinding<ItemParkBinding>().run {
                                 tvDescription.typeface = Typeface.createFromAsset(
-                                    requireActivity().assets,
-                                    "SanJiNengLiangHeiJianTi-2.ttf"
+                                    requireActivity().assets, "SanJiNengLiangHeiJianTi-2.ttf"
                                 )
                             }
                         }
@@ -87,12 +86,15 @@ class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBindin
                                     tvIsGather.text = if (model.isGather) "已采样" else "待采样"
 
                                     tvIsGather.setTextColor(
-                                        if (model.isGather ) context.color(splitties.material.colors.R.color.blue_400) else Color.parseColor("#5E656F")
+                                        if (model.isGather) context.color(splitties.material.colors.R.color.blue_600) else Color.parseColor(
+                                            "#5E656F"
+                                        )
                                     )
                                     tvNo.setTextColor(
-                                        if (model.isGather) context.color(splitties.material.colors.R.color.blue_400) else Color.parseColor("#AFB3BC")
+                                        if (model.isGather) context.color(splitties.material.colors.R.color.blue_600) else Color.parseColor(
+                                            "#AFB3BC"
+                                        )
                                     )
-
 
 
                                     val isChecked = model in getCheckedModels<FakePoint>()
@@ -170,7 +172,7 @@ class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBindin
                 text = "确认"
                 setOnClickListener {
                     rv.bindingAdapter.getCheckedModels<FakePoint>().joinToString { it.no }
-                        .let { toast(it) }
+                        .let { ToastUtils.showLong("已设定任务为 $it") }
                     rv.bindingAdapter.toggle()
                 }
             }
