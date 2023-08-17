@@ -47,8 +47,8 @@ class TaskTodayFra(val title: String) : BaseFra<FraTaskTodayBinding>() {
                     }
                 }
 
-                onClick(R.id.tv_route) {
-                    sendEvent(NavigationOutEvent(getModel()))
+                onClick(R.id.tv_map_event) {
+                    sendEvent(MapEvent(getModel()))
                 }
                 onClick(R.id.tv_navigation) {
                     sendEvent(NavigationEvent(getModel()))
@@ -57,7 +57,6 @@ class TaskTodayFra(val title: String) : BaseFra<FraTaskTodayBinding>() {
                     ToastUtils.showShort("跳转到采样界面")
                 }
                 onClick(R.id.root){
-                    sendEvent(MapEvent(getModel()))
                 }
 
             }

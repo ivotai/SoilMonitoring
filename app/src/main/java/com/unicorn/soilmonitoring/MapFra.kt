@@ -12,7 +12,6 @@ import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.baidu.mapapi.map.MyLocationData
 import com.baidu.mapapi.model.LatLng
-import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException
 import com.baidu.mapapi.navi.BaiduMapNavigation
 import com.baidu.mapapi.navi.NaviParaOption
 import com.baidu.mapapi.search.sug.SuggestionSearch
@@ -23,10 +22,10 @@ import com.baidu.mapapi.walknavi.adapter.IWRoutePlanListener
 import com.baidu.mapapi.walknavi.model.WalkRoutePlanError
 import com.baidu.mapapi.walknavi.params.WalkNaviLaunchParam
 import com.baidu.mapapi.walknavi.params.WalkRouteNodeInfo
+import com.blankj.utilcode.util.ToastUtils
 import com.drake.channel.receiveEvent
 import com.drake.channel.sendEvent
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
-import com.tbruyelle.rxpermissions3.RxPermissions
 import com.unicorn.soilmonitoring.app.Config
 import com.unicorn.soilmonitoring.app.MarkerHelper
 import com.unicorn.soilmonitoring.app.Point
@@ -34,7 +33,6 @@ import com.unicorn.soilmonitoring.app.PointStatus
 import com.unicorn.soilmonitoring.databinding.FraMapBinding
 import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.event.NavigationEvent
-import com.unicorn.soilmonitoring.event.NavigationOutEvent
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import com.unicorn.soilmonitoring.ui.view.PointRecyclerView
 
@@ -192,8 +190,12 @@ class MapFra : BaseFra<FraMapBinding>() {
             NaviParaOption().startPoint(startPoint).endPoint(point.latLng).endName("三号采集点")
 
         try {
-            BaiduMapNavigation.openBaiduMapWalkNavi(para, requireContext())
-        } catch (e: BaiduMapAppNotSupportNaviException) {
+            val result = BaiduMapNavigation.openBaiduMapWalkNavi(para, requireContext())
+            if (!result) {
+                ToastUtils.showLong("未安装百度地图，启用内置导航")
+                initNaviEngine(point)
+            }
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         BaiduMapNavigation.finish(requireContext());
@@ -219,7 +221,7 @@ class MapFra : BaseFra<FraMapBinding>() {
 
     override fun initEvents() {
         receiveEvent<NavigationEvent> {
-            initNaviEngine(it.point)
+            openBaiduMapWalkNavi(it.point)
         }
         receiveEvent<MapEvent> {
             map.setMapStatus(
@@ -227,9 +229,6 @@ class MapFra : BaseFra<FraMapBinding>() {
                     MapStatus.Builder().target(it.point.latLng).build()
                 )
             )
-        }
-        receiveEvent<NavigationOutEvent> {
-            openBaiduMapWalkNavi(it.point)
         }
     }
 

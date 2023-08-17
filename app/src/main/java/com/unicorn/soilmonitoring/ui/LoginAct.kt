@@ -4,6 +4,7 @@ import com.tbruyelle.rxpermissions3.RxPermissions
 import com.unicorn.soilmonitoring.databinding.ActLoginBinding
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import splitties.activities.start
+import splitties.views.onClick
 
 class LoginAct : BaseAct<ActLoginBinding>() {
 
@@ -22,6 +23,8 @@ class LoginAct : BaseAct<ActLoginBinding>() {
             start<MainAct> { }
             finish()
         }
+        start<MainAct> { }
+        finish()
     }
 
 }
