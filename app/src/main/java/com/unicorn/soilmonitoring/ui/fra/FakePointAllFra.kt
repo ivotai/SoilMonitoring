@@ -27,7 +27,7 @@ class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBindin
 
         binding.run {
 
-
+            // 设置标题栏
             titleBar.run {
                 titleBar.statusPadding()
                 setTitle(title)
@@ -83,7 +83,17 @@ class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBindin
                         when (val model = getModel<Any>()) {
                             is FakePoint -> {
                                 getBinding<ItemFakePointBinding>().run {
-//                                    tvDescription.text = model.description
+                                    tvNo.text = model.no
+                                    tvIsGather.text = if (model.isGather) "已采样" else "待采样"
+
+                                    tvIsGather.setTextColor(
+                                        if (model.isGather ) context.color(splitties.material.colors.R.color.blue_400) else Color.parseColor("#5E656F")
+                                    )
+                                    tvNo.setTextColor(
+                                        if (model.isGather) context.color(splitties.material.colors.R.color.blue_400) else Color.parseColor("#AFB3BC")
+                                    )
+
+
 
                                     val isChecked = model in getCheckedModels<FakePoint>()
                                     val backgroundColorNormalInt =
@@ -111,7 +121,8 @@ class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBindin
 
                     // 长按列表进入编辑模式
                     onLongClick(R.id.root) {
-                        if (getModel<Any>() is FakePoint) {
+                        val model = getModel<Any>()
+                        if (model is FakePoint && !model.isGather) {
                             if (!toggleMode) {
                                 toggle()
                                 setChecked(layoutPosition, true)
@@ -121,7 +132,8 @@ class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBindin
 
                     // 点击列表触发选中
                     onClick(R.id.root) {
-                        if (getModel<Any>() is FakePoint) {
+                        val model = getModel<Any>()
+                        if (model is FakePoint && !model.isGather) {
                             // 如果当前未处于选择模式下 点击无效
                             if (toggleMode) checkedSwitch(layoutPosition)
                         }
@@ -157,7 +169,7 @@ class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBindin
             titleBar.getCiv2().run {
                 text = "确认"
                 setOnClickListener {
-                    rv.bindingAdapter.getCheckedModels<FakePoint>().joinToString { it.description }
+                    rv.bindingAdapter.getCheckedModels<FakePoint>().joinToString { it.no }
                         .let { toast(it) }
                     rv.bindingAdapter.toggle()
                 }

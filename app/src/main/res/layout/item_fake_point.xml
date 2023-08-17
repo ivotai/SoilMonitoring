@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.ruffian.library.widget.RConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,14 +8,14 @@
     app:corner_radius="16dp">
 
     <TextView
-        android:textStyle="bold"
-        android:id="@+id/tv_description"
+        android:id="@+id/tv_is_gather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="采样点"
         android:textColor="#5E656F"
         android:textSize="16dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,8 +30,8 @@
         android:textColor="#AFB3BC"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/tv_description"
-        app:layout_constraintStart_toStartOf="@+id/tv_description"
-        app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_is_gather"
+        app:layout_constraintStart_toStartOf="@+id/tv_is_gather"
+        app:layout_constraintTop_toBottomOf="@+id/tv_is_gather" />
 
 </com.ruffian.library.widget.RConstraintLayout>
