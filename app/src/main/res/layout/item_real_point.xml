@@ -7,7 +7,7 @@
     app:background_normal="@color/white"
     app:border_width_normal="1dp"
     app:corner_radius="16dp"
-    app:shadow_color="@color/blue_50"
+    app:shadow_color="@color/green_50"
     app:shadow_dx="1dp"
     app:shadow_dy="1dp"
     app:shadow_radius="1dp">

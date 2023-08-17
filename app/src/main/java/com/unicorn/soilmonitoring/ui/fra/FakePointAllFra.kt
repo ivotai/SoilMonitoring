@@ -172,7 +172,7 @@ class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBindin
                 text = "确认"
                 setOnClickListener {
                     rv.bindingAdapter.getCheckedModels<FakePoint>().joinToString { it.no }
-                        .let { ToastUtils.showLong("已设定任务为 $it") }
+                        .let { ToastUtils.showLong("设定当前采样为 $it") }
                     rv.bindingAdapter.toggle()
                 }
             }

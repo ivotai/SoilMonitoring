@@ -1,5 +1,6 @@
 package com.unicorn.soilmonitoring.ui
 
+import com.tbruyelle.rxpermissions3.RxPermissions
 import com.unicorn.soilmonitoring.databinding.ActLoginBinding
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import splitties.activities.start
@@ -7,9 +8,15 @@ import splitties.activities.start
 class LoginAct : BaseAct<ActLoginBinding>() {
 
     override fun initIntents() {
-
-        start<MainAct> { }
-        finish()
+        fun requestPermissions() {
+            RxPermissions(this).request(
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            ).subscribe { granted ->
+                if (!granted) finish()
+            }
+        }
+        requestPermissions()
 
         binding.btnLogin.setOnClickListener {
             start<MainAct> { }

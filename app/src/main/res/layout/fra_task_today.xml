@@ -7,6 +7,7 @@
 
     <com.unicorn.soilmonitoring.ui.view.TitleBar
         android:id="@+id/titleBar"
+        android:background="@color/green_400"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

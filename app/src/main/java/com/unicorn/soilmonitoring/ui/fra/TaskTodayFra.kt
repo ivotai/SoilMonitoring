@@ -9,6 +9,7 @@ import com.drake.brv.utils.grid
 import com.drake.brv.utils.setup
 import com.drake.channel.receiveEvent
 import com.drake.channel.sendEvent
+import com.drake.statusbar.statusPadding
 import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.databinding.FraTaskTodayBinding
 import com.unicorn.soilmonitoring.databinding.ItemRealPointBinding
@@ -16,13 +17,20 @@ import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.event.NavigationEvent
 import com.unicorn.soilmonitoring.event.NavigationOutEvent
 import com.unicorn.soilmonitoring.ui.base.BaseFra
+import splitties.resources.color
 
 class TaskTodayFra(val title: String) : BaseFra<FraTaskTodayBinding>() {
 
     override fun initViews() {
 
         binding.run {
-            titleBar.setTitle(title)
+            // 设置标题栏
+            titleBar.run {
+                titleBar.statusPadding()
+                setTitle(title)
+                setTitleColor(color(R.color.white))
+            }
+
 
             rv.grid(1).divider { // 水平间距
                 orientation = DividerOrientation.GRID

@@ -44,16 +44,6 @@ class MapFra : BaseFra<FraMapBinding>() {
 
     override fun initViews() {
 
-        fun requestPermissions() {
-            RxPermissions(this).request(
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION,
-            ).subscribe { granted ->
-                if (!granted) activity?.finish()
-            }
-        }
-        requestPermissions()
-
         fun initMap() {
             map.run {
                 // 开启地图的定位图层
