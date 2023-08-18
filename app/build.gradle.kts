@@ -69,12 +69,11 @@ dependencies {
     implementation("com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.1.0")
 
     // baidu map
-//    implementation("com.baidu.lbsyun:BaiduMapSDK_Map:7.5.8")
+    implementation("com.baidu.lbsyun:BaiduMapSDK_Map-BWNavi:7.5.8")
     implementation("com.baidu.lbsyun:BaiduMapSDK_Search:7.5.8")
     implementation("com.baidu.lbsyun:BaiduMapSDK_Util:7.5.8")
-    implementation("com.baidu.lbsyun:BaiduMapSDK_Map-BWNavi:7.5.8")
     implementation("com.baidu.lbsyun:BaiduMapSDK_Location:9.3.7")
-//    implementation("com.baidu.lbsyun:NaviTts:3.2.8")
+
 
     // dialog
     implementation("com.afollestad.material-dialogs:core:3.3.0")

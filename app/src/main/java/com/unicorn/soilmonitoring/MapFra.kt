@@ -8,6 +8,7 @@ import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
+import com.baidu.mapapi.UIMsg.WalkNaviMsg
 import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.baidu.mapapi.map.MyLocationData
@@ -30,9 +31,11 @@ import com.unicorn.soilmonitoring.app.Config
 import com.unicorn.soilmonitoring.app.MarkerHelper
 import com.unicorn.soilmonitoring.app.Point
 import com.unicorn.soilmonitoring.app.PointStatus
+import com.unicorn.soilmonitoring.app.toast
 import com.unicorn.soilmonitoring.databinding.FraMapBinding
 import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.event.NavigationEvent
+import com.unicorn.soilmonitoring.ui.WNaviGuideActivity
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import com.unicorn.soilmonitoring.ui.view.PointRecyclerView
 
@@ -151,6 +154,7 @@ class MapFra : BaseFra<FraMapBinding>() {
                 }
 
                 override fun engineInitFail() {
+                    WalkNavigateHelper.getInstance().unInitNaviEngine()
                     //引擎初始化失败的回调
                 }
             })
@@ -179,6 +183,7 @@ class MapFra : BaseFra<FraMapBinding>() {
                 }
 
                 override fun onRoutePlanFail(walkRoutePlanError: WalkRoutePlanError) {
+                    "算路失败".toast()
                 }
             })
     }
