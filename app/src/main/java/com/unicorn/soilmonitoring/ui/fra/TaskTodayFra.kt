@@ -42,7 +42,7 @@ class TaskTodayFra(val title: String) : BaseFra<FraTaskTodayBinding>() {
                 onBind {
                     val model = getModel<com.unicorn.soilmonitoring.app.Point>()
                     getBinding<ItemRealPointBinding>().run {
-                        tvDescription.text = "${model.description}"
+                        tvDescription.text = model.description
                     }
                 }
 
