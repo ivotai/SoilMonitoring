@@ -13,6 +13,7 @@ class LoginAct : BaseAct<ActLoginBinding>() {
             RxPermissions(this).request(
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.CAMERA,
             ).subscribe { granted ->
                 if (!granted) finish()
             }
@@ -23,8 +24,8 @@ class LoginAct : BaseAct<ActLoginBinding>() {
             start<MainAct> { }
             finish()
         }
-        start<MainAct> { }
-        finish()
+//        start<MainAct> { }
+//        finish()
     }
 
 }
