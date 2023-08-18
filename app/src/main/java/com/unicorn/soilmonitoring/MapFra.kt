@@ -8,7 +8,6 @@ import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
-import com.baidu.mapapi.UIMsg.WalkNaviMsg
 import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.baidu.mapapi.map.MyLocationData
@@ -35,7 +34,7 @@ import com.unicorn.soilmonitoring.app.toast
 import com.unicorn.soilmonitoring.databinding.FraMapBinding
 import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.event.NavigationEvent
-import com.unicorn.soilmonitoring.ui.WNaviGuideActivity
+import com.unicorn.soilmonitoring.ui.act.WNaviGuideActivity
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import com.unicorn.soilmonitoring.ui.view.PointRecyclerView
 

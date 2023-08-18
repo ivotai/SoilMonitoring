@@ -18,11 +18,11 @@ import com.unicorn.soilmonitoring.event.NavigationEvent
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.resources.color
 
-class TaskTodayFra(val title: String) : BaseFra<FraTaskTodayBinding>() {
+class TaskTodayFra(private val title: String) : BaseFra<FraTaskTodayBinding>() {
 
     override fun initViews() {
-
         binding.run {
+
             // 设置标题栏
             titleBar.run {
                 titleBar.statusPadding()
@@ -54,8 +54,6 @@ class TaskTodayFra(val title: String) : BaseFra<FraTaskTodayBinding>() {
                 }
                 onClick(R.id.tv_gather) {
                     ToastUtils.showShort("跳转到采样界面")
-                }
-                onClick(R.id.root){
                 }
 
             }

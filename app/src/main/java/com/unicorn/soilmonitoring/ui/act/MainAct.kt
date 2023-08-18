@@ -1,4 +1,4 @@
-package com.unicorn.soilmonitoring.ui
+package com.unicorn.soilmonitoring.ui.act
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -12,6 +12,7 @@ import com.unicorn.soilmonitoring.MapFra
 import com.unicorn.soilmonitoring.app.setUpWithViewPager2
 import com.unicorn.soilmonitoring.databinding.ActMainBinding
 import com.unicorn.soilmonitoring.event.MapEvent
+import com.unicorn.soilmonitoring.ui.Fas
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import com.unicorn.soilmonitoring.ui.fra.FakePointAllFra
 import com.unicorn.soilmonitoring.ui.fra.TaskTodayFra

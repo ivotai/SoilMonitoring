@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2017 Baidu, Inc. All Rights Reserved.
  */
-package com.unicorn.soilmonitoring.ui;
+package com.unicorn.soilmonitoring.ui.act;
 
 import android.app.Activity;
 import android.os.Bundle;
