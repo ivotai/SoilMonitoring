@@ -15,7 +15,6 @@ import com.unicorn.soilmonitoring.databinding.FraTaskTodayBinding
 import com.unicorn.soilmonitoring.databinding.ItemRealPointBinding
 import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.event.NavigationEvent
-import com.unicorn.soilmonitoring.event.NavigationOutEvent
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.resources.color
 

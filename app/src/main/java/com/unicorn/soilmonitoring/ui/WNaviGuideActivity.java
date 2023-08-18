@@ -47,7 +47,7 @@ public class WNaviGuideActivity extends Activity {
         WalkNaviDisplayOption walkNaviDisplayOption = new WalkNaviDisplayOption()
                 .showImageToAr(false) // 是否展示AR图片
                 .showCalorieLayoutEnable(true) // 是否展示热量消耗布局
-                .showLocationImage(false);  // 是否展示视角切换资源
+                .showLocationImage(true);  // 是否展示视角切换资源
 
         mNaviHelper.setWalkNaviDisplayOption(walkNaviDisplayOption);
 
