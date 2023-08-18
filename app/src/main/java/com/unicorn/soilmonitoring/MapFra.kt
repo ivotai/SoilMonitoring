@@ -102,7 +102,7 @@ class MapFra : BaseFra<FraMapBinding>() {
                                 .zoom(Config.defaultZoom).build()
                         )
                     )
-                    sug(location.addrStr)
+                    location.addrStr?.let { sug(it) }
                     t = true
                 }
             })

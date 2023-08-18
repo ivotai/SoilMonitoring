@@ -75,6 +75,8 @@ class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBindin
                                     requireActivity().assets, "SanJiNengLiangHeiJianTi-2.ttf"
                                 )
                             }
+
+                            layoutPosition
                         }
                     }
 
@@ -121,7 +123,6 @@ class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBindin
                         }
                     }
 
-                    // 长按列表进入编辑模式
                     onLongClick(R.id.root) {
                         val model = getModel<Any>()
                         if (model is FakePoint && !model.isGather) {

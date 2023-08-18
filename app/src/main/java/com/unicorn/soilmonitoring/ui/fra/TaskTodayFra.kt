@@ -1,7 +1,6 @@
 package com.unicorn.soilmonitoring.ui.fra
 
 import android.graphics.Point
-import com.blankj.utilcode.util.ToastUtils
 import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.divider
@@ -15,7 +14,9 @@ import com.unicorn.soilmonitoring.databinding.FraTaskTodayBinding
 import com.unicorn.soilmonitoring.databinding.ItemRealPointBinding
 import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.event.NavigationEvent
+import com.unicorn.soilmonitoring.ui.act.SamplingAct
 import com.unicorn.soilmonitoring.ui.base.BaseFra
+import splitties.fragments.start
 import splitties.resources.color
 
 class TaskTodayFra(private val title: String) : BaseFra<FraTaskTodayBinding>() {
@@ -53,7 +54,7 @@ class TaskTodayFra(private val title: String) : BaseFra<FraTaskTodayBinding>() {
                     sendEvent(NavigationEvent(getModel()))
                 }
                 onClick(R.id.tv_gather) {
-                    ToastUtils.showShort("跳转到采样界面")
+                    start<SamplingAct> { }
                 }
 
             }
