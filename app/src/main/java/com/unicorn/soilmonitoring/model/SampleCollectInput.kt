@@ -1,4 +1,4 @@
 package com.unicorn.soilmonitoring.model
 
-class SampleCollectInput(val value:String) {
+class SampleCollectInput(val value:String="") {
 }

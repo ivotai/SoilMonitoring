@@ -1,5 +1,10 @@
 package com.unicorn.soilmonitoring.ui.act
 
+import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import androidx.core.graphics.toColor
+import androidx.core.graphics.toColorLong
 import androidx.recyclerview.widget.GridLayoutManager
 import com.blankj.utilcode.util.ConvertUtils
 import com.drake.brv.annotaion.DividerOrientation
@@ -18,10 +23,13 @@ import com.unicorn.soilmonitoring.model.SampleCollectInput
 import com.unicorn.soilmonitoring.model.SampleCollectParent
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import splitties.resources.color
+import splitties.resources.intArray
 
 class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
 
+    @SuppressLint("ResourceType")
     override fun initViews() {
+
         immersive()
 
         binding.run {
@@ -63,7 +71,6 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                         }
                     }
                 }
-
                 onBind {
                     when (val model = getModel<Any>()) {
                         is SampleCollectParent -> {
@@ -84,23 +91,24 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
 
                                 val isChecked = model in getCheckedModels<Dict>()
                                 val backgroundColorNormalInt =
-                                    if (isChecked) context.color(splitties.material.colors.R.color.blue_400) else context.color(
+                                    if (isChecked) context.color(splitties.material.colors.R.color.green_400) else context.color(
                                         splitties.material.colors.R.color.grey_100
                                     )
-//                                val borderColorNormalInt =
-//                                    if (isChecked) context.color(splitties.material.colors.R.color.blue_400) else Color.parseColor(
-//                                        "#F6F6F6"
-//                                    )
-                                root.helper.run {
+                                val textColor = if (isChecked) context.color(R.color.white) else context.color(
+                                    R.color.black
+                                )
+                                tv.helper.run {
                                     backgroundColorNormal = backgroundColorNormalInt
                                     cornerRadius = ConvertUtils.dp2px(100f).toFloat()
+                                    shadowRadius = if (isChecked) ConvertUtils.dp2px(1f) else 0
                                 }
+                                tv.setTextColor(textColor)
                             }
                         }
                     }
                 }
 
-                onClick(R.id.root) {
+                onClick(R.id.tv) {
                     val model = getModel<Any>()
                     if (model is Dict) {
                         val isChecked = model in getCheckedModels<Dict>()
