@@ -1,12 +1,15 @@
 package com.unicorn.soilmonitoring.ui.act
 
-import com.drake.brv.utils.linear
+import androidx.recyclerview.widget.GridLayoutManager
+import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.setup
 import com.drake.statusbar.immersive
 import com.drake.statusbar.statusPadding
 import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.databinding.ActSampleCollectBinding
+import com.unicorn.soilmonitoring.databinding.ItemSampleCollectDictBinding
 import com.unicorn.soilmonitoring.databinding.ItemSampleCollectInputBinding
+import com.unicorn.soilmonitoring.databinding.ItemSampleCollectParentBinding
 import com.unicorn.soilmonitoring.model.Dict
 import com.unicorn.soilmonitoring.model.SampleCollectInput
 import com.unicorn.soilmonitoring.model.SampleCollectParent
@@ -27,7 +30,20 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
             }
 
             //
-            rv.linear().setup {
+            val scanCount = 2
+            val layoutManager = GridLayoutManager(this@SampleCollectAct, scanCount)
+            layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    if (position < 0) return 1 // 如果添加分割线可能导致position为负数
+                    return when (rv.bindingAdapter.getItemViewType(position)) {
+                        R.layout.item_sample_collect_dict -> 1
+                        else -> scanCount
+                    }
+                }
+            }
+
+            rv.layoutManager = layoutManager
+            rv.setup {
                 addType<SampleCollectParent>(R.layout.item_sample_collect_parent)
                 addType<SampleCollectInput>(R.layout.item_sample_collect_input)
                 addType<Dict>(R.layout.item_sample_collect_dict)
@@ -41,14 +57,26 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                 }
 
                 onBind {
-//                    val model = getModel<String>()
+                    when(val model = getModel<Any>()) {
+                        is SampleCollectParent -> {
+                            getBinding<ItemSampleCollectParentBinding>().run {
+                                tvDescription.text = model.description
+                            }
+                        }
+                        is SampleCollectInput -> {
+                            getBinding<ItemSampleCollectInputBinding>().run {
+                                tv.hint = model.value
+                            }
+                        }
+                        is Dict -> {
+                            getBinding<ItemSampleCollectDictBinding>().run {
+                                tv.text = model.value
+                            }
+                        }
+                    }
                 }
 
-                onClick(R.id.tv) {}
-
-
             }.models = SampleCollectParent.all()
-
 
         }
     }

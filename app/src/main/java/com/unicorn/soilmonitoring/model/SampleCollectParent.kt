@@ -2,7 +2,9 @@ package com.unicorn.soilmonitoring.model
 
 import com.drake.brv.item.ItemExpand
 
-class SampleCollectParent(val label: String) : ItemExpand {
+class SampleCollectParent(val description: String) : ItemExpand {
+
+    // todo
     // 同级别分组的索引位置
     override var itemGroupPosition: Int = 0
 
