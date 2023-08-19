@@ -1,7 +1,10 @@
 package com.unicorn.soilmonitoring.ui.act
 
 import androidx.recyclerview.widget.GridLayoutManager
+import com.blankj.utilcode.util.ConvertUtils
+import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
+import com.drake.brv.utils.divider
 import com.drake.brv.utils.setup
 import com.drake.statusbar.immersive
 import com.drake.statusbar.statusPadding
@@ -43,7 +46,12 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
             }
 
             rv.layoutManager = layoutManager
-            rv.setup {
+            rv.divider {
+                orientation = DividerOrientation.GRID
+                setDivider(16, true)
+                startVisible = true
+                endVisible = true
+            }.setup {
                 addType<SampleCollectParent>(R.layout.item_sample_collect_parent)
                 addType<SampleCollectInput>(R.layout.item_sample_collect_input)
                 addType<Dict>(R.layout.item_sample_collect_dict)
@@ -57,23 +65,61 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                 }
 
                 onBind {
-                    when(val model = getModel<Any>()) {
+                    when (val model = getModel<Any>()) {
                         is SampleCollectParent -> {
                             getBinding<ItemSampleCollectParentBinding>().run {
                                 tvDescription.text = model.description
                             }
                         }
+
                         is SampleCollectInput -> {
                             getBinding<ItemSampleCollectInputBinding>().run {
                                 tv.hint = model.value
                             }
                         }
+
                         is Dict -> {
                             getBinding<ItemSampleCollectDictBinding>().run {
                                 tv.text = model.value
+
+                                val isChecked = model in getCheckedModels<Dict>()
+                                val backgroundColorNormalInt =
+                                    if (isChecked) context.color(splitties.material.colors.R.color.blue_400) else context.color(
+                                        splitties.material.colors.R.color.grey_100
+                                    )
+//                                val borderColorNormalInt =
+//                                    if (isChecked) context.color(splitties.material.colors.R.color.blue_400) else Color.parseColor(
+//                                        "#F6F6F6"
+//                                    )
+                                root.helper.run {
+                                    backgroundColorNormal = backgroundColorNormalInt
+                                    cornerRadius = ConvertUtils.dp2px(100f).toFloat()
+                                }
                             }
                         }
                     }
+                }
+
+                onClick(R.id.root) {
+                    val model = getModel<Any>()
+                    if (model is Dict) {
+                        val isChecked = model in getCheckedModels<Dict>()
+                        if (isChecked) {
+                            setChecked(modelPosition, false)
+                        } else {
+                            // 取消其他选中
+                            model.parent.sublist.forEach {
+                                // 这个 position 可能有问题，严格提防 headCount
+                                val position = models!!.indexOf(it)
+                                setChecked(position, false)
+                            }
+                            setChecked(modelPosition, true)
+                        }
+                    }
+                }
+
+                onChecked { position, isChecked, _ ->
+                    notifyItemChanged(position)
                 }
 
             }.models = SampleCollectParent.all()

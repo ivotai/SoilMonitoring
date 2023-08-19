@@ -28,7 +28,7 @@ class SampleCollectParent(val description: String) : ItemExpand {
                         sublist = listOf("").map { SampleCollectInput(it) }
                     })
                     add(SampleCollectParent("点位类型").apply {
-                        sublist = listOf("常规", "长期").map { Dict(it) }
+                        sublist = listOf("常规", "长期").map { Dict(it, this) }
                     })
                 }
                 return list

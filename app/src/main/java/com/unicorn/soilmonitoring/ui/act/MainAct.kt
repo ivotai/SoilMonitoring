@@ -65,6 +65,7 @@ class MainAct : BaseAct<ActMainBinding>() {
                     setTextCheckedColor(checkedColor)
                 }
 
+            Fas.Icon.fas_circle
             val navigationController = binding.tab.custom().addItem(
                 newItem(
                     titles[0], Fas.Icon.fas_map_pin, Fas.Icon.fas_map_pin
