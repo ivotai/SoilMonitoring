@@ -106,9 +106,7 @@ dependencies {
 
     implementation("me.majiajie:pager-bottom-tab-strip:2.4.0")
 
-
-//    implementation ("com.github.angcyo.DslTablayout:TabLayout:3.5.5")
-//    implementation ("com.github.angcyo.DslTablayout:ViewPager2Delegate:3.5.5")
+    implementation("me.saket.cascade:cascade:2.2.0")
 
 }
 

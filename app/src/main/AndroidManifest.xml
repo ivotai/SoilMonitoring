@@ -63,7 +63,7 @@
         </activity>
         <activity android:name=".ui.act.MainAct" />
         <activity android:name=".ui.act.WNaviGuideActivity" />
-        <activity android:name=".ui.act.SamplingAct" />
+        <activity android:name=".ui.act.SampleCollectAct" />
     </application>
 
 </manifest>

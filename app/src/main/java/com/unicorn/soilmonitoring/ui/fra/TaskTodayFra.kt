@@ -14,7 +14,7 @@ import com.unicorn.soilmonitoring.databinding.FraTaskTodayBinding
 import com.unicorn.soilmonitoring.databinding.ItemRealPointBinding
 import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.event.NavigationEvent
-import com.unicorn.soilmonitoring.ui.act.SamplingAct
+import com.unicorn.soilmonitoring.ui.act.SampleCollectAct
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.fragments.start
 import splitties.resources.color
@@ -54,7 +54,7 @@ class TaskTodayFra(private val title: String) : BaseFra<FraTaskTodayBinding>() {
                     sendEvent(NavigationEvent(getModel()))
                 }
                 onClick(R.id.tv_gather) {
-                    start<SamplingAct> { }
+                    start<SampleCollectAct> { }
                 }
 
             }
