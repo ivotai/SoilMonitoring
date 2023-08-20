@@ -108,6 +108,9 @@ dependencies {
 
     implementation("me.saket.cascade:cascade:2.2.0")
 
+    implementation("io.github.lucksiege:pictureselector:v3.11.1")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+
 }
 
 

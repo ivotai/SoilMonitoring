@@ -19,7 +19,7 @@ import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.fragments.start
 import splitties.resources.color
 
-class TaskTodayFra(private val title: String) : BaseFra<FraTaskTodayBinding>() {
+class TaskTodayFra : BaseFra<FraTaskTodayBinding>() {
 
     override fun initViews() {
         binding.run {
@@ -27,7 +27,7 @@ class TaskTodayFra(private val title: String) : BaseFra<FraTaskTodayBinding>() {
             // 设置标题栏
             titleBar.run {
                 titleBar.statusPadding()
-                setTitle(title)
+                setTitle("当前采样")
                 setTitleColor(color(R.color.white))
             }
 

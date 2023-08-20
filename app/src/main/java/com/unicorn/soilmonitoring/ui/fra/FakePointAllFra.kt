@@ -21,7 +21,7 @@ import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.resources.color
 
 
-class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBinding>() {
+class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
 
     override fun initViews() {
 
@@ -30,7 +30,7 @@ class FakePointAllFra(private val title: String) : BaseFra<FraFakePointAllBindin
             // 设置标题栏
             titleBar.run {
                 titleBar.statusPadding()
-                setTitle(title)
+                setTitle("采样点")
                 setTitleColor(color(R.color.white))
                 listOf(getCiv1(), getCiv2()).forEach {
                     it.textSize = 16f

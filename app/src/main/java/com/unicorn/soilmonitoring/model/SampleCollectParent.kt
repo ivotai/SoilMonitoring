@@ -21,8 +21,8 @@ class SampleCollectParent(val description: String) : ItemExpand {
     companion object {
 
         val all
-            get() = fun(): List<SampleCollectParent> {
-                return ArrayList<SampleCollectParent>().apply {
+            get() =
+                 ArrayList<SampleCollectParent>().apply {
                     add(SampleCollectParent("采样编号").apply {
                         sublist = listOf(SampleCollectInput())
                     })
@@ -60,7 +60,7 @@ class SampleCollectParent(val description: String) : ItemExpand {
                         sublist = listOf(SampleCollectInput())
                     })
                 }
-            }
+
 
     }
 
