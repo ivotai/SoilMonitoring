@@ -23,8 +23,8 @@ class LoginAct : BaseAct<ActLoginBinding>() {
             start<MainAct> { }
             finish()
         }
-        start<MainAct> { }
-        finish()
+//        start<MainAct> { }
+//        finish()
     }
 
 }

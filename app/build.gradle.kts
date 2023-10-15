@@ -99,6 +99,7 @@ dependencies {
     implementation("com.mikepenz:iconics-views:5.4.0")
     implementation("com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar")
     implementation("com.mikepenz:fontawesome-typeface:5.9.0.2-kotlin@aar")
+    implementation("com.mikepenz:ionicons-typeface:2.0.1.7-kotlin@aar")
 
     implementation("com.blankj:utilcodex:1.31.1")
     implementation("com.github.tbruyelle:rxpermissions:0.12")

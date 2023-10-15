@@ -3,12 +3,14 @@ package com.unicorn.soilmonitoring.ui.act
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.ConvertUtils
 import com.bumptech.glide.Glide
 import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.divider
 import com.drake.brv.utils.linear
+import com.drake.brv.utils.models
 import com.drake.brv.utils.setup
 import com.drake.statusbar.immersive
 import com.drake.statusbar.statusPadding
@@ -16,15 +18,18 @@ import com.luck.picture.lib.basic.PictureSelector
 import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
+import com.unicorn.soilmonitoring.GlideEngine
 import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.databinding.ActSampleCollectBinding
-import com.unicorn.soilmonitoring.databinding.ItemPhotoBinding
 import com.unicorn.soilmonitoring.databinding.ItemSampleCollectDictBinding
+import com.unicorn.soilmonitoring.databinding.ItemSampleCollectImageBinding
 import com.unicorn.soilmonitoring.databinding.ItemSampleCollectInputBinding
 import com.unicorn.soilmonitoring.databinding.ItemSampleCollectParentBinding
+import com.unicorn.soilmonitoring.databinding.ItemSampleCollectRecyclerBinding
 import com.unicorn.soilmonitoring.model.Dict
 import com.unicorn.soilmonitoring.model.SampleCollectInput
 import com.unicorn.soilmonitoring.model.SampleCollectParent
+import com.unicorn.soilmonitoring.model.SampleCollectRecycler
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import splitties.resources.color
 
@@ -44,22 +49,6 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                 setTitleColor(color(R.color.white))
             }
 
-            rvPhoto.linear(orientation = HORIZONTAL).setup {
-                addType<String>(R.layout.item_photo)
-
-                onBind {
-                    getBinding<ItemPhotoBinding>().run {
-                        val model = getModel<String>()
-                        Glide.with(this@SampleCollectAct).load(model).into(iv)
-                    }
-                }
-
-                onClick(R.id.iv) {
-                    val model = getModel<String>()
-                    if (model == "") takePhoto()
-                }
-            }.models = listOf("")
-
 
             //
             val scanCount = 2
@@ -68,6 +57,7 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                 override fun getSpanSize(position: Int): Int {
                     if (position < 0) return 1 // 如果添加分割线可能导致position为负数
                     return when (rv.bindingAdapter.getItemViewType(position)) {
+                        // 选项(dict)内容占1，其他占2
                         R.layout.item_sample_collect_dict -> 1
                         else -> scanCount
                     }
@@ -81,6 +71,8 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                 startVisible = true
                 endVisible = true
             }.setup {
+                //
+                addType<SampleCollectRecycler>(R.layout.item_sample_collect_recycler)
                 addType<SampleCollectParent>(R.layout.item_sample_collect_parent)
                 addType<SampleCollectInput>(R.layout.item_sample_collect_input)
                 addType<Dict>(R.layout.item_sample_collect_dict)
@@ -91,9 +83,68 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                             // todo text change
                         }
                     }
+
+                    if (itemViewType == R.layout.item_sample_collect_recycler) {
+                        getBinding<ItemSampleCollectRecyclerBinding>().run {
+                            rv.linear(orientation = HORIZONTAL).divider {
+                                setDivider(8, true)
+                            }.setup {
+                                addType<LocalMedia>(R.layout.item_sample_collect_image)
+
+                                onBind {
+                                    getBinding<ItemSampleCollectImageBinding>().run {
+                                        val localMedia = getModel<LocalMedia>()
+                                        Glide.with(this@SampleCollectAct).load(localMedia.path)
+                                            .into(iv)
+                                    }
+                                }
+
+                                onClick(R.id.iv) {
+                                    val localMedia = getModel<LocalMedia>()
+                                    if (localMedia.path == null) {
+                                        PictureSelector.create(this@SampleCollectAct)
+                                            .openGallery(SelectMimeType.ofImage())
+                                            .setImageEngine(GlideEngine.createGlideEngine())
+                                            .forResult(object :
+                                                OnResultCallbackListener<LocalMedia?> {
+                                                override fun onResult(result: ArrayList<LocalMedia?>) {
+                                                    val t = ArrayList<LocalMedia>()
+                                                    result.forEach {
+                                                        t.add(it!!)
+                                                    }
+                                                    t.add(LocalMedia())
+                                                    rv!!.models = t
+                                                }
+
+                                                override fun onCancel() {}
+                                            })
+                                    } else {
+                                        val list = ArrayList<LocalMedia>()
+                                        models!!.forEachIndexed { index, any ->
+                                            if (models!!.last() != any)
+                                                list.add(any as LocalMedia)
+                                        }
+                                        PictureSelector.create(this@SampleCollectAct)
+                                            .openPreview()
+                                            .setImageEngine(GlideEngine.createGlideEngine())
+                                            .startActivityPreview(
+                                                modelPosition,
+                                                false,
+                                                list
+                                            )
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 onBind {
                     when (val model = getModel<Any>()) {
+                        is SampleCollectRecycler -> {
+                            getBinding<ItemSampleCollectRecyclerBinding>().rv.bindingAdapter.models =
+                                model.list
+                        }
+
                         is SampleCollectParent -> {
                             getBinding<ItemSampleCollectParentBinding>().run {
                                 tvDescription.text = model.description
@@ -164,12 +215,19 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
 //   takePhoto()
     }
 
-    private fun takePhoto() {
-        PictureSelector.create(this).openCamera(SelectMimeType.ofImage())
+    private fun takePhoto(recyclerView: RecyclerView) {
+
+
+        PictureSelector.create(this).openGallery(SelectMimeType.ofImage())
+            .setImageEngine(GlideEngine.createGlideEngine())
             .forResult(object : OnResultCallbackListener<LocalMedia?> {
                 override fun onResult(result: ArrayList<LocalMedia?>) {
-                    val realPath = result[0]!!.realPath
-                    binding.rvPhoto.bindingAdapter.addModels(listOf(realPath))
+                    val t = ArrayList<LocalMedia>()
+                    result.forEach {
+                        t.add(it!!)
+                    }
+                    t.add(LocalMedia())
+                    recyclerView.models = t
                 }
 
                 override fun onCancel() {}
