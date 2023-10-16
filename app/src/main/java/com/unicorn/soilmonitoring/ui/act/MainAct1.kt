@@ -14,7 +14,8 @@ import com.unicorn.soilmonitoring.databinding.ActMain1Binding
 import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.ui.Fas
 import com.unicorn.soilmonitoring.ui.base.BaseAct
-import com.unicorn.soilmonitoring.ui.fra.TaskTodayFra
+import com.unicorn.soilmonitoring.ui.fra.CollectListFra
+import com.unicorn.soilmonitoring.ui.fra.CollectTaskFra
 import me.majiajie.pagerbottomtabstrip.item.NormalItemView
 import splitties.resources.color
 
@@ -24,7 +25,7 @@ class MainAct1 : BaseAct<ActMain1Binding>() {
     override fun initViews() {
         immersive()
 
-        val titles = listOf("待完成", "地图")
+        val titles = listOf("采样记录", "采样任务", "地图")
 
         binding.run {
             object : FragmentStateAdapter(this@MainAct1) {
@@ -34,7 +35,8 @@ class MainAct1 : BaseAct<ActMain1Binding>() {
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
 //                        0 -> FakePointAllFra()
-                        0 -> TaskTodayFra()
+                        0 -> CollectListFra()
+                        1 -> CollectTaskFra()
                         else -> MapFra()
                     }
                 }
@@ -71,9 +73,14 @@ class MainAct1 : BaseAct<ActMain1Binding>() {
                     newItem(
                         titles[0], Fas.Icon.fas_calendar_check, Fas.Icon.fas_calendar_check
                     )
+                )
+                .addItem(
+                    newItem(
+                        titles[1], Fas.Icon.fas_calendar_week, Fas.Icon.fas_calendar_week
+                    )
                 ).addItem(
                     newItem(
-                        titles[1], Fas.Icon.fas_map_marked_alt, Fas.Icon.fas_map_marked_alt
+                        titles[2], Fas.Icon.fas_map_marked_alt, Fas.Icon.fas_map_marked_alt
                     )
                 ).build()
             navigationController.setUpWithViewPager2(viewPager2 = viewPager2)
@@ -83,10 +90,11 @@ class MainAct1 : BaseAct<ActMain1Binding>() {
 
 
     override fun initEvents() {
-        val mapFraIndex = 1
+        val mapFraIndex = 2
         receiveEvent<MapEvent> {
             binding.vp.setCurrentItem(mapFraIndex, false)
         }
     }
+
 
 }

@@ -10,7 +10,7 @@ import com.drake.channel.receiveEvent
 import com.drake.channel.sendEvent
 import com.drake.statusbar.statusPadding
 import com.unicorn.soilmonitoring.R
-import com.unicorn.soilmonitoring.databinding.FraTaskTodayBinding
+import com.unicorn.soilmonitoring.databinding.FraCollectTaskBinding
 import com.unicorn.soilmonitoring.databinding.ItemRealPointBinding
 import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.event.NavigationEvent
@@ -19,7 +19,7 @@ import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.fragments.start
 import splitties.resources.color
 
-class TaskTodayFra : BaseFra<FraTaskTodayBinding>() {
+class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
 
     override fun initViews() {
         binding.run {
@@ -27,10 +27,9 @@ class TaskTodayFra : BaseFra<FraTaskTodayBinding>() {
             // 设置标题栏
             titleBar.run {
                 titleBar.statusPadding()
-                setTitle("当前采样")
+                setTitle("采样任务")
                 setTitleColor(color(R.color.white))
             }
-
 
             rv.grid(1).divider { // 水平间距
                 orientation = DividerOrientation.GRID
