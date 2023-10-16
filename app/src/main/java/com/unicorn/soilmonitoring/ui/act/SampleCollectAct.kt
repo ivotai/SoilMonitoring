@@ -25,11 +25,11 @@ import com.unicorn.soilmonitoring.databinding.ItemSampleCollectDictBinding
 import com.unicorn.soilmonitoring.databinding.ItemSampleCollectImageBinding
 import com.unicorn.soilmonitoring.databinding.ItemSampleCollectInputBinding
 import com.unicorn.soilmonitoring.databinding.ItemSampleCollectParentBinding
-import com.unicorn.soilmonitoring.databinding.ItemSampleCollectRecyclerBinding
+import com.unicorn.soilmonitoring.databinding.ItemSampleCollectLocalMediaBinding
 import com.unicorn.soilmonitoring.model.Dict
 import com.unicorn.soilmonitoring.model.SampleCollectInput
 import com.unicorn.soilmonitoring.model.SampleCollectParent
-import com.unicorn.soilmonitoring.model.SampleCollectRecycler
+import com.unicorn.soilmonitoring.model.SampleCollectLocalMedia
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import splitties.resources.color
 
@@ -72,7 +72,7 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                 endVisible = true
             }.setup {
                 //
-                addType<SampleCollectRecycler>(R.layout.item_sample_collect_recycler)
+                addType<SampleCollectLocalMedia>(R.layout.item_sample_collect_local_media)
                 addType<SampleCollectParent>(R.layout.item_sample_collect_parent)
                 addType<SampleCollectInput>(R.layout.item_sample_collect_input)
                 addType<Dict>(R.layout.item_sample_collect_dict)
@@ -84,8 +84,8 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                         }
                     }
 
-                    if (itemViewType == R.layout.item_sample_collect_recycler) {
-                        getBinding<ItemSampleCollectRecyclerBinding>().run {
+                    if (itemViewType == R.layout.item_sample_collect_local_media) {
+                        getBinding<ItemSampleCollectLocalMediaBinding>().run {
                             rv.linear(orientation = HORIZONTAL).divider {
                                 setDivider(8, true)
                             }.setup {
@@ -94,16 +94,22 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                                 onBind {
                                     getBinding<ItemSampleCollectImageBinding>().run {
                                         val localMedia = getModel<LocalMedia>()
-                                        Glide.with(this@SampleCollectAct).load(localMedia.path)
-                                            .into(iv)
+                                        if (localMedia.path == null) {
+                                            Glide.with(this@SampleCollectAct)
+                                                .load(R.drawable.ps_ic_placeholder).into(iv)
+                                        } else {
+                                            Glide.with(this@SampleCollectAct).load(localMedia.path)
+                                                .into(iv)
+                                        }
                                     }
                                 }
 
                                 onClick(R.id.iv) {
+                                    val sampleCollectLocalMedia = this@onCreate.getModel<SampleCollectLocalMedia>()
                                     val localMedia = getModel<LocalMedia>()
                                     if (localMedia.path == null) {
                                         PictureSelector.create(this@SampleCollectAct)
-                                            .openGallery(SelectMimeType.ofImage())
+                                            .openGallery(sampleCollectLocalMedia.selectMimeType)
                                             .setImageEngine(GlideEngine.createGlideEngine())
                                             .forResult(object :
                                                 OnResultCallbackListener<LocalMedia?> {
@@ -114,6 +120,8 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                                                     }
                                                     t.add(LocalMedia())
                                                     rv!!.models = t
+                                                    // 保存下来
+                                                    sampleCollectLocalMedia.list = t
                                                 }
 
                                                 override fun onCancel() {}
@@ -121,8 +129,8 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                                     } else {
                                         val list = ArrayList<LocalMedia>()
                                         models!!.forEachIndexed { index, any ->
-                                            if (models!!.last() != any)
-                                                list.add(any as LocalMedia)
+                                            any as LocalMedia
+                                            any.let { if (it.path != null) list.add(it) }
                                         }
                                         PictureSelector.create(this@SampleCollectAct)
                                             .openPreview()
@@ -140,8 +148,8 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
                 }
                 onBind {
                     when (val model = getModel<Any>()) {
-                        is SampleCollectRecycler -> {
-                            getBinding<ItemSampleCollectRecyclerBinding>().rv.bindingAdapter.models =
+                        is SampleCollectLocalMedia -> {
+                            getBinding<ItemSampleCollectLocalMediaBinding>().rv.bindingAdapter.models =
                                 model.list
                         }
 

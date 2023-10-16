@@ -1,6 +1,7 @@
 package com.unicorn.soilmonitoring.model
 
 import com.drake.brv.item.ItemExpand
+import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.entity.LocalMedia
 
 class SampleCollectParent(val description: String) : ItemExpand {
@@ -23,8 +24,13 @@ class SampleCollectParent(val description: String) : ItemExpand {
 
         val all
             get() = ArrayList<SampleCollectParent>().apply {
-                add(SampleCollectParent("采样痕迹").apply {
-                    sublist = listOf(SampleCollectRecycler(ArrayList<LocalMedia>().apply {
+                add(SampleCollectParent("采样照片").apply {
+                    sublist = listOf(SampleCollectLocalMedia(selectMimeType = SelectMimeType.ofImage(),ArrayList<LocalMedia>().apply {
+                        add(LocalMedia())
+                    }))
+                })
+                add(SampleCollectParent("采样视频").apply {
+                    sublist = listOf(SampleCollectLocalMedia(selectMimeType = SelectMimeType.ofVideo(),ArrayList<LocalMedia>().apply {
                         add(LocalMedia())
                     }))
                 })
