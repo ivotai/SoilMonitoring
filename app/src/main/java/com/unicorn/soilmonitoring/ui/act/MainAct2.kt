@@ -15,6 +15,7 @@ import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.ui.Fas
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import com.unicorn.soilmonitoring.ui.fra.CollectListFra
+import com.unicorn.soilmonitoring.ui.fra.CollectListFra2
 import com.unicorn.soilmonitoring.ui.fra.CollectTaskFra
 import com.unicorn.soilmonitoring.ui.fra.FakePointAllFra
 import me.majiajie.pagerbottomtabstrip.item.NormalItemView
@@ -36,7 +37,7 @@ class MainAct2 : BaseAct<ActMain1Binding>() {
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
                         0 -> FakePointAllFra()
-                        else -> CollectListFra()
+                        else -> CollectListFra2()
                     }
                 }
 

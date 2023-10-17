@@ -30,7 +30,7 @@ class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
             // 设置标题栏
             titleBar.run {
                 titleBar.statusPadding()
-                setTitle("采样点")
+                setTitle("采样总览")
                 setTitleColor(color(R.color.white))
                 listOf(getCiv1(), getCiv2()).forEach {
                     it.textSize = 16f
@@ -88,12 +88,12 @@ class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
                                     tvIsGather.text = if (model.isGather) "已采样" else "待采样"
 
                                     tvIsGather.setTextColor(
-                                        if (model.isGather) context.color(splitties.material.colors.R.color.blue_600) else Color.parseColor(
+                                        if (model.isGather) context.color(splitties.material.colors.R.color.green_400) else Color.parseColor(
                                             "#5E656F"
                                         )
                                     )
                                     tvNo.setTextColor(
-                                        if (model.isGather) context.color(splitties.material.colors.R.color.blue_600) else Color.parseColor(
+                                        if (model.isGather) context.color(splitties.material.colors.R.color.green_400) else Color.parseColor(
                                             "#AFB3BC"
                                         )
                                     )
