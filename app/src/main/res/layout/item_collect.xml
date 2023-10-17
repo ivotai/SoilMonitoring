@@ -1,35 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ruffian.library.widget.RConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:background_normal="@color/white"
+    app:corner_radius="16dp"
+    app:shadow_color="@color/grey_100"
+    app:shadow_dx="1dp"
+    app:shadow_dy="1dp"
+    app:shadow_radius="1dp">
 
-    <com.mikepenz.iconics.view.IconicsTextView
-        android:id="@+id/iconicsTextView"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/tvCollectNo"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="{fas-circle-notch}"
-        android:textColor="@color/green_400"
-        android:textSize="14dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="NJP32304 A274-1"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.ruffian.library.widget.RTextView
-        android:id="@+id/tv_description"
+    <TextView
+        android:id="@+id/tvCollectDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="描述"
-        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
+        android:text="宝山区，外环线外泰和西路，北面天极盛宅花园小区，南门正对电线杆灯号06362120"
+        android:textColor="@color/grey_400"
         android:textSize="14dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iconicsTextView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/tvCollectNo"
+        app:layout_constraintStart_toStartOf="@+id/tvCollectNo"
+        app:layout_constraintTop_toBottomOf="@+id/tvCollectNo" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/collect"
+        app:layout_constraintEnd_toEndOf="@+id/tvCollectDescription"
+        app:layout_constraintStart_toStartOf="@+id/tvCollectDescription"
+        app:layout_constraintTop_toBottomOf="@+id/tvCollectDescription" />
+
+    <com.ruffian.library.widget.RTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="查看采样详情"
+        android:textColor="@color/grey_700"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:background_normal="@color/grey_100"
+        app:corner_radius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+</com.ruffian.library.widget.RConstraintLayout>

@@ -30,9 +30,15 @@ class LoginAct : BaseAct<ActLoginBinding>() {
         }
         requestPermissions()
 
-        binding.btnLogin.setOnClickListener {
-            start<MainAct1> { }
-//            finish()
+        binding.apply {
+            btnLogin.setOnClickListener {
+                val username = etUsername.text.toString().trim()
+                if (username == "admin") {
+                    start<MainAct2> { }
+                } else {
+                    start<MainAct1> { }
+                }
+            }
         }
     }
 
