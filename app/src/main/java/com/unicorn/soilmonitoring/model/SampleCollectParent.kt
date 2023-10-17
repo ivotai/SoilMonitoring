@@ -3,6 +3,7 @@ package com.unicorn.soilmonitoring.model
 import com.drake.brv.item.ItemExpand
 import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.entity.LocalMedia
+import com.unicorn.soilmonitoring.app.Global
 
 class SampleCollectParent(val description: String) : ItemExpand {
 
@@ -25,14 +26,20 @@ class SampleCollectParent(val description: String) : ItemExpand {
         val all
             get() = ArrayList<SampleCollectParent>().apply {
                 add(SampleCollectParent("采样照片").apply {
-                    sublist = listOf(SampleCollectLocalMedia(selectMimeType = SelectMimeType.ofImage(),ArrayList<LocalMedia>().apply {
-                        add(LocalMedia())
-                    }))
+                    sublist = listOf(
+                        SampleCollectLocalMedia(selectMimeType = SelectMimeType.ofImage(),
+                            ArrayList<LocalMedia>().apply {
+                                add(LocalMedia())
+                            })
+                    )
                 })
                 add(SampleCollectParent("采样视频").apply {
-                    sublist = listOf(SampleCollectLocalMedia(selectMimeType = SelectMimeType.ofVideo(),ArrayList<LocalMedia>().apply {
-                        add(LocalMedia())
-                    }))
+                    sublist = listOf(
+                        SampleCollectLocalMedia(selectMimeType = SelectMimeType.ofVideo(),
+                            ArrayList<LocalMedia>().apply {
+                                add(LocalMedia())
+                            })
+                    )
                 })
                 add(SampleCollectParent("采样编号").apply {
                     sublist = listOf(SampleCollectInput())
@@ -58,8 +65,16 @@ class SampleCollectParent(val description: String) : ItemExpand {
                 add(SampleCollectParent("植被类型及长势").apply {
                     sublist = listOf(SampleCollectInput())
                 })
+                // 获取经纬度
+                val location = Global.location
+                val value =
+                    if (location != null) "经度：${location.latitude}   纬度：${location.longitude}" else ""
                 add(SampleCollectParent("GPS定位").apply {
-                    sublist = listOf(SampleCollectInput())
+                    sublist = listOf(
+                        SampleCollectInput(
+                            value = value
+                        )
+                    )
                 })
                 add(SampleCollectParent("土壤扰动情况").apply {
                     sublist = listOf(SampleCollectInput())

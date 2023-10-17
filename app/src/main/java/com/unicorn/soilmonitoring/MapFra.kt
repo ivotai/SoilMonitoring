@@ -27,6 +27,7 @@ import com.drake.channel.receiveEvent
 import com.drake.channel.sendEvent
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.unicorn.soilmonitoring.app.Config
+import com.unicorn.soilmonitoring.app.Global
 import com.unicorn.soilmonitoring.app.MarkerHelper
 import com.unicorn.soilmonitoring.app.Point
 import com.unicorn.soilmonitoring.app.PointStatus
@@ -77,6 +78,8 @@ class MapFra : BaseFra<FraMapBinding>() {
             }
             registerLocationListener(object : BDAbstractLocationListener() {
                 override fun onReceiveLocation(location: BDLocation) {
+
+                    Global.location = location
 
                     // todo district to districtId
                     location.district
@@ -204,24 +207,6 @@ class MapFra : BaseFra<FraMapBinding>() {
         }
         BaiduMapNavigation.finish(requireContext());
     }
-
-
-    private val pointDialog by lazy {
-        MaterialDialog(requireContext(), BottomSheet()).apply {
-            title(text = "采样点总览")
-//            cornerRadius(16f)
-            customView(
-                view = PointRecyclerView(requireContext()),
-                scrollable = false,
-                noVerticalPadding = true
-            )
-        }
-    }
-
-    private fun showPointDialog() {
-        pointDialog.show()
-    }
-
 
     override fun initEvents() {
         receiveEvent<NavigationEvent> {
