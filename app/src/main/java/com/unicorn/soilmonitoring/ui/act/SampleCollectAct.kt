@@ -1,6 +1,8 @@
 package com.unicorn.soilmonitoring.ui.act
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +33,7 @@ import com.unicorn.soilmonitoring.model.SampleCollectInput
 import com.unicorn.soilmonitoring.model.SampleCollectParent
 import com.unicorn.soilmonitoring.model.SampleCollectLocalMedia
 import com.unicorn.soilmonitoring.ui.base.BaseAct
+import me.saket.cascade.CascadePopupMenu
 import splitties.resources.color
 
 
@@ -218,8 +221,20 @@ class SampleCollectAct : BaseAct<ActSampleCollectBinding>() {
 
 
     override fun initIntents() {
-
-
+        binding.apply {
+            titleBar.getCiv2().visibility = View.VISIBLE
+            titleBar.getCiv2().setTextColor(Color.WHITE)
+            titleBar.getCiv2().setOnClickListener {
+                val popup = CascadePopupMenu(this@SampleCollectAct, titleBar.getCiv2())
+                popup.menu.run {
+                    add("查看历次采样记录").setOnMenuItemClickListener { true }
+                    add("查看采样点变更信息").setOnMenuItemClickListener { true }
+                    add("从历史数据中导入").setOnMenuItemClickListener { true }
+                    add("保存本次采样记录").setOnMenuItemClickListener { true }
+                }
+                popup.show()
+            }
+        }
 //   takePhoto()
     }
 
