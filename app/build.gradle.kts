@@ -111,6 +111,15 @@ dependencies {
 
     implementation("io.github.lucksiege:pictureselector:v3.11.1")
     implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation(files("libs/ocrsdk.aar"))
+    implementation(files("libs/ocr_ui-debug.aar"))
+    implementation(fileTree(mapOf(
+        "dir" to "libs",
+        "include" to listOf("*.aar", "*.jar"),
+    )))
+
+//    implementation(files('libs/ocrsdk.aar'))
+//    implementation files('libs/ocr_ui-debug.aar')
 
 }
 
