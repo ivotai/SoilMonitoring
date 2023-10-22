@@ -11,8 +11,6 @@ object Config {
 
     val points = ArrayList<Point>()
 
-    var selfPoint = Point("自身", LatLng(0.0, 0.0))
+    var selfPoint = Point("本人", LatLng(0.0, 0.0))
 
-
-    val colorPrimary = Color.parseColor("#85A7A9")
 }

@@ -3,7 +3,7 @@ package com.unicorn.soilmonitoring.model
 import com.drake.brv.item.ItemExpand
 import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.unicorn.soilmonitoring.app.Global
+import com.unicorn.soilmonitoring.app.Config
 
 class SampleCollectParent(val description: String) : ItemExpand {
 
@@ -69,9 +69,8 @@ class SampleCollectParent(val description: String) : ItemExpand {
                     sublist = listOf(SampleCollectInput())
                 })
                 // 获取经纬度
-                val location = Global.location
                 val value =
-                    if (location != null) "经度：${location.latitude}   纬度：${location.longitude}" else ""
+                "经度：${Config.selfPoint.latLng.latitude}   纬度：${Config.selfPoint.latLng.longitude}"
                 add(SampleCollectParent("GPS定位").apply {
                     sublist = listOf(
                         SampleCollectInput(

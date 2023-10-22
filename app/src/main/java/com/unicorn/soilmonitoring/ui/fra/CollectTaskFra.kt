@@ -52,7 +52,8 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
 
                         is Point -> {
                             getBinding<ItemRealPointBinding>().run {
-                                tvDescription.text = model.key
+                                tvDescription.text =
+                                    "${model.key} (距离${model.distance.toInt()}米)"
                             }
                         }
                     }

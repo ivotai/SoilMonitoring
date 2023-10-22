@@ -13,6 +13,7 @@ import com.baidu.mapapi.navi.BaiduMapNavigation
 import com.baidu.mapapi.navi.NaviParaOption
 import com.baidu.mapapi.search.sug.SuggestionSearch
 import com.baidu.mapapi.search.sug.SuggestionSearchOption
+import com.baidu.mapapi.utils.DistanceUtil
 import com.baidu.mapapi.walknavi.WalkNavigateHelper
 import com.baidu.mapapi.walknavi.adapter.IWEngineInitListener
 import com.baidu.mapapi.walknavi.adapter.IWRoutePlanListener
@@ -24,7 +25,6 @@ import com.drake.channel.receiveEvent
 import com.drake.channel.sendEvent
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.unicorn.soilmonitoring.app.Config
-import com.unicorn.soilmonitoring.app.Global
 import com.unicorn.soilmonitoring.app.MarkerHelper
 import com.unicorn.soilmonitoring.app.Point
 import com.unicorn.soilmonitoring.app.PointStatus
@@ -75,21 +75,19 @@ class MapFra : BaseFra<FraMapBinding>() {
             registerLocationListener(object : BDAbstractLocationListener() {
                 override fun onReceiveLocation(location: BDLocation) {
 
-                    Global.location = location
-
                     // todo district to districtId
-                    location.district
+//                    location.district
+
+                    // self point
+                    Config.selfPoint = Point(
+                        "本人", LatLng(location.latitude, location.longitude), PointStatus.UN_TAKEN
+                    )
 
                     // setMyLocationData
                     map.setMyLocationData(
                         MyLocationData.Builder().accuracy(location.radius)
                             .direction(location.direction).latitude(location.latitude)
                             .longitude(location.longitude).build()
-                    )
-
-                    // self point
-                    Config.selfPoint = Point(
-                        "本人", LatLng(location.latitude, location.longitude), PointStatus.UN_TAKEN
                     )
 
                     // sug
@@ -119,7 +117,11 @@ class MapFra : BaseFra<FraMapBinding>() {
                         val point = Point(
                             suggestionInfo.key,
                             suggestionInfo.pt,
-                            listOf(PointStatus.TAKEN, PointStatus.UN_TAKEN).random()
+                            listOf(PointStatus.TAKEN, PointStatus.UN_TAKEN).random(),
+                            distance = DistanceUtil.getDistance(
+                                Config.selfPoint.latLng,
+                                suggestionInfo.pt
+                            )
                         )
                         Config.points.add(point)
                         MarkerHelper.addOverlay(
@@ -134,6 +136,7 @@ class MapFra : BaseFra<FraMapBinding>() {
                         )
                     }
 
+                Config.points.sortBy { it.distance }
                 sendEvent(Config.points)
 //                suggestionResult.allSuggestions?.filter { it.pt != null }?.map {
 //                    Point(
