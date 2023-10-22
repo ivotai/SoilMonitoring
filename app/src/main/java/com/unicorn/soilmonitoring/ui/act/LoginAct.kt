@@ -41,7 +41,7 @@ class LoginAct : BaseAct<ActLoginBinding>() {
         binding.apply {
             btnLogin.setOnClickListener {
                 val username = etUsername.text.toString().trim()
-                if (username != "admin") {
+                if (username == "") {
                     start<MainAct1> { }
                 } else {
                     // 2 代表 pm

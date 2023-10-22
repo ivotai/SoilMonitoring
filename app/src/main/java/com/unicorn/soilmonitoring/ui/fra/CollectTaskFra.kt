@@ -23,13 +23,7 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
 
     override fun initViews() {
         binding.run {
-
-            // 设置标题栏
-            titleBar.run {
-                titleBar.statusPadding()
-                setTitle("采样任务")
-                setTitleColor(color(R.color.white))
-            }
+            root.statusPadding()
 
             rv.grid(1).divider { // 水平间距
                 orientation = DividerOrientation.GRID

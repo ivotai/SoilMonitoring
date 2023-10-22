@@ -7,9 +7,9 @@ import com.drake.channel.receiveEvent
 import com.drake.statusbar.immersive
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
-import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome
 import com.mikepenz.iconics.utils.colorInt
 import com.unicorn.soilmonitoring.MapFra
+import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.app.setUpWithViewPager2
 import com.unicorn.soilmonitoring.databinding.ActMain1Binding
 import com.unicorn.soilmonitoring.event.MapEvent
@@ -24,7 +24,7 @@ import splitties.resources.color
 class MainAct1 : BaseAct<ActMain1Binding>() {
 
     override fun initViews() {
-        immersive()
+        immersive(darkMode = true)
 
         val titles = listOf("采样记录", "采样任务", "地图")
 
@@ -35,7 +35,6 @@ class MainAct1 : BaseAct<ActMain1Binding>() {
 
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
-//                        0 -> FakePointAllFra()
                         0 -> CollectListFra()
                         1 -> CollectTaskFra()
                         else -> MapFra()
@@ -54,7 +53,7 @@ class MainAct1 : BaseAct<ActMain1Binding>() {
             fun newItem(vTitle: String, iconDefault: IIcon, iconChecked: IIcon) =
                 NormalItemView(this).apply {
                     val defaultColor = color(splitties.material.colors.R.color.grey_400)
-                    val checkedColor = color(splitties.material.colors.R.color.green_400)
+                    val checkedColor = color(R.color.primary)
 
 //                    val checkedColor = Color.parseColor("#4485E1")
                     title = vTitle
@@ -69,13 +68,11 @@ class MainAct1 : BaseAct<ActMain1Binding>() {
                 }
 
             Fas.Icon.fas_circle
-            val navigationController = binding.tab.custom()
-                .addItem(
+            val navigationController = binding.tab.custom().addItem(
                     newItem(
                         titles[0], Fas.Icon.fas_calendar_check, Fas.Icon.fas_calendar_check
                     )
-                )
-                .addItem(
+                ).addItem(
                     newItem(
                         titles[1], Fas.Icon.fas_calendar_week, Fas.Icon.fas_calendar_week
                     )
