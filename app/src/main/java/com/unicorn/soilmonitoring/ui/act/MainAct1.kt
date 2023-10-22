@@ -86,7 +86,6 @@ class MainAct1 : BaseAct<ActMain1Binding>() {
         initTab(binding.vp)
     }
 
-
     override fun initEvents() {
         val mapFraIndex = 2
         receiveEvent<MapEvent> {
