@@ -1,6 +1,5 @@
 package com.unicorn.soilmonitoring.ui.fra
 
-import android.graphics.Point
 import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.divider
@@ -11,21 +10,24 @@ import com.drake.channel.sendEvent
 import com.drake.statusbar.statusPadding
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.unicorn.soilmonitoring.R
+import com.unicorn.soilmonitoring.app.Point
+import com.unicorn.soilmonitoring.app.PointStatus
 import com.unicorn.soilmonitoring.databinding.FraCollectTaskBinding
+import com.unicorn.soilmonitoring.databinding.ItemCollectProgressBinding
 import com.unicorn.soilmonitoring.databinding.ItemRealPointBinding
 import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.event.NavigationEvent
+import com.unicorn.soilmonitoring.model.Progress
 import com.unicorn.soilmonitoring.ui.act.SampleCollectAct
 import com.unicorn.soilmonitoring.ui.base.BaseFra
-import me.saket.cascade.CascadePopupMenu
 import splitties.fragments.start
-import splitties.resources.color
+
 
 class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
 
     override fun initViews() {
         binding.run {
-            root.statusPadding()
+            constraintLayout.statusPadding()
 
             rv.grid(1).divider { // 水平间距
                 orientation = DividerOrientation.GRID
@@ -33,12 +35,26 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
                 includeVisible = true
             }.setup {
 
-                addType<com.unicorn.soilmonitoring.app.Point>(R.layout.item_real_point)
+                addType<Progress>(R.layout.item_collect_progress)
+                addType<Point>(R.layout.item_real_point)
 
                 onBind {
-                    val model = getModel<com.unicorn.soilmonitoring.app.Point>()
-                    getBinding<ItemRealPointBinding>().run {
-                        tvDescription.text = model.description
+                    when (val model = getModel<Any>()) {
+                        is Progress -> {
+                            val total = model.points.size
+                            val taken = model.points.count { it.pointStatus == PointStatus.TAKEN }
+                            val progress = 100 * taken / total
+                            getBinding<ItemCollectProgressBinding>().run {
+                                tvProgress.text = "$taken/$total"
+                                linearProgressIndicator.setProgress(progress, true)
+                            }
+                        }
+
+                        is Point -> {
+                            getBinding<ItemRealPointBinding>().run {
+                                tvDescription.text = model.key
+                            }
+                        }
                     }
                 }
 
@@ -59,15 +75,15 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
 
     override fun initIntents() {
         binding.run {
-            tvOrderBy.setOnClickListener {
+            tvFilterByDate.setOnClickListener {
                 try {
                     val datePicker =
-                        MaterialDatePicker.Builder.datePicker()
-                            .setTitleText("Select date")
+                        MaterialDatePicker.Builder.dateRangePicker()
+                            .setTitleText("选择筛选日期")
                             .build()
                     datePicker.show(childFragmentManager, "datePicker")
 
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
@@ -76,7 +92,7 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
 
     override fun initEvents() {
         receiveEvent<List<Point>> {
-            binding.rv.bindingAdapter.models = it
+            binding.rv.bindingAdapter.models = listOf(Progress(it)) + it
         }
     }
 

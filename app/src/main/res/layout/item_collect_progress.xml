@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ruffian.library.widget.RConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:background_normal="@color/white"
+    app:border_width_normal="1dp"
+    app:corner_radius="16dp"
+    app:shadow_color="@color/green_50"
+    app:shadow_dx="1dp"
+    app:shadow_dy="1dp"
+    app:shadow_radius="1dp">
+
+    <TextView
+        android:id="@+id/tvLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="采样任务进度"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/linearProgressIndicator"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:progress="30"
+        app:layout_constraintBottom_toBottomOf="@+id/tvProgress"
+        app:layout_constraintEnd_toStartOf="@+id/tvProgress"
+        app:layout_constraintStart_toStartOf="@+id/tvLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvProgress" />
+
+    <TextView
+        android:id="@+id/tvProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="3/10"
+        android:textColor="@color/primary"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabel" />
+
+</com.ruffian.library.widget.RConstraintLayout>

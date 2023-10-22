@@ -9,52 +9,79 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvOrderBy"
-            android:layout_width="wrap_content"
+        <com.ruffian.library.widget.REditText
+            android:id="@+id/tvSearch"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="按距离"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="20dp"
+            android:hint="搜索采样地点、植被类型及长势"
+            android:paddingHorizontal="16dp"
+            android:textColorHint="@color/grey_400"
+            android:textSize="16dp"
+            app:background_normal="@color/grey_50"
+            app:corner_radius="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iiv1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/iiv1"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            app:iiv_color="#2AAE67"
-            app:iiv_icon="faw_chevron_down"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toEndOf="@+id/tvOrderBy"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="4dp"
+            app:iiv_color="@color/primary"
+            app:iiv_icon="faw_calendar_alt"
+            app:layout_constraintBottom_toBottomOf="@+id/tvSearch"
+            app:layout_constraintEnd_toStartOf="@+id/tvFilterByDate"
+            app:layout_constraintTop_toTopOf="@+id/tvSearch" />
 
-        <com.mikepenz.iconics.view.IconicsImageView
-            android:id="@+id/iiv2"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="16dp"
+        <TextView
+            android:id="@+id/tvFilterByDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            app:iiv_color="#2AAE67"
-            app:iiv_icon="faw_search"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="筛选"
+            android:textColor="@color/primary"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvSearch"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/tvSearch" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvProgress"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:text="3/8"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16dp"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/tvSearch"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tvSearch" />-->
+
+<!--        <com.google.android.material.progressindicator.CircularProgressIndicator-->
+<!--            android:id="@+id/progress"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            app:trackColor="@color/grey_100"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            android:progress="30"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/tvFilterByDate"-->
+<!--            app:layout_constraintHorizontal_bias="0.0"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/tvProgress"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tvProgress"-->
+<!--            app:trackCornerRadius="10dp" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

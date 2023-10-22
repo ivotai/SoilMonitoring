@@ -93,7 +93,7 @@ class MapFra : BaseFra<FraMapBinding>() {
 
                     // self point
                     Config.selfPoint = Point(
-                        "自己", LatLng(location.latitude, location.longitude), PointStatus.UN_TAKEN
+                        "本人", LatLng(location.latitude, location.longitude), PointStatus.UN_TAKEN
                     )
 
                     // sug
@@ -135,7 +135,7 @@ class MapFra : BaseFra<FraMapBinding>() {
 
                 suggestionResult.allSuggestions?.filter { it.pt != null }?.map {
                     Point(
-                        it.key, it.pt, PointStatus.UN_TAKEN
+                        it.key, it.pt, listOf(PointStatus.TAKEN,PointStatus.UN_TAKEN).random()
                     )
                 }?.let { sendEvent(it) }
             }

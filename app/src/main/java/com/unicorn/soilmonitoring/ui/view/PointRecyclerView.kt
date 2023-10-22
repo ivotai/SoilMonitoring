@@ -2,7 +2,6 @@ package com.unicorn.soilmonitoring.ui.view
 
 import android.content.Context
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.DeviceUtils.getModel
 import com.drake.brv.utils.linear
 import com.drake.brv.utils.setup
@@ -33,7 +32,7 @@ class PointRecyclerView(context: Context) : ConstraintLayout(context) {
                         tvParentDescription.text = getModel<Parent>().description
                     }
                     getBindingOrNull<ItemPointBinding>()?.run {
-                        tvPointDescription.text = getModel<Point>().description
+                        tvPointDescription.text = getModel<Point>().key
                     }
                 }
                 R.id.root.onFastClick {
