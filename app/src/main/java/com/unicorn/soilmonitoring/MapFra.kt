@@ -1,9 +1,6 @@
 package com.unicorn.soilmonitoring
 
 import android.content.Intent
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.bottomsheets.BottomSheet
-import com.afollestad.materialdialogs.customview.customView
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
@@ -37,7 +34,6 @@ import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.event.NavigationEvent
 import com.unicorn.soilmonitoring.ui.act.WNaviGuideActivity
 import com.unicorn.soilmonitoring.ui.base.BaseFra
-import com.unicorn.soilmonitoring.ui.view.PointRecyclerView
 
 
 class MapFra : BaseFra<FraMapBinding>() {
@@ -121,23 +117,29 @@ class MapFra : BaseFra<FraMapBinding>() {
                 suggestionResult.allSuggestions?.filter { it.pt != null }
                     ?.forEach { suggestionInfo ->
                         val point = Point(
-                            suggestionInfo.key, suggestionInfo.pt, PointStatus.UN_TAKEN
+                            suggestionInfo.key,
+                            suggestionInfo.pt,
+                            listOf(PointStatus.TAKEN, PointStatus.UN_TAKEN).random()
                         )
                         Config.points.add(point)
                         MarkerHelper.addOverlay(
                             requireContext(),
                             point,
-                            splitties.material.colors.R.color.red_300,
+                            if (point.pointStatus == PointStatus.TAKEN)
+                                splitties.material.colors.R.color.green_300
+                            else
+                                splitties.material.colors.R.color.grey_400,
                             GoogleMaterial.Icon.gmd_location_pin,
                             binding.mapView.map
                         )
                     }
 
-                suggestionResult.allSuggestions?.filter { it.pt != null }?.map {
-                    Point(
-                        it.key, it.pt, listOf(PointStatus.TAKEN,PointStatus.UN_TAKEN).random()
-                    )
-                }?.let { sendEvent(it) }
+                sendEvent(Config.points)
+//                suggestionResult.allSuggestions?.filter { it.pt != null }?.map {
+//                    Point(
+//                        it.key, it.pt, listOf(PointStatus.TAKEN,PointStatus.UN_TAKEN).random()
+//                    )
+//                }?.let { sendEvent(it) }
             }
             requestSuggestion(
                 SuggestionSearchOption().city("上海").keyword(keyword)
