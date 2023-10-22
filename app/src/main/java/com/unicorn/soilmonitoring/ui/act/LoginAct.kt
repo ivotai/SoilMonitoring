@@ -5,6 +5,7 @@ import androidx.core.graphics.ColorUtils
 import com.drake.statusbar.immersive
 import com.drake.statusbar.statusPadding
 import com.tbruyelle.rxpermissions3.RxPermissions
+import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.databinding.ActLoginBinding
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import splitties.activities.start
@@ -20,7 +21,7 @@ class LoginAct : BaseAct<ActLoginBinding>() {
         // 按钮点击效果
         binding.apply {
             btnLogin.helper.backgroundColorPressed = ColorUtils.blendARGB(
-                color(splitties.material.colors.R.color.green_400), Color.WHITE, 0.3f
+                color(R.color.primary), Color.WHITE, 0.3f
             )
         }
     }

@@ -7,6 +7,7 @@ import com.drake.channel.receiveEvent
 import com.drake.statusbar.immersive
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
+import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome
 import com.mikepenz.iconics.utils.colorInt
 import com.unicorn.soilmonitoring.MapFra
 import com.unicorn.soilmonitoring.app.setUpWithViewPager2

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:hint="用户名"
+        android:hint="手机号码"
         android:maxLines="1"
         android:padding="16dp"
         android:textColor="@color/black"
@@ -62,7 +62,7 @@
         android:textColor="@color/white"
         android:textSize="16dp"
         android:textStyle="bold"
-        app:background_normal="@color/green_400"
+        app:background_normal="@color/primary"
         app:corner_radius="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,14 +71,75 @@
         app:layout_constraintTop_toBottomOf="@+id/etPassword" />
 
     <TextView
-        android:id="@+id/tv"
+        android:id="@+id/tvLabel1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="忘记密码？"
+        android:layout_marginBottom="16dp"
+        android:text="欢迎"
         android:textColor="@color/black"
-        android:textSize="14dp"
-        app:layout_constraintEnd_toEndOf="@+id/btnLogin"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvLabel2"
+        app:layout_constraintStart_toStartOf="@+id/tvLabel2" />
+
+    <TextView
+        android:id="@+id/tvLabel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:text="手机号码快捷登录"
+        android:textColor="@color/grey_700"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/etUsername"
+        app:layout_constraintStart_toStartOf="@+id/etUsername" />
+
+    <com.mikepenz.iconics.view.IconicsImageView
+        android:id="@+id/iiv1"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:iiv_color="#2AAE67"
+        app:iiv_icon="faw_weixin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iiv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+    <com.mikepenz.iconics.view.IconicsImageView
+        android:id="@+id/iiv2"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:iiv_color="#1378FE"
+        app:iiv_icon="faw_alipay"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/iiv1"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="微信登录"
+        android:textColor="@color/grey_700"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/iiv1"
+        app:layout_constraintStart_toStartOf="@+id/iiv1"
+        app:layout_constraintTop_toBottomOf="@+id/iiv1" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="支付宝登录"
+        android:textColor="@color/grey_700"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/iiv2"
+        app:layout_constraintStart_toStartOf="@+id/iiv2"
+        app:layout_constraintTop_toBottomOf="@+id/iiv2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
