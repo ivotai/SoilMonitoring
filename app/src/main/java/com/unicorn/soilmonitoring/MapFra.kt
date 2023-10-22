@@ -135,8 +135,7 @@ class MapFra : BaseFra<FraMapBinding>() {
                             binding.mapView.map
                         )
                     }
-
-                Config.points.sortBy { it.distance }
+                Config.points.sortWith(compareBy({ it.pointStatus }, { it.distance }))
                 sendEvent(Config.points)
 //                suggestionResult.allSuggestions?.filter { it.pt != null }?.map {
 //                    Point(

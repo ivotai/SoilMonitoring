@@ -21,6 +21,7 @@ import com.unicorn.soilmonitoring.model.Progress
 import com.unicorn.soilmonitoring.ui.act.SampleCollectAct
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.fragments.start
+import splitties.resources.color
 
 
 class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
@@ -54,6 +55,11 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
                             getBinding<ItemRealPointBinding>().run {
                                 tvDescription.text =
                                     "${model.key} (距离${model.distance.toInt()}米)"
+                                tvStatus.text = model.pointStatus.text
+                                tvStatus.setTextColor(
+                                    color(
+                                        if (model.pointStatus == PointStatus.TAKEN)R.color.primary else splitties.material.colors.R.color.grey_400))
+
                             }
                         }
                     }
