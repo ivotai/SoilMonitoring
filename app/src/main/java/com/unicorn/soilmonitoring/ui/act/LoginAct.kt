@@ -2,6 +2,8 @@ package com.unicorn.soilmonitoring.ui.act
 
 import android.graphics.Color
 import androidx.core.graphics.ColorUtils
+import com.drake.statusbar.immersive
+import com.drake.statusbar.statusPadding
 import com.tbruyelle.rxpermissions3.RxPermissions
 import com.unicorn.soilmonitoring.databinding.ActLoginBinding
 import com.unicorn.soilmonitoring.ui.base.BaseAct
@@ -11,6 +13,11 @@ import splitties.resources.color
 class LoginAct : BaseAct<ActLoginBinding>() {
 
     override fun initViews() {
+        // 状态栏透明
+        immersive(darkMode = true)
+        binding.root.statusPadding()
+
+        // 按钮点击效果
         binding.apply {
             btnLogin.helper.backgroundColorPressed = ColorUtils.blendARGB(
                 color(splitties.material.colors.R.color.green_400), Color.WHITE, 0.3f
@@ -33,10 +40,11 @@ class LoginAct : BaseAct<ActLoginBinding>() {
         binding.apply {
             btnLogin.setOnClickListener {
                 val username = etUsername.text.toString().trim()
-                if (username == "admin") {
-                    start<MainAct2> { }
-                } else {
+                if (username != "admin") {
                     start<MainAct1> { }
+                } else {
+                    // 2 代表 pm
+                    start<MainAct2> { }
                 }
             }
         }
