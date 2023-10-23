@@ -18,7 +18,7 @@ import com.unicorn.soilmonitoring.databinding.ItemRealPointBinding
 import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.event.NavigationEvent
 import com.unicorn.soilmonitoring.model.Progress
-import com.unicorn.soilmonitoring.ui.act.SampleCollectAct
+import com.unicorn.soilmonitoring.ui.act.AddCollectAct
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.fragments.start
 import splitties.resources.color
@@ -58,7 +58,9 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
                                 tvStatus.text = model.pointStatus.text
                                 tvStatus.setTextColor(
                                     color(
-                                        if (model.pointStatus == PointStatus.TAKEN)R.color.primary else splitties.material.colors.R.color.grey_400))
+                                        if (model.pointStatus == PointStatus.TAKEN) R.color.primary else splitties.material.colors.R.color.grey_400
+                                    )
+                                )
 
                             }
                         }
@@ -72,7 +74,7 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
                     sendEvent(NavigationEvent(getModel()))
                 }
                 onClick(R.id.tv_gather) {
-                    start<SampleCollectAct> { }
+                    start<AddCollectAct> { }
                 }
 
             }
@@ -85,8 +87,7 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
             tvFilterByDate.setOnClickListener {
                 try {
                     val datePicker =
-                        MaterialDatePicker.Builder.dateRangePicker()
-                            .setTitleText("选择筛选日期")
+                        MaterialDatePicker.Builder.dateRangePicker().setTitleText("选择筛选日期")
                             .build()
                     datePicker.show(childFragmentManager, "datePicker")
 

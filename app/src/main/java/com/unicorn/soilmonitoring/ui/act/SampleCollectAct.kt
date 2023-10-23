@@ -22,6 +22,7 @@ import com.drake.channel.sendEvent
 import com.drake.statusbar.immersive
 import com.drake.statusbar.statusPadding
 import com.luck.picture.lib.basic.PictureSelector
+import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
@@ -125,9 +126,12 @@ class SampleCollectAct : BaiduOrcAct<ActSampleCollectBinding>() {
                                     val sampleCollectLocalMedia =
                                         this@onCreate.getModel<SampleCollectLocalMedia>()
                                     val localMedia = getModel<LocalMedia>()
-                                    if (localMedia.path == null) {
+//                                    if (localMedia.path == null) {
                                         PictureSelector.create(this@SampleCollectAct)
-                                            .openGallery(sampleCollectLocalMedia.selectMimeType)
+                                            .openGallery(SelectMimeType.ofAll())
+                                            .isWithSelectVideoImage(true)
+                                            .setMaxVideoSelectNum(3)
+                                            .setSelectedData(sampleCollectLocalMedia.list)
                                             .setImageEngine(GlideEngine.createGlideEngine())
                                             .forResult(object :
                                                 OnResultCallbackListener<LocalMedia?> {
@@ -144,18 +148,18 @@ class SampleCollectAct : BaiduOrcAct<ActSampleCollectBinding>() {
 
                                                 override fun onCancel() {}
                                             })
-                                    } else {
-                                        val list = ArrayList<LocalMedia>()
-                                        models!!.forEachIndexed { index, any ->
-                                            any as LocalMedia
-                                            any.let { if (it.path != null) list.add(it) }
-                                        }
-                                        PictureSelector.create(this@SampleCollectAct).openPreview()
-                                            .setImageEngine(GlideEngine.createGlideEngine())
-                                            .startActivityPreview(
-                                                modelPosition, false, list
-                                            )
-                                    }
+//                                    } else {
+//                                        val list = ArrayList<LocalMedia>()
+//                                        models!!.forEachIndexed { index, any ->
+//                                            any as LocalMedia
+//                                            any.let { if (it.path != null) list.add(it) }
+//                                        }
+//                                        PictureSelector.create(this@SampleCollectAct).openPreview()
+//                                            .setImageEngine(GlideEngine.createGlideEngine())
+//                                            .startActivityPreview(
+//                                                modelPosition, false, list
+//                                            )
+//                                    }
                                 }
                             }
                         }

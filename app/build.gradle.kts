@@ -118,6 +118,8 @@ dependencies {
         "include" to listOf("*.aar", "*.jar"),
     )))
 
+//    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
+
 //    implementation(files('libs/ocrsdk.aar'))
 //    implementation files('libs/ocr_ui-debug.aar')
 

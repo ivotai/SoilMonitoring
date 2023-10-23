@@ -1,0 +1,20 @@
+
+0. 是否可以视频和照片同时 ok
+
+1. 确定所有字段
+
+点位类型 sublist = listOf("常规", "长期").map { Dict(it, this) }
+剖面类型 sublist = listOf("剖面", "其他").map { Dict(it, this) }
+
+采样地点 崇明区，瀛洲公园，青色墙正对香樟树下行政区 sublist = listOf("徐汇区").map { Dict(it, this) }
+                       绿地类型 公园
+
+检测项目 sublist = listOf("LB").map { Dict(it, this) }
+采样深度 "0-20cm", "20-40cm", "40-90cm").map { Dict(it, this) }
+植被类型及长势 乔：香樟  草：鸢尾
+土壤扰动情况
+样品描述
+
+2. 确定采集点字段。 跳过
+
+3. 设计确定界面。
