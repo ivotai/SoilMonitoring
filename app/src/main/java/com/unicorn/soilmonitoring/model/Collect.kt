@@ -1,5 +1,6 @@
 package com.unicorn.soilmonitoring.model
 
+import android.graphics.Bitmap.Config
 import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome
 
 class Collect(
@@ -42,10 +43,12 @@ class Collect(
         CollectField(
             label = "GPS定位",
             inputType = InputType.TEXT,
-            collectFieldType = CollectFieldType.MIDDLE
+            collectFieldType = CollectFieldType.MIDDLE,
+            value = "经度：${com.unicorn.soilmonitoring.app.Config.selfPoint.latLng.latitude}\n纬度：${com.unicorn.soilmonitoring.app.Config.selfPoint.latLng.longitude}"
         ),
         CollectField(
-            label = "温湿度", inputType = InputType.TEXT, collectFieldType = CollectFieldType.BOTTOM
+            label = "温湿度", inputType = InputType.TEXT, collectFieldType = CollectFieldType.BOTTOM,
+            value = "温度：19℃\n湿度：72%"
         ),
         SupportDivider(),
 
