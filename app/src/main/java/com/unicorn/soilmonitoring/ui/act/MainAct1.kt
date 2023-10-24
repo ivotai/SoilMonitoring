@@ -26,7 +26,7 @@ class MainAct1 : BaseAct<ActMain1Binding>() {
     override fun initViews() {
         immersive(darkMode = true)
 
-        val titles = listOf( "采样记录","采样任务", "地图")
+        val titles = listOf( "采样记录","采样任务", "采样地图")
 
         binding.run {
             object : FragmentStateAdapter(this@MainAct1) {
