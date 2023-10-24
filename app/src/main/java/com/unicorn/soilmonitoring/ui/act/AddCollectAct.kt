@@ -66,7 +66,7 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
 
         val modelPosition = intent.getIntExtra("modelPosition", -1)
         if (modelPosition != -1) {
-            collect = Config.collectList[modelPosition]
+            collect = Config.currentCollectList[modelPosition]
         }
 
         binding.run {
@@ -181,12 +181,12 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
                             ToastUtils.showShort("以更新定位及温湿度信息")
                         }
                         if (item.icon == FontAwesome.Icon.faw_history) {
-                            if (Config.collectList.isEmpty()) {
+                            if (Config.currentCollectList.isEmpty()) {
                                 ToastUtils.showShort("暂无历史数据")
                                 return@onFastClick
                             }
 
-                            val history = Config.collectList.first()
+                            val history = Config.currentCollectList.first()
                             onFieldValueChange(14, (history.models[14] as CollectField).value)
                             onFieldValueChange(15, (history.models[15] as CollectField).value)
                             onFieldValueChange(16, (history.models[16] as CollectField).value)
@@ -197,13 +197,10 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
                     }
                     if (item is CollectLocalMedia) {
                         PictureSelector.create(this@AddCollectAct)
-                            .openGallery(SelectMimeType.ofAll())
-                            .isWithSelectVideoImage(true)
-                            .setMaxVideoSelectNum(5)
-                            .setSelectedData(item.localMedias)
+                            .openGallery(SelectMimeType.ofAll()).isWithSelectVideoImage(true)
+                            .setMaxVideoSelectNum(5).setSelectedData(item.localMedias)
                             .setImageEngine(GlideEngine.createGlideEngine())
-                            .forResult(object :
-                                OnResultCallbackListener<LocalMedia> {
+                            .forResult(object : OnResultCallbackListener<LocalMedia> {
                                 override fun onResult(result: ArrayList<LocalMedia>) {
                                     item.localMedias = result
                                     binding.rv.bindingAdapter.notifyItemChanged(item.modelPosition)
@@ -220,8 +217,7 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
                     if (item is CollectField) when (item.inputType) {
                         InputType.TEXT -> {
                             MaterialDialog(
-                                this@AddCollectAct,
-                                BottomSheet(LayoutMode.WRAP_CONTENT)
+                                this@AddCollectAct, BottomSheet(LayoutMode.WRAP_CONTENT)
                             ).show {
                                 title(text = "输入${item.label}")
                                 input(prefill = item.value) { _, text ->
@@ -239,8 +235,7 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
                                 else -> listOf("")
                             }
                             MaterialDialog(
-                                this@AddCollectAct,
-                                BottomSheet(LayoutMode.MATCH_PARENT)
+                                this@AddCollectAct, BottomSheet(LayoutMode.MATCH_PARENT)
                             ).show {
                                 title(text = "选择${item.label}")
                                 listItems(items = items) { _, index, text ->
@@ -267,11 +262,7 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
         binding.titleBar.getCiv2().setOnClickListener {
 
             val modelPosition = intent.getIntExtra("modelPosition", -1)
-            if (modelPosition == -1) {
-                Config.collectList.add(0, collect)
-            }
-
-            sendEvent(CollectsChangeEvent())
+            sendEvent(CollectsChangeEvent(modelPosition == -1, collect = collect))
             finish()
         }
     }

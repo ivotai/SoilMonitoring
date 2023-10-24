@@ -1,4 +1,5 @@
 package com.unicorn.soilmonitoring.event
 
-class CollectsChangeEvent {
-}
+import com.unicorn.soilmonitoring.model.Collect
+
+class CollectsChangeEvent(val isAdd: Boolean = true, val collect: Collect) {}
