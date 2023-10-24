@@ -13,6 +13,7 @@ import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.app.Config
+import com.unicorn.soilmonitoring.app.PointStatus
 import com.unicorn.soilmonitoring.databinding.FraCollectListBinding
 import com.unicorn.soilmonitoring.databinding.ItemCollectBinding
 import com.unicorn.soilmonitoring.databinding.ItemParentBinding
@@ -64,6 +65,8 @@ class CollectListFra : BaseFra<FraCollectListBinding>() {
                                 val no = (model.models[6] as CollectField).value
                                 if (no.isNotEmpty()) {
                                     tvCollectNo.text = (model.models[6] as CollectField).value
+                                }else{
+                                    tvCollectNo.text = "NJP32304"
                                 }
                             }
                             val collectLocalMedia =
@@ -96,32 +99,35 @@ class CollectListFra : BaseFra<FraCollectListBinding>() {
 
     private fun getData(): List<CollectParent> {
         val collectParentList = mutableListOf<CollectParent>()
-        collectParentList.add(CollectParent("批次1").apply {
+//        val total = Config.points.size
+//        val taken = Config.points.count { it.pointStatus == PointStatus.TAKEN }
+//        val progress = 100 * taken / total
+        collectParentList.add(CollectParent("批次1(${50}%)").apply {
             itemGroupPosition = 0
-            itemExpand = true
+            itemExpand = false
             sublist = Config.currentCollectList
         })
-        collectParentList.add(CollectParent("批次2").apply {
+        collectParentList.add(CollectParent("批次2(100%)").apply {
             itemGroupPosition = 1
             itemExpand = false
             sublist = MutableList(5) { Collect() }
         })
-//        collectParentList.add(CollectParent("批次3").apply {
-//            itemGroupPosition = 2
-//            itemExpand = false
-//            sublist = MutableList(5) { Collect() }
-//        })
-//        collectParentList.add(CollectParent("批次4").apply {
-//            itemGroupPosition = 3
-//            itemExpand = false
-//            sublist = MutableList(5) { Collect() }
-//        })
-//        collectParentList.add(CollectParent("批次5").apply {
-//            itemGroupPosition = 4
-//            itemExpand = false
-//            sublist = MutableList(5) { Collect() }
-//
-//        })
+        collectParentList.add(CollectParent("批次3(100%)").apply {
+            itemGroupPosition = 2
+            itemExpand = false
+            sublist = MutableList(5) { Collect() }
+        })
+        collectParentList.add(CollectParent("批次4(100%)").apply {
+            itemGroupPosition = 3
+            itemExpand = false
+            sublist = MutableList(5) { Collect() }
+        })
+        collectParentList.add(CollectParent("批次5(100%)").apply {
+            itemGroupPosition = 4
+            itemExpand = false
+            sublist = MutableList(5) { Collect() }
+
+        })
         return collectParentList
     }
 
@@ -131,8 +137,16 @@ class CollectListFra : BaseFra<FraCollectListBinding>() {
             val adapter = binding.rv.bindingAdapter
             val parent = adapter.models!!.filterIsInstance<CollectParent>().first()
             if (it.isAdd) {
-                parent.sublist.add(0,it.collect)
-                adapter.addModels(listOf(it.collect),false,1)
+                // 这里的代码超级搞
+                if (parent.itemExpand) {
+                    adapter.addModels(listOf(it.collect), false, 1)
+                    parent.sublist.add(0, it.collect)
+//                    adapter.notifyItemInserted(0)
+                } else {
+                    parent.sublist.add(0, it.collect)
+                }
+//                parent.sublist.add(0,it.collect)
+//                adapter.addModels(listOf(it.collect),false,1)
 //                val list = listOf(it.collect) + Config.currentCollectList
 //                parent.sublist = list
 //                Config.currentCollectList = list

@@ -16,7 +16,6 @@ import splitties.resources.color
 class LoginAct : BaseAct<ActLoginBinding>() {
 
     override fun initViews() {
-        binding.etUsername.setText("上海")
         // 状态栏透明
         immersive(darkMode = true)
         binding.root.statusPadding()
@@ -43,8 +42,7 @@ class LoginAct : BaseAct<ActLoginBinding>() {
 
         binding.apply {
             btnLogin.setOnClickListener {
-                val username = etUsername.text.toString().trim()
-                Config.city = username
+//                val username = etUsername.text.toString().trim()
 //                if (username == "") {
                     start<MainAct1> { }
 //                } else {

@@ -121,10 +121,16 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation(files("libs/ocrsdk.aar"))
     implementation(files("libs/ocr_ui-debug.aar"))
-    implementation(fileTree(mapOf(
-        "dir" to "libs",
-        "include" to listOf("*.aar", "*.jar"),
-    )))
+    implementation(
+        fileTree(
+            mapOf(
+                "dir" to "libs",
+                "include" to listOf("*.aar", "*.jar"),
+            )
+        )
+    )
+
+    implementation("com.github.castorflex.smoothprogressbar:library:1.1.0")
 
 //    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
 

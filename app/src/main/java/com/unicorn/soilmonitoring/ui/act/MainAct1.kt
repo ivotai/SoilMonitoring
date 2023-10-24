@@ -17,6 +17,7 @@ import com.unicorn.soilmonitoring.ui.Fas
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import com.unicorn.soilmonitoring.ui.fra.CollectListFra
 import com.unicorn.soilmonitoring.ui.fra.CollectTaskFra
+import com.unicorn.soilmonitoring.ui.fra.ProgressListFra
 import me.majiajie.pagerbottomtabstrip.item.NormalItemView
 import splitties.resources.color
 
@@ -26,7 +27,7 @@ class MainAct1 : BaseAct<ActMain1Binding>() {
     override fun initViews() {
         immersive(darkMode = true)
 
-        val titles = listOf( "采样记录","采样任务", "采样地图")
+        val titles = listOf("采样记录", "采样任务", "采样地图")
 
         binding.run {
             object : FragmentStateAdapter(this@MainAct1) {
@@ -35,7 +36,7 @@ class MainAct1 : BaseAct<ActMain1Binding>() {
 
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
-                        0 -> CollectListFra()
+                        0 -> ProgressListFra()
                         1 -> CollectTaskFra()
                         else -> MapFra()
                     }
@@ -68,13 +69,11 @@ class MainAct1 : BaseAct<ActMain1Binding>() {
                 }
 
             Fas.Icon.fas_circle
-            val navigationController = binding.tab.custom()
-                .addItem(
+            val navigationController = binding.tab.custom().addItem(
                     newItem(
                         titles[0], Fas.Icon.fas_calendar_check, Fas.Icon.fas_calendar_check
                     )
-                )
-                .addItem(
+                ).addItem(
                     newItem(
                         titles[1], Fas.Icon.fas_calendar_week, Fas.Icon.fas_calendar_week
                     )

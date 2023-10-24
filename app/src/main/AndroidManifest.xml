@@ -83,6 +83,7 @@
         <activity android:name=".ui.act.WNaviGuideActivity" />
         <activity android:name=".ui.act.SampleCollectAct" />
         <activity android:name=".ui.act.AddCollectAct" />
+        <activity android:name=".ui.act.CollectListAct"/>
     </application>
 
 </manifest>

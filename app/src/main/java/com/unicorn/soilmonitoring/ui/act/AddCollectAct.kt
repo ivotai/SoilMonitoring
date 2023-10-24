@@ -262,6 +262,10 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
         binding.titleBar.getCiv2().setOnClickListener {
 
             val modelPosition = intent.getIntExtra("modelPosition", -1)
+            val isAdd = modelPosition == -1
+            if (isAdd){
+                Config.currentCollectList.add(collect)
+            }
             sendEvent(CollectsChangeEvent(modelPosition == -1, collect = collect))
             finish()
         }
