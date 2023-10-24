@@ -97,13 +97,13 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
             swipeRefreshLayout.setOnRefreshListener {
                 swipeRefreshLayout.isRefreshing = false
 
-                val models = binding.rv.bindingAdapter.models!!
-                val progress = models.filterIsInstance<Progress>()
-                if (progress.isEmpty()){
-                    binding.rv.bindingAdapter.models = listOf(Progress(Config.points)) + Config.points
+//                val models = binding.rv.bindingAdapter.models!!
+//                val progress = models.filterIsInstance<Progress>()
+//                if (progress.isEmpty()){
+//                    binding.rv.bindingAdapter.models = listOf(Progress(Config.points)) + Config.points
                     // 不知道为什么错
 //                    binding.rv.bindingAdapter.addModels(listOf(Progress(Config.points)),true,0)
-                }
+//                }
             }
         }
     }
