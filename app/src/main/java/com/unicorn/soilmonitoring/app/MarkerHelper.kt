@@ -1,6 +1,7 @@
 package com.unicorn.soilmonitoring.app
 
 import android.content.Context
+import android.os.Bundle
 import androidx.annotation.ColorRes
 import com.baidu.mapapi.map.BaiduMap
 import com.baidu.mapapi.map.BitmapDescriptorFactory
@@ -23,7 +24,8 @@ object MarkerHelper {
             colorInt = context.color(colorRes)
             sizeDp = 24
         }
-        val option = MarkerOptions().position(point.latLng)
+        val extraInfo = Bundle().apply { putSerializable("key", point.key) }
+        val option = MarkerOptions().position(point.latLng).perspective(true).extraInfo(extraInfo)
             .icon(BitmapDescriptorFactory.fromBitmap(iconicsDrawable.toBitmap()))
         return baiduMap.addOverlay(option)
     }

@@ -5,6 +5,7 @@ import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
+import com.baidu.mapapi.map.BaiduMap.OnMarkerClickListener
 import com.baidu.mapapi.map.MapStatus
 import com.baidu.mapapi.map.MapStatusUpdateFactory
 import com.baidu.mapapi.map.MyLocationData
@@ -57,7 +58,15 @@ class MapFra : BaseFra<FraMapBinding>() {
 
         initLocationClient()
 
-//        binding.tvPoint.setOnClickListener { showPointDialog() }
+        map.setOnMarkerClickListener( {
+            //marker被点击时回调的方法
+            //若响应点击事件，返回true，否则返回false
+            //默认返回false
+            val key = it.extraInfo.getString("key")
+            ToastUtils.showLong(key)
+            false
+        })
+
     }
 
     private var locationClient: LocationClient? = null
