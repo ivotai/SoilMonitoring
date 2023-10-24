@@ -19,6 +19,7 @@ import com.unicorn.soilmonitoring.model.FakePoint
 import com.unicorn.soilmonitoring.model.Park
 import com.unicorn.soilmonitoring.ui.base.BaseFra
 import splitties.resources.color
+import splitties.views.InputType.Companion.text
 
 
 class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
@@ -28,15 +29,15 @@ class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
         binding.run {
 
             // 设置标题栏
-            titleBar.run {
-                titleBar.statusPadding()
-                setTitle("采样总览")
-                setTitleColor(color(R.color.white))
-                listOf(getCiv1(), getCiv2()).forEach {
-                    it.textSize = 16f
-                    it.setTextColor(color(R.color.white))
-                }
-            }
+//            titleBar.run {
+//                titleBar.statusPadding()
+//                setTitle("采样总览")
+//                setTitleColor(color(R.color.white))
+//                listOf(getCiv1(), getCiv2()).forEach {
+//                    it.textSize = 16f
+//                    it.setTextColor(color(R.color.white))
+//                }
+//            }
 
             val scanCount = 3
             val layoutManager = GridLayoutManager(requireContext(), scanCount) // 则代表列表一行铺满要求跨度为3
@@ -147,13 +148,13 @@ class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
                         notifyItemChanged(position)
 
                         // 显示打钩
-                        titleBar.getCiv2().visibility =
-                            if (toggleMode && checkedCount > 0) VISIBLE else INVISIBLE
+//                        titleBar.getCiv2().visibility =
+//                            if (toggleMode && checkedCount > 0) VISIBLE else INVISIBLE
                     }
 
                     onToggle { position, toggleMode, _ ->
                         // 显示打叉
-                        titleBar.getCiv1().visibility = if (toggleMode) VISIBLE else INVISIBLE
+//                        titleBar.getCiv1().visibility = if (toggleMode) VISIBLE else INVISIBLE
                         // 如果取消管理模式则取消全部已选择
                         if (!toggleMode) checkedAll(false)
                     }
@@ -165,18 +166,18 @@ class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
 
     override fun initIntents() {
         binding.run {
-            titleBar.getCiv1().run {
-                text = "取消"
-                setOnClickListener { rv.bindingAdapter.toggle() }
-            }
-            titleBar.getCiv2().run {
-                text = "确认"
-                setOnClickListener {
-                    rv.bindingAdapter.getCheckedModels<FakePoint>().joinToString { it.no }
-                        .let { ToastUtils.showLong("设定当前采样为 $it") }
-                    rv.bindingAdapter.toggle()
-                }
-            }
+//            titleBar.getCiv1().run {
+//                text = "取消"
+//                setOnClickListener { rv.bindingAdapter.toggle() }
+//            }
+//            titleBar.getCiv2().run {
+//                text = "确认"
+//                setOnClickListener {
+//                    rv.bindingAdapter.getCheckedModels<FakePoint>().joinToString { it.no }
+//                        .let { ToastUtils.showLong("设定当前采样为 $it") }
+//                    rv.bindingAdapter.toggle()
+//                }
+//            }
         }
     }
 
