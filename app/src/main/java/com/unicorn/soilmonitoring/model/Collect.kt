@@ -83,6 +83,8 @@ class Collect(
             inputType = InputType.TEXT,
             collectFieldType = CollectFieldType.BOTTOM
         ),
+        SupportDivider(),
+        CollectLocalMedia(),
     )
 
 
@@ -90,6 +92,9 @@ class Collect(
     init {
         models.forEachIndexed { index, any ->
             if (any is CollectField) {
+                any.modelPosition = index
+            }
+            if (any is CollectLocalMedia) {
                 any.modelPosition = index
             }
         }
