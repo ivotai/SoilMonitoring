@@ -27,7 +27,7 @@ class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
     override fun initViews() {
 
         binding.run {
-
+            root.statusPadding()
             // 设置标题栏
 //            titleBar.run {
 //                titleBar.statusPadding()

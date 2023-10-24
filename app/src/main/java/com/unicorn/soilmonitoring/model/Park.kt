@@ -14,23 +14,35 @@ class Park(val description: String) : ItemExpand {
         return sublist
     }
 
-    var sublist: List<FakePoint> = ArrayList()
+    var sublist: ArrayList<FakePoint> = ArrayList()
 
     companion object {
 
         val all
             get() = fun(): List<Any> {
                 val parks = ArrayList<Park>()
-                for (i in 1..10) {
-                    val park = Park("园区$i")
-                    park.itemGroupPosition = i
-                    val sublist = ArrayList<FakePoint>()
-                    for (j in 1..10) {
-                        sublist.add(FakePoint(park = park))
-                    }
-                    sublist.sortBy { it.isGather }
-                    park.sublist = sublist
-                    parks.add(park)
+                parks.apply {
+                    add(Park("批次").apply {
+                        itemGroupPosition = 0
+                        sublist = ArrayList()
+                        sublist.add(FakePoint(no = "批次1", park = this))
+                        sublist.add(FakePoint(no = "批次2", park = this))
+                        sublist.add(FakePoint(no = "批次3", park = this))
+                    })
+                    add(Park("状态").apply {
+                        itemGroupPosition = 1
+                        sublist = ArrayList()
+                        sublist.add(FakePoint(no = "未完成", park = this))
+                        sublist.add(FakePoint(no = "已完成", park = this))
+                        sublist.add(FakePoint(no = "全部", park = this))
+                    })
+                    add(Park("排序").apply {
+                        itemGroupPosition = 2
+                        sublist = ArrayList()
+                        sublist.add(FakePoint(no = "由近道远", park = this))
+                        sublist.add(FakePoint(no = "名称", park = this))
+                        sublist.add(FakePoint(no = "采样编号", park = this))
+                    })
                 }
                 return parks
             }
