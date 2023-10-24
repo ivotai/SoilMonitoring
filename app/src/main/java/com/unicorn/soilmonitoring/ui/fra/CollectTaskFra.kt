@@ -40,20 +40,20 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
                 includeVisible = true
             }.setup {
 
-                addType<Progress>(R.layout.item_collect_progress)
+//                addType<Progress>(R.layout.item_collect_progress)
                 addType<Point>(R.layout.item_real_point)
 
                 onBind {
                     when (val model = getModel<Any>()) {
-                        is Progress -> {
-                            val total = Config.points.size
-                            val taken = Config.points.count { it.pointStatus == PointStatus.TAKEN }
-                            val progress = 100 * taken / total
-                            getBinding<ItemCollectProgressBinding>().run {
-                                tvProgress.text = "$taken/$total"
-                                linearProgressIndicator.setProgress(progress, true)
-                            }
-                        }
+//                        is Progress -> {
+//                            val total = Config.points.size
+//                            val taken = Config.points.count { it.pointStatus == PointStatus.TAKEN }
+//                            val progress = 100 * taken / total
+//                            getBinding<ItemCollectProgressBinding>().run {
+//                                tvProgress.text = "$taken/$total"
+//                                linearProgressIndicator.setProgress(progress, true)
+//                            }
+//                        }
 
                         is Point -> {
                             getBinding<ItemRealPointBinding>().run {

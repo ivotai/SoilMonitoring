@@ -29,15 +29,15 @@ class ProgressListFra : BaseFra<FraCollectProgressBinding>() {
 
             rv.grid(1).divider {
                 orientation = DividerOrientation.GRID
-                setDivider(16, true)
+                setDivider(32, true)
                 includeVisible = true
             }.setup {
                 addType<CollectProgress>(R.layout.item_collect_progress)
                 onBind {
                     val model = getModel<CollectProgress>()
                     val binding = getBinding<ItemCollectProgressBinding>()
-                    binding.tvLabel.text = model.key
-                    binding.tvProgress.text = model.key2
+                    binding.tvKey1.text = model.key
+                    binding.tvKey2.text = model.key2
                     binding.linearProgressIndicator.progress = model.progress
                 }
 
@@ -48,11 +48,11 @@ class ProgressListFra : BaseFra<FraCollectProgressBinding>() {
                 }
 
             }.models = listOf(
-                CollectProgress("批次1", "7/10",70),
-                CollectProgress("批次2", "10/10",100),
-                CollectProgress("批次3","10/10", 100),
-                CollectProgress("批次4", "10/10",100),
-                CollectProgress("批次5", "10/10",100),
+                CollectProgress("批次1", "7",70),
+                CollectProgress("批次2", "10",100),
+                CollectProgress("批次3","10", 100),
+                CollectProgress("批次4", "10",100),
+                CollectProgress("批次5", "10",100),
             )
 
         }

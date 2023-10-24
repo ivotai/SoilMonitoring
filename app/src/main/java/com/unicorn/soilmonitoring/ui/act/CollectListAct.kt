@@ -33,8 +33,6 @@ class CollectListAct : BaseAct<ActCollectListBinding>() {
 
         binding.run {
 
-            ToastUtils.showShort(t)
-
             // 设置标题栏
             titleBar.run {
                 titleBar.statusPadding()
