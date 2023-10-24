@@ -2,6 +2,7 @@ package com.unicorn.soilmonitoring.ui.act
 
 import android.graphics.Color
 import androidx.core.graphics.ColorUtils
+import com.baidu.ar.pm
 import com.drake.statusbar.immersive
 import com.drake.statusbar.statusPadding
 import com.tbruyelle.rxpermissions3.RxPermissions
@@ -40,13 +41,13 @@ class LoginAct : BaseAct<ActLoginBinding>() {
 
         binding.apply {
             btnLogin.setOnClickListener {
-                val username = etUsername.text.toString().trim()
-                if (username == "") {
+//                val username = etUsername.text.toString().trim()
+//                if (username == "") {
                     start<MainAct1> { }
-                } else {
-                    // 2 代表 pm
-                    start<MainAct2> { }
-                }
+//                } else {
+//                     2 代表 pm
+//                    start<MainAct2> { }
+//                }
             }
         }
     }

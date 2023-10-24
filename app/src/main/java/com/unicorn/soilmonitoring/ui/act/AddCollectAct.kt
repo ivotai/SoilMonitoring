@@ -1,6 +1,8 @@
 package com.unicorn.soilmonitoring.ui.act
 
+import android.annotation.SuppressLint
 import android.graphics.Color
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
@@ -56,6 +58,7 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun initViews() {
         immersive(darkMode = true)
 
@@ -64,6 +67,10 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
             titleBar.run {
                 titleBar.statusPadding()
                 setTitle("采样记录")
+
+                getCiv1().visibility = View.VISIBLE
+                getCiv2().visibility = View.VISIBLE
+                getCiv2().text = "保存"
             }
 
             rv.linear().divider {
@@ -164,6 +171,11 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
                         }
                         if (item.icon == FontAwesome.Icon.faw_sync) {
                             ToastUtils.showShort("以更新定位及温湿度信息")
+                        }
+                        if (item.icon == FontAwesome.Icon.faw_history) {
+                            // todo
+                            ToastUtils.showShort("历史数据回填")
+//                            onFieldValueChange(14,"常规")
                         }
                     }
                     if (item is CollectLocalMedia){

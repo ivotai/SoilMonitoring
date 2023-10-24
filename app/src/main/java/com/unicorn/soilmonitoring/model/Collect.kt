@@ -52,7 +52,7 @@ class Collect(
         ),
         SupportDivider(),
 
-        CollectGroup("土壤采样"),
+        CollectGroup("土壤采样", FontAwesome.Icon.faw_history),
         CollectField(
             label = "点位类型",
             inputType = InputType.SELECT,
