@@ -1,5 +1,6 @@
 package com.unicorn.soilmonitoring.ui.fra
 
+import com.baidu.ar.it
 import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.divider
@@ -10,6 +11,7 @@ import com.drake.channel.sendEvent
 import com.drake.statusbar.statusPadding
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.unicorn.soilmonitoring.R
+import com.unicorn.soilmonitoring.app.Config
 import com.unicorn.soilmonitoring.app.Point
 import com.unicorn.soilmonitoring.app.PointStatus
 import com.unicorn.soilmonitoring.databinding.FraCollectTaskBinding
@@ -42,8 +44,8 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
                 onBind {
                     when (val model = getModel<Any>()) {
                         is Progress -> {
-                            val total = model.points.size
-                            val taken = model.points.count { it.pointStatus == PointStatus.TAKEN }
+                            val total = Config.points.size
+                            val taken = Config.points.count { it.pointStatus == PointStatus.TAKEN }
                             val progress = 100 * taken / total
                             getBinding<ItemCollectProgressBinding>().run {
                                 tvProgress.text = "$taken/$total"
@@ -85,14 +87,20 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
     override fun initIntents() {
         binding.run {
             tvFilterByDate.setOnClickListener {
-                try {
-                    val datePicker =
-                        MaterialDatePicker.Builder.dateRangePicker().setTitleText("选择筛选日期")
-                            .build()
-                    datePicker.show(childFragmentManager, "datePicker")
+                // todo
+            }
 
-                } catch (e: Exception) {
-                    e.printStackTrace()
+            //
+            swipeRefreshLayout.setColorSchemeResources(R.color.primary)
+            swipeRefreshLayout.setOnRefreshListener {
+                swipeRefreshLayout.isRefreshing = false
+
+                val models = binding.rv.bindingAdapter.models!!
+                val progress = models.filterIsInstance<Progress>()
+                if (progress.isEmpty()){
+                    binding.rv.bindingAdapter.models = listOf(Progress(Config.points)) + Config.points
+                    // 不知道为什么错
+//                    binding.rv.bindingAdapter.addModels(listOf(Progress(Config.points)),true,0)
                 }
             }
         }
@@ -100,7 +108,7 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
 
     override fun initEvents() {
         receiveEvent<List<Point>> {
-            binding.rv.bindingAdapter.models = listOf(Progress(it)) + it
+            binding.rv.bindingAdapter.models =  Config.points
         }
     }
 
