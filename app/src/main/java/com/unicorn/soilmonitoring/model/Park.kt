@@ -41,7 +41,7 @@ class Park(val description: String) : ItemExpand {
                     add(Park("排序").apply {
                         itemGroupPosition = 2
                         sublist = ArrayList()
-                        sublist.add(FakePoint(no = "由近道远", park = this))
+                        sublist.add(FakePoint(no = "由近到远", park = this))
                         sublist.add(FakePoint(no = "名称", park = this))
                         sublist.add(FakePoint(no = "采样编号", park = this))
                     })
