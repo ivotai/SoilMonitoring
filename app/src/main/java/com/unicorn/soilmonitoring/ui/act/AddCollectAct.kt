@@ -18,6 +18,7 @@ import com.drake.brv.utils.divider
 import com.drake.brv.utils.linear
 import com.drake.brv.utils.models
 import com.drake.brv.utils.setup
+import com.drake.channel.sendEvent
 import com.drake.statusbar.immersive
 import com.drake.statusbar.statusPadding
 import com.luck.picture.lib.basic.PictureSelector
@@ -30,20 +31,20 @@ import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import com.unicorn.soilmonitoring.GlideEngine
 import com.unicorn.soilmonitoring.R
+import com.unicorn.soilmonitoring.app.Config
 import com.unicorn.soilmonitoring.app.OrcResult
 import com.unicorn.soilmonitoring.databinding.ActAddCollectBinding
 import com.unicorn.soilmonitoring.databinding.GroupCollectFieldBinding
 import com.unicorn.soilmonitoring.databinding.ItemCollectFieldBinding
 import com.unicorn.soilmonitoring.databinding.ItemCollectLocalMediaBinding
 import com.unicorn.soilmonitoring.databinding.ItemSampleCollectImageBinding
-import com.unicorn.soilmonitoring.databinding.ItemSampleCollectLocalMediaBinding
+import com.unicorn.soilmonitoring.event.CollectsChangeEvent
 import com.unicorn.soilmonitoring.model.Collect
 import com.unicorn.soilmonitoring.model.CollectField
 import com.unicorn.soilmonitoring.model.CollectFieldType
 import com.unicorn.soilmonitoring.model.CollectGroup
 import com.unicorn.soilmonitoring.model.CollectLocalMedia
 import com.unicorn.soilmonitoring.model.InputType
-import com.unicorn.soilmonitoring.model.SampleCollectLocalMedia
 import com.unicorn.soilmonitoring.model.SupportDivider
 
 class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
@@ -58,9 +59,15 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
         }
     }
 
+
     @SuppressLint("SuspiciousIndentation")
     override fun initViews() {
         immersive(darkMode = true)
+
+        val modelPosition = intent.getIntExtra("modelPosition", -1)
+        if (modelPosition != -1) {
+            collect = Config.collectList[modelPosition]
+        }
 
         binding.run {
             // 设置标题栏
@@ -71,6 +78,7 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
                 getCiv1().visibility = View.VISIBLE
                 getCiv2().visibility = View.VISIBLE
                 getCiv2().text = "保存"
+
             }
 
             rv.linear().divider {
@@ -85,19 +93,19 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
 
                 onCreate {
                     if (itemViewType == R.layout.item_collect_local_media) {
-                            getBinding<ItemCollectLocalMediaBinding>().run {
-                                rv.linear(orientation = LinearLayoutManager.HORIZONTAL).divider {
-                                    setDivider(8, true)
-                                }.setup {
-                                    addType<LocalMedia>(R.layout.item_sample_collect_image)
+                        getBinding<ItemCollectLocalMediaBinding>().run {
+                            rv.linear(orientation = LinearLayoutManager.HORIZONTAL).divider {
+                                setDivider(8, true)
+                            }.setup {
+                                addType<LocalMedia>(R.layout.item_sample_collect_image)
 
-                                    onBind {
-                                        getBinding<ItemSampleCollectImageBinding>().run {
-                                            val localMedia = getModel<LocalMedia>()
-                                                Glide.with(this@AddCollectAct).load(localMedia.path)
-                                                    .into(iv)
-                                        }
+                                onBind {
+                                    getBinding<ItemSampleCollectImageBinding>().run {
+                                        val localMedia = getModel<LocalMedia>()
+                                        Glide.with(this@AddCollectAct).load(localMedia.path)
+                                            .into(iv)
                                     }
+                                }
                             }
                         }
                     }
@@ -173,17 +181,26 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
                             ToastUtils.showShort("以更新定位及温湿度信息")
                         }
                         if (item.icon == FontAwesome.Icon.faw_history) {
-                            // todo
-                            ToastUtils.showShort("历史数据回填")
-//                            onFieldValueChange(14,"常规")
+                            if (Config.collectList.isEmpty()) {
+                                ToastUtils.showShort("暂无历史数据")
+                                return@onFastClick
+                            }
+
+                            val history = Config.collectList.first()
+                            onFieldValueChange(14, (history.models[14] as CollectField).value)
+                            onFieldValueChange(15, (history.models[15] as CollectField).value)
+                            onFieldValueChange(16, (history.models[16] as CollectField).value)
+                            onFieldValueChange(17, (history.models[17] as CollectField).value)
+                            onFieldValueChange(18, (history.models[18] as CollectField).value)
+                            onFieldValueChange(19, (history.models[19] as CollectField).value)
                         }
                     }
-                    if (item is CollectLocalMedia){
+                    if (item is CollectLocalMedia) {
                         PictureSelector.create(this@AddCollectAct)
                             .openGallery(SelectMimeType.ofAll())
                             .isWithSelectVideoImage(true)
                             .setMaxVideoSelectNum(5)
-                            .setSelectedData(item .localMedias)
+                            .setSelectedData(item.localMedias)
                             .setImageEngine(GlideEngine.createGlideEngine())
                             .forResult(object :
                                 OnResultCallbackListener<LocalMedia> {
@@ -202,7 +219,10 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
                     val item = getModel<Any>()
                     if (item is CollectField) when (item.inputType) {
                         InputType.TEXT -> {
-                            MaterialDialog(this@AddCollectAct, BottomSheet(LayoutMode.WRAP_CONTENT)).show {
+                            MaterialDialog(
+                                this@AddCollectAct,
+                                BottomSheet(LayoutMode.WRAP_CONTENT)
+                            ).show {
                                 title(text = "输入${item.label}")
                                 input(prefill = item.value) { _, text ->
                                     onFieldValueChange(item.modelPosition, text.toString())
@@ -218,7 +238,10 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
                                 "采样深度" -> listOf("0-20cm", "20-40cm", "40-90cm")
                                 else -> listOf("")
                             }
-                            MaterialDialog(this@AddCollectAct, BottomSheet(LayoutMode.MATCH_PARENT)).show {
+                            MaterialDialog(
+                                this@AddCollectAct,
+                                BottomSheet(LayoutMode.MATCH_PARENT)
+                            ).show {
                                 title(text = "选择${item.label}")
                                 listItems(items = items) { _, index, text ->
                                     onFieldValueChange(item.modelPosition, text.toString())
@@ -239,7 +262,21 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
         }.models = collect.models
     }
 
-    private val collect = Collect()
+    override fun initIntents() {
+        super.initIntents()
+        binding.titleBar.getCiv2().setOnClickListener {
+
+            val modelPosition = intent.getIntExtra("modelPosition", -1)
+            if (modelPosition == -1) {
+                Config.collectList.add(0, collect)
+            }
+
+            sendEvent(CollectsChangeEvent())
+            finish()
+        }
+    }
+
+    private var collect = Collect()
 
     private fun onFieldValueChange(
         modelPosition: Int, value: String

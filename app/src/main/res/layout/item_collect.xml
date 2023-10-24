@@ -30,7 +30,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="宝山区，外环线外泰和西路，北面天极盛宅花园小区，南门正对电线杆灯号06362120"
+        android:text="奉贤区，瀛洲公园，青色墙正对香樟树下"
         android:textColor="@color/grey_400"
         android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="@+id/tvCollectNo"
@@ -42,13 +42,14 @@
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:layout_marginTop="16dp"
-        android:scaleType="fitXY"
+        android:scaleType="center"
         android:src="@drawable/collect"
         app:layout_constraintEnd_toEndOf="@+id/tvCollectDescription"
         app:layout_constraintStart_toStartOf="@+id/tvCollectDescription"
         app:layout_constraintTop_toBottomOf="@+id/tvCollectDescription" />
 
     <com.ruffian.library.widget.RTextView
+        android:id="@+id/tvDetail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

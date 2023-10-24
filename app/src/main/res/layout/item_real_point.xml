@@ -138,7 +138,7 @@
         android:layout_marginEnd="8dp"
         android:paddingHorizontal="12dp"
         android:paddingVertical="4dp"
-        android:text="跳转地图"
+        android:text="采样地图"
         android:textColor="@color/green_400"
         android:textSize="14dp"
         app:border_color_normal="@color/green_400"

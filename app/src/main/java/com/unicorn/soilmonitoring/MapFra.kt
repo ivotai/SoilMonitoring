@@ -137,14 +137,9 @@ class MapFra : BaseFra<FraMapBinding>() {
                     }
                 Config.points.sortWith(compareBy({ it.pointStatus }, { it.distance }))
                 sendEvent(Config.points)
-//                suggestionResult.allSuggestions?.filter { it.pt != null }?.map {
-//                    Point(
-//                        it.key, it.pt, listOf(PointStatus.TAKEN,PointStatus.UN_TAKEN).random()
-//                    )
-//                }?.let { sendEvent(it) }
             }
             requestSuggestion(
-                SuggestionSearchOption().city("上海").keyword(keyword)
+                SuggestionSearchOption().city(Config.city).keyword(keyword)
             )
         }
     }

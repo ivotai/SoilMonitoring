@@ -7,6 +7,7 @@ import com.drake.statusbar.immersive
 import com.drake.statusbar.statusPadding
 import com.tbruyelle.rxpermissions3.RxPermissions
 import com.unicorn.soilmonitoring.R
+import com.unicorn.soilmonitoring.app.Config
 import com.unicorn.soilmonitoring.databinding.ActLoginBinding
 import com.unicorn.soilmonitoring.ui.base.BaseAct
 import splitties.activities.start
@@ -15,6 +16,7 @@ import splitties.resources.color
 class LoginAct : BaseAct<ActLoginBinding>() {
 
     override fun initViews() {
+        binding.etUsername.setText("上海")
         // 状态栏透明
         immersive(darkMode = true)
         binding.root.statusPadding()
@@ -41,7 +43,8 @@ class LoginAct : BaseAct<ActLoginBinding>() {
 
         binding.apply {
             btnLogin.setOnClickListener {
-//                val username = etUsername.text.toString().trim()
+                val username = etUsername.text.toString().trim()
+                Config.city = username
 //                if (username == "") {
                     start<MainAct1> { }
 //                } else {
