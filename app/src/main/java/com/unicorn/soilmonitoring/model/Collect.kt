@@ -55,17 +55,17 @@ class Collect(
         CollectGroup("土壤采样"),
         CollectField(
             label = "点位类型",
-            inputType = InputType.TEXT,
+            inputType = InputType.SELECT,
             collectFieldType = CollectFieldType.MIDDLE
         ),
         CollectField(
             label = "剖面类型",
-            inputType = InputType.TEXT,
+            inputType = InputType.SELECT,
             collectFieldType = CollectFieldType.MIDDLE
         ),
         CollectField(
             label = "采样深度",
-            inputType = InputType.TEXT,
+            inputType = InputType.SELECT,
             collectFieldType = CollectFieldType.MIDDLE
         ),
         CollectField(
