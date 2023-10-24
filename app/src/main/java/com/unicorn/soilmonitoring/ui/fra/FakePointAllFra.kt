@@ -10,11 +10,13 @@ import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.divider
 import com.drake.brv.utils.setup
+import com.drake.channel.sendEvent
 import com.drake.statusbar.statusPadding
 import com.unicorn.soilmonitoring.R
 import com.unicorn.soilmonitoring.databinding.FraFakePointAllBinding
 import com.unicorn.soilmonitoring.databinding.ItemFakePointBinding
 import com.unicorn.soilmonitoring.databinding.ItemParkBinding
+import com.unicorn.soilmonitoring.event.DrawCloseEvent
 import com.unicorn.soilmonitoring.model.FakePoint
 import com.unicorn.soilmonitoring.model.Park
 import com.unicorn.soilmonitoring.ui.base.BaseFra
@@ -57,7 +59,7 @@ class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
 //                 原来的间隔方案
                 .divider { // 水平间距
                     orientation = DividerOrientation.GRID
-                    setDivider(12, true)
+                    setDivider(16, true)
                     startVisible = true
                     endVisible = true
                 }
@@ -77,7 +79,7 @@ class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
                                 )
                             }
 
-                            layoutPosition
+//                            layoutPosition
                         }
                     }
 
@@ -86,32 +88,29 @@ class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
                             is FakePoint -> {
                                 getBinding<ItemFakePointBinding>().run {
                                     tvNo.text = model.no
-                                    tvIsGather.text = if (model.isGather) "已采样" else "待采样"
+//                                    tvIsGather.text = if (model.isGather) "已采样" else "待采样"
+//
+//                                    tvIsGather.setTextColor(
+//                                        if (model.isGather) context.color(splitties.material.colors.R.color.green_400) else Color.parseColor(
+//                                            "#5E656F"
+//                                        )
+//                                    )
 
-                                    tvIsGather.setTextColor(
-                                        if (model.isGather) context.color(splitties.material.colors.R.color.green_400) else Color.parseColor(
-                                            "#5E656F"
-                                        )
-                                    )
-                                    tvNo.setTextColor(
-                                        if (model.isGather) context.color(splitties.material.colors.R.color.green_400) else Color.parseColor(
-                                            "#AFB3BC"
-                                        )
-                                    )
 
 
                                     val isChecked = model in getCheckedModels<FakePoint>()
+                                    tvNo.setTextColor(
+                                        if (isChecked) context.color(R.color.white) else context.color(
+                                            splitties.material.colors.R.color.grey_700
+                                        )
+                                    )
                                     val backgroundColorNormalInt =
-                                        if (isChecked) context.color(splitties.material.colors.R.color.blue_50) else context.color(
-                                            splitties.material.colors.R.color.grey_100
+                                        if (isChecked) context.color(R.color.primary) else context.color(
+                                            splitties.material.colors.R.color.grey_50
                                         )
-                                    val borderColorNormalInt =
-                                        if (isChecked) context.color(splitties.material.colors.R.color.blue_400) else Color.parseColor(
-                                            "#F6F6F6"
-                                        )
-                                    root.helper.run {
+
+                                    tvNo.helper.run {
                                         backgroundColorNormal = backgroundColorNormalInt
-                                        borderColorNormal = borderColorNormalInt
                                     }
                                 }
                             }
@@ -124,23 +123,12 @@ class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
                         }
                     }
 
-                    onLongClick(R.id.root) {
-                        val model = getModel<Any>()
-                        if (model is FakePoint && !model.isGather) {
-                            if (!toggleMode) {
-                                toggle()
-                                setChecked(layoutPosition, true)
-                            }
-                        }
-                    }
+
 
                     // 点击列表触发选中
-                    onClick(R.id.root) {
-                        val model = getModel<Any>()
-                        if (model is FakePoint && !model.isGather) {
-                            // 如果当前未处于选择模式下 点击无效
-                            if (toggleMode) checkedSwitch(layoutPosition)
-                        }
+                    onClick(R.id.tv_no) {
+                        checkedSwitch(modelPosition)
+//                        notifyItemChanged(modelPosition)
                     }
 
                     // 监听列表选中
@@ -166,6 +154,9 @@ class FakePointAllFra() : BaseFra<FraFakePointAllBinding>() {
 
     override fun initIntents() {
         binding.run {
+            tvFinish.setOnClickListener {
+                sendEvent(DrawCloseEvent())
+            }
 //            titleBar.getCiv1().run {
 //                text = "取消"
 //                setOnClickListener { rv.bindingAdapter.toggle() }

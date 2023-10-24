@@ -28,6 +28,8 @@ class Park(val description: String) : ItemExpand {
                         sublist.add(FakePoint(no = "批次1", park = this))
                         sublist.add(FakePoint(no = "批次2", park = this))
                         sublist.add(FakePoint(no = "批次3", park = this))
+                        sublist.add(FakePoint(no = "批次4", park = this))
+                        sublist.add(FakePoint(no = "批次5", park = this))
                     })
                     add(Park("状态").apply {
                         itemGroupPosition = 1

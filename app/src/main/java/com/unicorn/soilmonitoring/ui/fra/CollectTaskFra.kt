@@ -18,6 +18,7 @@ import com.unicorn.soilmonitoring.app.PointStatus
 import com.unicorn.soilmonitoring.databinding.FraCollectTaskBinding
 import com.unicorn.soilmonitoring.databinding.ItemCollectProgressBinding
 import com.unicorn.soilmonitoring.databinding.ItemRealPointBinding
+import com.unicorn.soilmonitoring.event.DrawCloseEvent
 import com.unicorn.soilmonitoring.event.MapEvent
 import com.unicorn.soilmonitoring.event.NavigationEvent
 import com.unicorn.soilmonitoring.model.Progress
@@ -110,6 +111,9 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
     override fun initEvents() {
         receiveEvent<List<Point>> {
             binding.rv.bindingAdapter.models =  Config.points
+        }
+        receiveEvent<DrawCloseEvent> {
+            binding.drawerLayout.closeDrawer(Gravity.RIGHT)
         }
     }
 

@@ -1,37 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.ruffian.library.widget.RConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ruffian.library.widget.RTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root"
+    android:id="@+id/tv_no"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:border_width_normal="1dp"
-    app:corner_radius="16dp">
+    android:padding="8dp"
+    android:gravity="center"
+    android:text="HNC1501"
+    android:textColor="@color/grey_700"
+    android:textSize="14dp"
+    app:background_normal="@color/grey_50"
+    app:corner_radius="4dp" />
 
-    <TextView
-        android:id="@+id/tv_is_gather"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="采样点"
-        android:textColor="#5E656F"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_no"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="16dp"
-        android:text="HNC1501"
-        android:textColor="#AFB3BC"
-        android:textSize="14dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/tv_is_gather"
-        app:layout_constraintStart_toStartOf="@+id/tv_is_gather"
-        app:layout_constraintTop_toBottomOf="@+id/tv_is_gather" />
-
-</com.ruffian.library.widget.RConstraintLayout>
