@@ -78,6 +78,7 @@ dependencies {
     // dialog
     implementation("com.afollestad.material-dialogs:core:3.3.0")
     implementation("com.afollestad.material-dialogs:bottomsheets:3.3.0")
+    implementation("com.afollestad.material-dialogs:input:3.3.0")
 
     // liangjingkanji
     implementation("com.github.liangjingkanji:BRV:1.5.0")

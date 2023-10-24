@@ -1,6 +1,11 @@
 package com.unicorn.soilmonitoring.ui.act
 
 import android.graphics.Color
+import androidx.databinding.DataBindingUtil.getBinding
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
+import com.afollestad.materialdialogs.list.listItems
+import com.blankj.utilcode.util.DeviceUtils.getModel
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.drake.brv.utils.bindingAdapter
@@ -22,7 +27,9 @@ import com.unicorn.soilmonitoring.model.Collect
 import com.unicorn.soilmonitoring.model.CollectField
 import com.unicorn.soilmonitoring.model.CollectFieldType
 import com.unicorn.soilmonitoring.model.CollectGroup
+import com.unicorn.soilmonitoring.model.InputType
 import com.unicorn.soilmonitoring.model.SupportDivider
+import io.reactivex.rxjava3.core.Single
 
 class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
 
@@ -47,78 +54,114 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
             }
 
             rv.linear().divider {
-                    setColorRes(splitties.material.colors.R.color.grey_100)
-                    setDivider(width = 1, dp = false)
-                    setMargin(16, 16, true)
-                }.setup {
-                    addType<CollectField>(R.layout.item_collect_field)
-                    addType<SupportDivider>(R.layout.item_divider)
-                    addType<CollectGroup>(R.layout.group_collect_field)
+                setColorRes(splitties.material.colors.R.color.grey_100)
+                setDivider(width = 1, dp = false)
+                setMargin(16, 16, true)
+            }.setup {
+                addType<CollectField>(R.layout.item_collect_field)
+                addType<SupportDivider>(R.layout.item_divider)
+                addType<CollectGroup>(R.layout.group_collect_field)
 
-                    onBind {
-                        when (val item = getModel<Any>()) {
-                            is CollectField -> {
-                                val binding = getBinding<ItemCollectFieldBinding>()
+                onBind {
+                    when (val item = getModel<Any>()) {
+                        is CollectField -> {
+                            val binding = getBinding<ItemCollectFieldBinding>()
 
-                                // 设置圆角
-                                val helper = binding.root.helper
-                                val dp16 = SizeUtils.dp2px(16f).toFloat()
-                                when (item.collectFieldType) {
-                                    CollectFieldType.TOP -> {
-                                        helper.cornerRadiusTopLeft = dp16
-                                        helper.cornerRadiusTopRight = dp16
-                                        helper.cornerRadiusBottomLeft = 0f
-                                        helper.cornerRadiusBottomRight = 0f
-                                    }
-
-                                    CollectFieldType.BOTTOM -> {
-                                        helper.cornerRadiusTopLeft = 0f
-                                        helper.cornerRadiusTopRight = 0f
-                                        helper.cornerRadiusBottomLeft = dp16
-                                        helper.cornerRadiusBottomRight = dp16
-                                    }
-
-                                    CollectFieldType.MIDDLE -> {
-                                        helper.cornerRadiusTopLeft = 0f
-                                        helper.cornerRadiusTopRight = 0f
-                                        helper.cornerRadiusBottomLeft = 0f
-                                        helper.cornerRadiusBottomRight = 0f
-                                    }
+                            // 设置圆角
+                            val helper = binding.root.helper
+                            val dp16 = SizeUtils.dp2px(16f).toFloat()
+                            when (item.collectFieldType) {
+                                CollectFieldType.TOP -> {
+                                    helper.cornerRadiusTopLeft = dp16
+                                    helper.cornerRadiusTopRight = dp16
+                                    helper.cornerRadiusBottomLeft = 0f
+                                    helper.cornerRadiusBottomRight = 0f
                                 }
 
-                                // 展示数据
-                                binding.apply {
-                                    l.text = item.label
-                                    tv.hint = item.inputType.hint
-                                    tv.text = item.value
+                                CollectFieldType.BOTTOM -> {
+                                    helper.cornerRadiusTopLeft = 0f
+                                    helper.cornerRadiusTopRight = 0f
+                                    helper.cornerRadiusBottomLeft = dp16
+                                    helper.cornerRadiusBottomRight = dp16
+                                }
+
+                                CollectFieldType.MIDDLE -> {
+                                    helper.cornerRadiusTopLeft = 0f
+                                    helper.cornerRadiusTopRight = 0f
+                                    helper.cornerRadiusBottomLeft = 0f
+                                    helper.cornerRadiusBottomRight = 0f
                                 }
                             }
 
-                            is CollectGroup -> {
-                                val binding = getBinding<GroupCollectFieldBinding>()
-                                binding.tv.text = item.name
-                                if (item.icon != null) binding.iiv.icon =
-                                    IconicsDrawable(context, item.icon).apply {
-                                        colorInt = Color.WHITE
-                                        sizeDp = 24
-                                    }
-                            }
-
-                            is SupportDivider -> {
-                                // do nothing
+                            // 展示数据
+                            binding.apply {
+                                l.text = item.label
+                                tv.hint = item.inputType.hint
+                                tv.text = item.value
                             }
                         }
-                    }
 
-                    onClick(R.id.iiv) {
-                        val item = getModel<Any>()
-                        if (item is CollectGroup) {
-                            if (item.icon == FontAwesome.Icon.faw_camera) {
-                                startOrc()
-                            }
+                        is CollectGroup -> {
+                            val binding = getBinding<GroupCollectFieldBinding>()
+                            binding.tv.text = item.name
+                            if (item.icon != null) binding.iiv.icon =
+                                IconicsDrawable(context, item.icon).apply {
+                                    colorInt = Color.WHITE
+                                    sizeDp = 24
+                                }
+                        }
+
+                        is SupportDivider -> {
+                            // do nothing
                         }
                     }
                 }
+
+                onClick(R.id.iiv) {
+                    val item = getModel<Any>()
+                    if (item is CollectGroup) {
+                        if (item.icon == FontAwesome.Icon.faw_camera) {
+                            startOrc()
+                        }
+                    }
+                }
+
+
+                onFastClick(R.id.tv) {
+                    val item = getModel<Any>()
+                    if (item is CollectField)
+                        when (item.inputType) {
+                            InputType.TEXT -> {
+                                MaterialDialog(this@AddCollectAct).show {
+                                    title(text = "请输入${item.label}")
+                                    input(prefill = item.value) { _, text ->
+                                        onFieldValueChange(item.modelPosition, text.toString())
+                                    }
+                                    positiveButton(text = "确认")
+                                }
+                            }
+
+                            InputType.SELECT -> {
+                                val items = when(item.label){
+                                    "行政区" -> listOf("")
+                                    else -> listOf("")
+                                }
+
+                                MaterialDialog(this@AddCollectAct).show {
+                                    listItems(items=items) { _, index, text ->
+
+                                    }
+                                }
+                            }
+
+                            else -> {
+                                // do nothing
+                            }
+                        }
+                }
+
+
+            }
 
 
         }.models = collect.models
