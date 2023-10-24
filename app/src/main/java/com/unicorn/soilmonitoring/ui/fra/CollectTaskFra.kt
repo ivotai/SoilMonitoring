@@ -1,5 +1,6 @@
 package com.unicorn.soilmonitoring.ui.fra
 
+import android.view.Gravity
 import com.baidu.ar.it
 import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
@@ -87,7 +88,7 @@ class CollectTaskFra : BaseFra<FraCollectTaskBinding>() {
     override fun initIntents() {
         binding.run {
             tvFilterByDate.setOnClickListener {
-                // todo
+                drawerLayout.openDrawer(Gravity.RIGHT)
             }
 
             //

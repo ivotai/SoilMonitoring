@@ -1,104 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_200">
+    tools:openDrawer="end">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="1dp"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:background="@color/grey_200">
 
-        <com.ruffian.library.widget.REditText
-            android:id="@+id/tvSearch"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:hint="搜索采样地点、植被类型及长势"
-            android:paddingHorizontal="16dp"
-            android:textColorHint="@color/grey_400"
-            android:textSize="16dp"
-            app:background_normal="@color/grey_50"
-            app:corner_radius="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/iiv1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.mikepenz.iconics.view.IconicsImageView
-            android:id="@+id/iiv1"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginEnd="4dp"
-            app:iiv_color="@color/primary"
-            app:iiv_icon="faw_calendar_alt"
-            app:layout_constraintBottom_toBottomOf="@+id/tvSearch"
-            app:layout_constraintEnd_toStartOf="@+id/tvFilterByDate"
-            app:layout_constraintTop_toTopOf="@+id/tvSearch" />
-
-        <TextView
-            android:id="@+id/tvFilterByDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="筛选"
-            android:textColor="@color/primary"
-            android:textSize="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvSearch"
+            android:background="@color/white"
+            android:elevation="1dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvSearch" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-<!--        <TextView-->
-<!--            android:id="@+id/tvProgress"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:text="3/8"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="16dp"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/tvSearch"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/tvSearch" />-->
+            <com.ruffian.library.widget.REditText
+                android:id="@+id/tvSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:hint="搜索采样地点、植被类型及长势"
+                android:paddingHorizontal="16dp"
+                android:textColorHint="@color/grey_400"
+                android:textSize="16dp"
+                app:background_normal="@color/grey_50"
+                app:corner_radius="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/iiv1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <com.google.android.material.progressindicator.CircularProgressIndicator-->
-<!--            android:id="@+id/progress"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            app:trackColor="@color/grey_100"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:layout_marginBottom="16dp"-->
-<!--            android:progress="30"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/tvFilterByDate"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/tvProgress"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/tvProgress"-->
-<!--            app:trackCornerRadius="10dp" />-->
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:id="@+id/iiv1"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="4dp"
+                app:iiv_color="@color/primary"
+                app:iiv_icon="faw_calendar_alt"
+                app:layout_constraintBottom_toBottomOf="@+id/tvSearch"
+                app:layout_constraintEnd_toStartOf="@+id/tvFilterByDate"
+                app:layout_constraintTop_toTopOf="@+id/tvSearch" />
+
+            <TextView
+                android:id="@+id/tvFilterByDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="筛选"
+                android:textColor="@color/primary"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvSearch"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvSearch" />
+
+            <!--        <TextView-->
+            <!--            android:id="@+id/tvProgress"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_marginTop="16dp"-->
+            <!--            android:text="3/8"-->
+            <!--            android:textColor="@color/black"-->
+            <!--            android:textSize="16dp"-->
+            <!--            app:layout_constraintStart_toStartOf="@+id/tvSearch"-->
+            <!--            app:layout_constraintTop_toBottomOf="@+id/tvSearch" />-->
+
+            <!--        <com.google.android.material.progressindicator.CircularProgressIndicator-->
+            <!--            android:id="@+id/progress"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            app:trackColor="@color/grey_100"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_marginTop="8dp"-->
+            <!--            android:layout_marginBottom="16dp"-->
+            <!--            android:progress="30"-->
+            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--            app:layout_constraintEnd_toEndOf="@+id/tvFilterByDate"-->
+            <!--            app:layout_constraintHorizontal_bias="0.0"-->
+            <!--            app:layout_constraintStart_toStartOf="@+id/tvProgress"-->
+            <!--            app:layout_constraintTop_toBottomOf="@+id/tvProgress"-->
+            <!--            app:trackCornerRadius="10dp" />-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+    <fragment
+        android:name="com.unicorn.soilmonitoring.ui.fra.FakePointAllFra"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="right" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+</androidx.drawerlayout.widget.DrawerLayout>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
