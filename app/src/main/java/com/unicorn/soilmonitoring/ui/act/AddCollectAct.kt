@@ -118,7 +118,7 @@ class AddCollectAct : BaiduOrcAct<ActAddCollectBinding>() {
 
                             // 设置圆角
                             val helper = binding.root.helper
-                            val dp16 = SizeUtils.dp2px(16f).toFloat()
+                            val dp16 = SizeUtils.dp2px(8f).toFloat()
                             when (item.collectFieldType) {
                                 CollectFieldType.TOP -> {
                                     helper.cornerRadiusTopLeft = dp16

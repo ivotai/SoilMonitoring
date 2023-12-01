@@ -6,7 +6,7 @@
     android:layout_height="100dp"
     android:scaleType="center"
     app:border_width="1dp"
-    app:border_color="@color/blue_300"
+    app:border_color="@color/primary"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
